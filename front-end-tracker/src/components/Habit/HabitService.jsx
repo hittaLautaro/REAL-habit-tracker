@@ -4,8 +4,9 @@ import axios from "axios";
 const API_URL = "http://localhost:8080/habits"; // Adjust according to your back-end URL
 
 const HabitService = {
-  getAll: () => {
-    return axios.get(API_URL);
+  getAll: async () => {
+    const response = await axios.get(`${API_URL}`);
+    return response.data;
   },
   getById: (id) => {
     return axios.get(`${API_URL}/${id}`);
