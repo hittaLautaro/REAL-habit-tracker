@@ -13,13 +13,21 @@ public class HabitMapper {
     public HabitCreateDto toHabitDto(Habit habit) {
         if (habit == null) throw new NullPointerException("Habit is null.");
 
-        return new HabitCreateDto(habit.getName(), habit.getUser().getId(), habit.getCategory().getId(), habit.isFinished());
+        Integer category_id = null;
+        if(habit.getCategory() == null) category_id = null;
+        else category_id = habit.getCategory().getId();
+
+        return new HabitCreateDto(habit.getName(), habit.getUser().getId(), category_id, habit.isFinished());
     }
 
     public HabitResponseDto toHabitResponseDto(Habit habit) {
         if (habit == null) throw new NullPointerException("Habit is null.");
 
-        return new HabitResponseDto(habit.getId(), habit.getName(), habit.getUser().getId(), habit.getCategory().getId(), habit.isFinished());
+        Integer category_id = null;
+        if(habit.getCategory() == null) category_id = null;
+        else category_id = habit.getCategory().getId();
+
+        return new HabitResponseDto(habit.getId(), habit.getName(), habit.getUser().getId(), category_id, habit.isFinished());
     }
 
     public Habit toHabit(HabitCreateDto habitDto) {
@@ -30,9 +38,12 @@ public class HabitMapper {
         habit.setName(habitDto.name());
         habit.setFinished(habitDto.finished());
 
-        var category = new Category();
-        category.setId(habitDto.category_id());
-        habit.setCategory(category);
+        if(habitDto.category_id() != null){
+            var category = new Category();
+            category.setId(habitDto.category_id());
+            habit.setCategory(category);
+        }
+
 
         var user = new User();
         user.setId(habitDto.user_id());

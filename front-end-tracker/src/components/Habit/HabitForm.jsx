@@ -49,7 +49,6 @@ const HabitForm = ({ habit, refreshHabits }) => {
           type="number"
           value={categoryId}
           onChange={(e) => setCategoryId(e.target.value)}
-          required
           placeholder="Category ID"
         />
         <button type="submit">{habit ? "Update" : "Add"} Habit</button>
