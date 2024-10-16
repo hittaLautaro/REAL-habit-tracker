@@ -24,7 +24,11 @@ public class HabitService {
 
     // Get all
     public List<HabitResponseDto> findAll() {
-        return repository.findAll().stream().map(mapper::toHabitResponseDto).toList();
+        var habits = repository.findAllByOrderByIdAsc();
+
+        var habitsResponse = habits.stream().map(mapper::toHabitResponseDto).toList();
+
+        return habitsResponse;
     }
 
     // Get by id
@@ -51,9 +55,11 @@ public class HabitService {
         habit.setName(habitDto.name());
         habit.setFinished(habitDto.finished());
 
-        var category = new Category();
-        category.setId(habitDto.category_id());
-        habit.setCategory(category);
+        if(habitDto.category_id() != null){
+            var category = new Category();
+            category.setId(habitDto.category_id());
+            habit.setCategory(category);
+        }
 
         var user = new User();
         user.setId(habitDto.user_id());

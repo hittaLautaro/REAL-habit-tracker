@@ -20,7 +20,7 @@ const HabitManager = () => {
     <div>
       <Header />
       <HabitForm refreshHabits={fetchHabits} />
-      <HabitList habits={habits} />
+      <HabitList habits={habits} refreshHabits={fetchHabits} />
     </div>
   );
 };

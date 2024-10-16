@@ -1,5 +1,7 @@
+import HabitCard from "./HabitCard";
+
 // src/components/CategoryList.js
-const HabitList = ({ habits = [] }) => {
+const HabitList = ({ habits = [], refreshHabits }) => {
   console.log("Habits received in HabitList:", habits);
 
   return (
@@ -8,21 +10,11 @@ const HabitList = ({ habits = [] }) => {
       <ul>
         {habits.map((habit) => (
           <div key={habit.id}>
-            <li>
-              {"id -> "} {habit.id}{" "}
-            </li>
-            <li>
-              {"name -> "}
-              {habit.name}{" "}
-            </li>
-            <li>
-              {"user id -> "}
-              {habit.user_id}{" "}
-            </li>
-            <li>
-              {"category id -> "}
-              {habit.category_id}
-            </li>
+            {habit ? (
+              <HabitCard refreshHabits={refreshHabits} habit={habit} />
+            ) : (
+              <></>
+            )}
           </div>
         ))}
       </ul>
