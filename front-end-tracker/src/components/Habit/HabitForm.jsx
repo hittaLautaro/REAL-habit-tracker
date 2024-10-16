@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import HabitService from "./HabitService";
+import HabitList from "./HabitList";
 
-const HabitForm = ({ habit }) => {
+const HabitForm = ({ habit, refreshHabits }) => {
   const [name, setName] = useState(habit ? habit.name : "");
   const [userId, setUserId] = useState(habit ? habit.user_id : ""); // User ID state
   const [categoryId, setCategoryId] = useState(habit ? habit.category_id : ""); // User ID state
@@ -20,8 +21,7 @@ const HabitForm = ({ habit }) => {
       } else {
         await HabitService.create(habitDto);
       }
-      // Redirect to habitslist after saving
-      navigate("/habits");
+      refreshHabits(); // Call refreshHabits to update the habit list
     } catch (error) {
       console.error("Error saving habit:", error);
     }

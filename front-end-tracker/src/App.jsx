@@ -7,16 +7,16 @@ import UserForm from "./components/User/UserForm";
 import HabitForm from "./components/Habit/HabitForm";
 import HabitList from "./components/Habit/HabitList";
 import Home from "./components/Home";
+import HabitManager from "./components/Habit/HabitManager";
 
 const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HabitManager />} />
         <Route path="/users" element={<UserList />} />
         <Route path="/users/add" element={<UserForm />} />
-        <Route path="/habits" element={<HabitList />} />
-        <Route path="/habits/add" element={<HabitForm />} />
+        <Route path="/habits" element={<HabitManager />} />
         <Route path="/categories" element={<CategoryList />} />
         <Route path="/categories/add" element={<CategoryForm />} />
       </Routes>

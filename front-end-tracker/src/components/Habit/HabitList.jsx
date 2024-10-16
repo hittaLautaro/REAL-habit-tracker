@@ -1,28 +1,9 @@
 // src/components/CategoryList.js
-import { useEffect, useState } from "react";
-import HabitService from "./HabitService";
-import Header from "../global/Header";
-
-const HabitList = () => {
-  const [habits, setHabits] = useState([]);
-
-  useEffect(() => {
-    fetchHabits();
-  }, []);
-
-  const fetchHabits = async () => {
-    try {
-      const response = await HabitService.getAll();
-      console.log("Fetched Habits:", response.data); // Check the data structure
-      setHabits(response.data);
-    } catch (error) {
-      console.error("Error fetching Habits", error);
-    }
-  };
+const HabitList = ({ habits = [] }) => {
+  console.log("Habits received in HabitList:", habits);
 
   return (
     <div>
-      <Header />
       <h1>Habits</h1>
       <ul>
         {habits.map((habit) => (

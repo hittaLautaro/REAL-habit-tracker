@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5173") // Adjust as necessary
 @RestController
 public class HabitController {
     private final HabitService service;
