@@ -1,7 +1,7 @@
 import { useState } from "react";
 import HabitService from "./HabitService";
 
-const HabitForm = ({ userId, categoryId }) => {
+const HabitForm = ({ userId, categoryId, refreshHabits }) => {
   const [name, setName] = useState("");
 
   const handleSubmit = async (e) => {
@@ -9,6 +9,12 @@ const HabitForm = ({ userId, categoryId }) => {
 
     const habitDto = { name, user_id: userId, category_id: categoryId };
     await HabitService.create(habitDto);
+
+    // Refresh habits after successfully creating a new habit
+    refreshHabits();
+
+    // Optionally clear the input field after submission
+    setName("");
   };
 
   return (

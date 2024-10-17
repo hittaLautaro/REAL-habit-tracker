@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import HabitService from "./HabitService";
-import CategoryService from "../Category/CategoryService";
 
-const HabitCard = ({ habit }) => {
+const HabitCard = ({ habit, refreshHabits }) => {
   const invertFinished = async () => {
     await HabitService.update(habit.id, {
       id: habit.id,
@@ -11,6 +10,7 @@ const HabitCard = ({ habit }) => {
       category_id: habit.category_id,
       finished: !habit.finished,
     });
+    refreshHabits(); // Refresh habits after update
   };
 
   const copyHabit = async () => {
@@ -20,10 +20,12 @@ const HabitCard = ({ habit }) => {
       category_id: habit.category_id,
       finished: !habit.finished,
     });
+    refreshHabits(); // Refresh habits after copying
   };
 
   const deleteHabit = async () => {
     await HabitService.delete(habit.id);
+    refreshHabits(); // Refresh habits after deletion
   };
 
   return (

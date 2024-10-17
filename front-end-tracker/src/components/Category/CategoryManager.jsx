@@ -1,43 +1,50 @@
 import { useState, useEffect } from "react";
 import Header from "../Global/Header";
 import CategoryService from "./CategoryService";
-import HabitList from "../Habit/HabitList";
 import HabitService from "../Habit/HabitService";
 import CategoryForm from "./CategoryForm";
 import HabitForm from "../Habit/HabitForm";
+import HabitCard from "../Habit/HabitCard"; // Import the HabitCard component
 
 const CategoryManager = () => {
   const [categories, setCategories] = useState([]);
-  const [habitsByCategory, setHabitsByCategory] = useState({}); // Store habits by category
-  const [loading, setLoading] = useState(true); // Manage loading state
+  const [habitsByCategory, setHabitsByCategory] = useState({});
 
   useEffect(() => {
     fetchCategoriesAndHabits();
   }, []);
 
   const fetchCategoriesAndHabits = async () => {
-    const categoryResponse = await CategoryService.getAll();
-    const fetchedCategories = categoryResponse.data;
-    console.log("Fetched Categories:", fetchedCategories);
-    setCategories(fetchedCategories);
+    try {
+      // Fetch all categories
+      const categoryResponse = await CategoryService.getAll();
+      console.log("Fetched Categories:", categoryResponse.data);
+      setCategories(categoryResponse.data);
 
-    // Fetch all habits after categories are loaded
-    const habitsData = {};
-    await Promise.all(
-      fetchedCategories.map(async (category) => {
-        const habitResponse = await HabitService.getByCategoryId(category.id);
-        habitsData[category.id] = habitResponse;
-      })
-    );
+      // Fetch all habits at once
+      const habitResponse = await HabitService.getAll();
+      console.log("Fetched all Habits:", habitResponse);
 
-    console.log("Fetched all habits:", habitsData);
-    setHabitsByCategory(habitsData);
-    setLoading(false); // Loading completed
+      // Group habits by category
+      const groupedHabits = habitResponse.reduce((acc, habit) => {
+        const categoryId = habit.category_id;
+        if (!acc[categoryId]) {
+          acc[categoryId] = [];
+        }
+        acc[categoryId].push(habit);
+        return acc;
+      }, {});
+
+      // Update state with habits grouped by category
+      setHabitsByCategory(groupedHabits);
+    } catch (error) {
+      console.error("Error fetching categories or habits", error);
+    }
   };
 
-  if (loading) {
-    return <div>Loading...</div>; // Show loading spinner or message while fetching
-  }
+  const refreshHabits = async () => {
+    await fetchCategoriesAndHabits();
+  };
 
   return (
     <div>
@@ -47,12 +54,24 @@ const CategoryManager = () => {
       <ul>
         {categories.map((category) => (
           <div key={category.id}>
-            <HabitForm userId={1} categoryId={category.id} />
+            <HabitForm
+              userId={1} // or however you want to manage this
+              categoryId={category.id}
+              refreshHabits={refreshHabits} // Pass refresh function
+            />
+            {/* Pass refresh function here */}
             <h1>
               <strong>{category.name}</strong> (id: {category.id})
             </h1>
             <ul>
-              <HabitList habits={habitsByCategory[category.id] || []} />
+              {/* Render HabitCard for each habit */}
+              {(habitsByCategory[category.id] || []).map((habit) => (
+                <HabitCard
+                  key={habit.id}
+                  habit={habit}
+                  refreshHabits={refreshHabits} // Pass refresh function to HabitCard
+                />
+              ))}
             </ul>
           </div>
         ))}

@@ -1,12 +1,6 @@
 // src/App.js
 import { Route, Routes } from "react-router-dom";
-import CategoryList from "./components/Category/CategoryList";
-import CategoryForm from "./components/Category/CategoryForm";
-import UserList from "./components/User/UserList";
-import UserForm from "./components/User/UserForm";
-import HabitForm from "./components/Habit/HabitForm";
-import HabitList from "./components/Habit/HabitList";
-import Home from "./components/Home";
+
 import CategoryManager from "./components/Category/CategoryManager";
 
 const App = () => {
