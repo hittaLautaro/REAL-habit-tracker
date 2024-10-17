@@ -50,7 +50,7 @@ const CategoryManager = () => {
     <div>
       <Header />
       <h1>Categories</h1>
-      <CategoryForm />
+      <CategoryForm refreshHabits={refreshHabits} />
       <ul>
         {categories.map((category) => (
           <div key={category.id}>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CategoryService from "./CategoryService";
 
-const CategoryForm = ({ category }) => {
+const CategoryForm = ({ category, refreshHabits }) => {
   const [name, setName] = useState(category ? category.name : "");
   const [userId, setUserId] = useState(category ? category.user_id : ""); // User ID state
 
@@ -15,6 +15,8 @@ const CategoryForm = ({ category }) => {
     } else {
       await CategoryService.create(categoryDto);
     }
+
+    refreshHabits();
   };
 
   return (
@@ -35,7 +37,7 @@ const CategoryForm = ({ category }) => {
           required
           placeholder="User ID"
         />
-        <button type="submit">{category ? "Update" : "Add"} Category</button>
+        <button type="submit">Add Category</button>
       </form>
     </>
   );
