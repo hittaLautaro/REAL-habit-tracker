@@ -2,28 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import UserService from "./UserService";
 
-const UserForm = ({ user }) => {
-  const [name, setName] = useState(user ? user.name : "");
-  const [email, setEmail] = useState(user ? user.email : "");
-
-  const navigate = useNavigate(); // Initialize useNavigate
+const UserForm = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const userDto = { name, email };
-
-    try {
-      if (user) {
-        await UserService.update(user.id, userDto);
-      } else {
-        await UserService.create(userDto);
-      }
-
-      navigate("/users");
-    } catch (error) {
-      console.error("Error saving User:", error);
-    }
+    await UserService.create(userDto);
   };
 
   return (
@@ -44,7 +31,7 @@ const UserForm = ({ user }) => {
           required
           placeholder="User Email"
         />
-        <button type="submit">{user ? "Update" : "Add"} User</button>
+        <button type="submit">User</button>
       </form>
     </>
   );
