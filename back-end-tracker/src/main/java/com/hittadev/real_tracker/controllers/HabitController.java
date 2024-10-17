@@ -21,6 +21,13 @@ public class HabitController {
         return service.findAll();
     }
 
+    @GetMapping("/habits/category/{category-id}")
+    public List<HabitResponseDto> findByCategoryId(
+            @PathVariable("category-id") Integer id
+    ){
+        return service.findByCategoryId(id);
+    }
+
     @GetMapping("/habits/{habit-id}")
     public HabitResponseDto findById(
             @PathVariable("habit-id") Integer id

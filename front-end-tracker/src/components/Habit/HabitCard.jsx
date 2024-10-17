@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HabitService from "./HabitService";
+import CategoryService from "../Category/CategoryService";
 
-const HabitCard = ({ habit, refreshHabits }) => {
+const HabitCard = ({ habit }) => {
   const invertFinished = async () => {
     try {
-      // Wait for the update request to complete
       await HabitService.update(habit.id, {
         id: habit.id,
         name: habit.name,
@@ -12,8 +12,6 @@ const HabitCard = ({ habit, refreshHabits }) => {
         category_id: habit.category_id,
         finished: !habit.finished,
       });
-      // Once the update is done, refresh the habits
-      refreshHabits();
     } catch (error) {
       console.error("Failed to update habit:", error);
     }
@@ -27,18 +25,14 @@ const HabitCard = ({ habit, refreshHabits }) => {
         category_id: habit.category_id,
         finished: !habit.finished,
       });
-      refreshHabits();
     } catch (error) {
-      console.error("Failed to delete habit:", error);
+      console.error("Failed to copy habit:", error);
     }
   };
 
   const deleteHabit = async () => {
     try {
-      // Wait for the delete request to complete
       await HabitService.delete(habit.id);
-      // Refresh the habits after deletion
-      refreshHabits();
     } catch (error) {
       console.error("Failed to delete habit:", error);
     }
@@ -58,20 +52,16 @@ const HabitCard = ({ habit, refreshHabits }) => {
           {"id -> "} {habit.id}
         </li>
         <li>
-          {"name -> "}
-          {habit.name}
+          {"name -> "} {habit.name}
         </li>
         <li>
-          {"user id -> "}
-          {habit.user_id}
+          {"user id -> "} {habit.user_id}
         </li>
         <li>
-          {"category id -> "}
-          {habit.category_id}
+          {"category id -> "} {habit.category_id}
         </li>
         <li>
-          {"finished -> "}
-          {habit.finished.toString()}
+          {"finished -> "} {habit.finished.toString()}
         </li>
       </div>
       <button onClick={invertFinished}>Finish/Unfinish</button>

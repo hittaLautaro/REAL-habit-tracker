@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import CategoryService from "./CategoryService";
 import Header from "../global/Header";
+import HabitForm from "../Habit/HabitForm";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -27,17 +28,21 @@ const CategoryList = () => {
       <ul>
         {categories.map((category) => (
           <div key={category.id}>
-            <li>
-              {"id: "} {category.id}{" "}
-            </li>
-            <li>
-              {"name: "}
-              {category.name}{" "}
-            </li>
-            <li>
-              {"user id: "}
-              {category.user_id}{" "}
-            </li>
+            <HabitForm />
+
+            <div>
+              <li>
+                {"id: "} {category.id}{" "}
+              </li>
+              <li>
+                {"name: "}
+                {category.name}{" "}
+              </li>
+              <li>
+                {"user id: "}
+                {category.user_id}{" "}
+              </li>
+            </div>
           </div>
         ))}
       </ul>

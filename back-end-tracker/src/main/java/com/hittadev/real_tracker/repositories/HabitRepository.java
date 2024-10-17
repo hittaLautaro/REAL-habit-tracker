@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface HabitRepository extends JpaRepository<Habit, Integer> {
     List<Habit> findAllByOrderByIdAsc();
+
+    List<Habit> findByCategoryId(Integer id);
 }

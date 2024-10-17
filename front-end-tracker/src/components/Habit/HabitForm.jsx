@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import HabitService from "./HabitService";
-import HabitList from "./HabitList";
 
-const HabitForm = ({ habit, refreshHabits }) => {
-  const [name, setName] = useState(habit ? habit.name : "");
-  const [userId, setUserId] = useState(habit ? habit.user_id : ""); // User ID state
-  const [categoryId, setCategoryId] = useState(habit ? habit.category_id : ""); // User ID state
-
-  const navigate = useNavigate(); // Initialize useNavigate
+const HabitForm = () => {
+  const [name, setName] = useState("");
+  const [userId, setUserId] = useState(null); // User ID state
+  const [categoryId, setCategoryId] = useState(null); // User ID state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,12 +12,7 @@ const HabitForm = ({ habit, refreshHabits }) => {
     const habitDto = { name, user_id: userId, category_id: categoryId };
 
     try {
-      if (habit) {
-        await HabitService.update(habit.id, habitDto);
-      } else {
-        await HabitService.create(habitDto);
-      }
-      refreshHabits(); // Call refreshHabits to update the habit list
+      await HabitService.create(habitDto);
     } catch (error) {
       console.error("Error saving habit:", error);
     }
@@ -51,7 +42,7 @@ const HabitForm = ({ habit, refreshHabits }) => {
           onChange={(e) => setCategoryId(e.target.value)}
           placeholder="Category ID"
         />
-        <button type="submit">{habit ? "Update" : "Add"} Habit</button>
+        <button type="submit">Add Habit</button>
       </form>
     </>
   );

@@ -31,6 +31,15 @@ public class HabitService {
         return habitsResponse;
     }
 
+    // Get all
+    public List<HabitResponseDto> findByCategoryId(Integer id) {
+        var habits = repository.findByCategoryId(id);
+
+        var habitsResponse = habits.stream().map(mapper::toHabitResponseDto).toList();
+
+        return habitsResponse;
+    }
+
     // Get by id
     public HabitResponseDto findById(Integer id) {
         var habit = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Habit not found with id: " + id));
@@ -38,6 +47,8 @@ public class HabitService {
 
         return habitResponseDto;
     }
+
+
 
     // Post
     public HabitResponseDto save(HabitCreateDto habitDto) {

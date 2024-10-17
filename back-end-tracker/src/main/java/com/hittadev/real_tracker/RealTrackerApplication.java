@@ -44,6 +44,24 @@ public class RealTrackerApplication {
 					.category(category)
 					.build();
 			habitRepository.save(habit);
+			System.out.println("Habit created: " + habit);
+
+
+			var category2 = Category.builder()
+					.name("Chilling")
+					.user(user)
+					.build();
+			categoryRepository.save(category2);
+			System.out.println("Category created: " + category2);
+
+			var habit2 = Habit.builder()
+					.name("Fishing")
+					.user(user)
+					.category(category2)
+					.build();
+			habitRepository.save(habit2);
+			System.out.println("Habit created: " + habit2);
+
 		};
 	}
 }

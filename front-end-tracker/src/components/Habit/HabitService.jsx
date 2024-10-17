@@ -8,6 +8,10 @@ const HabitService = {
     const response = await axios.get(`${API_URL}`);
     return response.data;
   },
+  getByCategoryId: async (id) => {
+    const response = await axios.get(`${API_URL}/category/${id}`);
+    return response.data;
+  },
   getById: (id) => {
     return axios.get(`${API_URL}/${id}`);
   },
