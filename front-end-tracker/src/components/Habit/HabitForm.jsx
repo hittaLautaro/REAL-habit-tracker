@@ -1,21 +1,14 @@
 import { useState } from "react";
 import HabitService from "./HabitService";
 
-const HabitForm = () => {
+const HabitForm = ({ userId, categoryId }) => {
   const [name, setName] = useState("");
-  const [userId, setUserId] = useState(null); // User ID state
-  const [categoryId, setCategoryId] = useState(null); // User ID state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const habitDto = { name, user_id: userId, category_id: categoryId };
-
-    try {
-      await HabitService.create(habitDto);
-    } catch (error) {
-      console.error("Error saving habit:", error);
-    }
+    await HabitService.create(habitDto);
   };
 
   return (
@@ -28,19 +21,6 @@ const HabitForm = () => {
           onChange={(e) => setName(e.target.value)}
           required
           placeholder="Habit Name"
-        />
-        <input
-          type="number"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-          required
-          placeholder="User ID"
-        />
-        <input
-          type="number"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-          placeholder="Category ID"
         />
         <button type="submit">Add Habit</button>
       </form>

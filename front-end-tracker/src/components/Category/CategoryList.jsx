@@ -12,13 +12,9 @@ const CategoryList = () => {
   }, []);
 
   const fetchCategories = async () => {
-    try {
-      const response = await CategoryService.getAll();
-      console.log("Fetched Categories:", response.data); // Check the data structure
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories", error);
-    }
+    const response = await CategoryService.getAll();
+    console.log("Fetched Categories:", response.data); // Check the data structure
+    setCategories(response.data);
   };
 
   return (
@@ -28,8 +24,6 @@ const CategoryList = () => {
       <ul>
         {categories.map((category) => (
           <div key={category.id}>
-            <HabitForm />
-
             <div>
               <li>
                 {"id: "} {category.id}{" "}

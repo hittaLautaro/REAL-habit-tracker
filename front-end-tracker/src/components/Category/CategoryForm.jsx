@@ -1,27 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import CategoryService from "./CategoryService";
 
 const CategoryForm = ({ category }) => {
   const [name, setName] = useState(category ? category.name : "");
   const [userId, setUserId] = useState(category ? category.user_id : ""); // User ID state
-  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const categoryDto = { name, user_id: userId };
 
-    try {
-      if (category) {
-        await CategoryService.update(category.id, categoryDto);
-      } else {
-        await CategoryService.create(categoryDto);
-      }
-      // Redirect to CategoryList after saving
-      navigate("/categories");
-    } catch (error) {
-      console.error("Error saving category:", error);
+    if (category) {
+      await CategoryService.update(category.id, categoryDto);
+    } else {
+      await CategoryService.create(categoryDto);
     }
   };
 

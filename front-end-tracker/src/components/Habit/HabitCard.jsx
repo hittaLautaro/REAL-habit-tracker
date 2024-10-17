@@ -4,38 +4,26 @@ import CategoryService from "../Category/CategoryService";
 
 const HabitCard = ({ habit }) => {
   const invertFinished = async () => {
-    try {
-      await HabitService.update(habit.id, {
-        id: habit.id,
-        name: habit.name,
-        user_id: habit.user_id,
-        category_id: habit.category_id,
-        finished: !habit.finished,
-      });
-    } catch (error) {
-      console.error("Failed to update habit:", error);
-    }
+    await HabitService.update(habit.id, {
+      id: habit.id,
+      name: habit.name,
+      user_id: habit.user_id,
+      category_id: habit.category_id,
+      finished: !habit.finished,
+    });
   };
 
   const copyHabit = async () => {
-    try {
-      await HabitService.create({
-        name: habit.name,
-        user_id: habit.user_id,
-        category_id: habit.category_id,
-        finished: !habit.finished,
-      });
-    } catch (error) {
-      console.error("Failed to copy habit:", error);
-    }
+    await HabitService.create({
+      name: habit.name,
+      user_id: habit.user_id,
+      category_id: habit.category_id,
+      finished: !habit.finished,
+    });
   };
 
   const deleteHabit = async () => {
-    try {
-      await HabitService.delete(habit.id);
-    } catch (error) {
-      console.error("Failed to delete habit:", error);
-    }
+    await HabitService.delete(habit.id);
   };
 
   return (

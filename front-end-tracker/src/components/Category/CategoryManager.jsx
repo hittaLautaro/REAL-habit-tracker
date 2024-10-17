@@ -9,40 +9,35 @@ import HabitForm from "../Habit/HabitForm";
 const CategoryManager = () => {
   const [categories, setCategories] = useState([]);
   const [habitsByCategory, setHabitsByCategory] = useState({}); // Store habits by category
+  const [loading, setLoading] = useState(true); // Manage loading state
 
   useEffect(() => {
-    fetchCategories();
+    fetchCategoriesAndHabits();
   }, []);
 
-  const fetchCategories = async () => {
-    try {
-      const response = await CategoryService.getAll();
-      console.log("Fetched Categories:", response.data);
-      setCategories(response.data);
+  const fetchCategoriesAndHabits = async () => {
+    const categoryResponse = await CategoryService.getAll();
+    const fetchedCategories = categoryResponse.data;
+    console.log("Fetched Categories:", fetchedCategories);
+    setCategories(fetchedCategories);
 
-      // Fetch habits for each category after categories are loaded
-      response.data.forEach((category) => {
-        fetchHabitsFromCategory(category.id);
-      });
-    } catch (error) {
-      console.error("Error fetching categories", error);
-    }
+    // Fetch all habits after categories are loaded
+    const habitsData = {};
+    await Promise.all(
+      fetchedCategories.map(async (category) => {
+        const habitResponse = await HabitService.getByCategoryId(category.id);
+        habitsData[category.id] = habitResponse;
+      })
+    );
+
+    console.log("Fetched all habits:", habitsData);
+    setHabitsByCategory(habitsData);
+    setLoading(false); // Loading completed
   };
 
-  const fetchHabitsFromCategory = async (categoryId) => {
-    try {
-      const response = await HabitService.getByCategoryId(categoryId);
-      console.log(`Fetched habits for category ${categoryId}:`, response);
-
-      // Update state to store habits by category ID
-      setHabitsByCategory((prev) => ({
-        ...prev,
-        [categoryId]: response, // Store habits under the categoryId
-      }));
-    } catch (error) {
-      console.error(`Error fetching habits for category ${categoryId}`, error);
-    }
-  };
+  if (loading) {
+    return <div>Loading...</div>; // Show loading spinner or message while fetching
+  }
 
   return (
     <div>
@@ -52,8 +47,7 @@ const CategoryManager = () => {
       <ul>
         {categories.map((category) => (
           <div key={category.id}>
-            <HabitForm />
-
+            <HabitForm userId={1} categoryId={category.id} />
             <h1>
               <strong>{category.name}</strong> (id: {category.id})
             </h1>
