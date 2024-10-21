@@ -51,4 +51,5 @@ public class UserService {
     public void delete(Integer id) {
         repository.delete(repository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id)));
     }
+
 }

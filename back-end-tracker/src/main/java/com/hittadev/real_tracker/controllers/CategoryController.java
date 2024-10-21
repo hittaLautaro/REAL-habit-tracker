@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
+@RequestMapping("/categories")
+
 public class CategoryController {
 
     private final CategoryService service;
@@ -21,26 +23,26 @@ public class CategoryController {
         this.service = service;
     }
 
-    @GetMapping("/categories")
+    @GetMapping()
     public List<CategoryResponseDto> findAll(){
         return service.findAll();
     }
 
-    @GetMapping("/categories/{category-id}")
+    @GetMapping("/{category-id}")
     public CategoryResponseDto findById(
             @PathVariable("category-id") Integer id
     ){
         return service.findById(id);
     }
 
-    @PostMapping("/categories")
+    @PostMapping()
     public CategoryResponseDto save(
             @RequestBody CategoryCreateDto categoryDto
     ){
         return service.save(categoryDto);
     }
 
-    @PutMapping("/categories/{category-id}")
+    @PutMapping("/{category-id}")
     public CategoryResponseDto update(
             @PathVariable("category-id") Integer id,
             @RequestBody CategoryCreateDto categoryDto
@@ -48,7 +50,7 @@ public class CategoryController {
         return service.updateById(id, categoryDto);
     }
 
-    @DeleteMapping("/categories/{category-id}")
+    @DeleteMapping("/{category-id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void delete(
             @PathVariable("category-id") Integer id

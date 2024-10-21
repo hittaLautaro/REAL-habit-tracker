@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/habits")
 public class HabitController {
     private final HabitService service;
 
@@ -16,19 +17,19 @@ public class HabitController {
         this.service = service;
     }
 
-    @GetMapping("/habits")
+    @GetMapping()
     public List<HabitResponseDto> findAll(){
         return service.findAll();
     }
 
-    @GetMapping("/habits/category/{category-id}")
+    @GetMapping("/category/{category-id}")
     public List<HabitResponseDto> findByCategoryId(
             @PathVariable("category-id") Integer id
     ){
         return service.findByCategoryId(id);
     }
 
-    @GetMapping("/habits/{habit-id}")
+    @GetMapping("/{habit-id}")
     public HabitResponseDto findById(
             @PathVariable("habit-id") Integer id
     ){
@@ -42,7 +43,7 @@ public class HabitController {
         return service.save(habitDto);
     }
 
-    @PutMapping("/habits/{habit-id}")
+    @PutMapping("/{habit-id}")
     public HabitResponseDto update(
             @PathVariable("habit-id") Integer id,
             @RequestBody HabitCreateDto habitDto
@@ -50,7 +51,7 @@ public class HabitController {
         return service.updateById(id, habitDto);
     }
 
-    @DeleteMapping("/habits/{habit-id}")
+    @DeleteMapping("/{habit-id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void delete(
             @PathVariable("habit-id") Integer id

@@ -29,5 +29,5 @@ public class Category {
     private User user;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Habit> habits;
+    private List<Habit> habits;
 }

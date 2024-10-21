@@ -28,9 +28,8 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Habit> habits;
+    private List<Habit> habits;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Category> categories;
-
+    private List<Category> categories;
 }

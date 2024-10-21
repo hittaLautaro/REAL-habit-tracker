@@ -69,7 +69,7 @@ public class CategoryService {
 
     // Delete
     public void delete(Integer id){
-        var category = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+        var category = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Category to delete not found with id: " + id));
         repository.delete(category);
     }
 
