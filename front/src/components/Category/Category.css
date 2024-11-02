@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap");
+
+/* Category styling */
+.category-card {
+  background-color: #161c3d; /* Darker background for category */
+  border-radius: 15px; /* Rounded corners */
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Shadow for category */
+  margin-inline: 20rem;
+}
+
+.category-title {
+  color: #fff;
+  font-size: 2.5rem; /* Larger for category */
+  margin-bottom: 1rem; /* Spacing between category title and habits */
+  margin-left: 0.5rem;
+  font-family: "IBM Plex Mono", monospace;
+}

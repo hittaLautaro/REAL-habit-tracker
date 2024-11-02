@@ -1,0 +1,29 @@
+server:
+  servlet:
+    context-path: /api/v1/
+  port: 8080
+spring:
+  mail:
+    host: localhost
+    port: 1025
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/real_tracker_db
+    username: postgres
+    password: Z3pp3l1n2471386@
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: postgresql
+    show-sql: true
+application:
+  security:
+    jwt:
+      secret_key: adsasd
+      expiration: 8640000

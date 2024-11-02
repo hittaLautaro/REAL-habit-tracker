@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap");
+
+.habit-card {
+  background-color: #272f52; /* Dark background */
+  border-radius: 10px; /* Rounded corners */
+  border: none; /* Remove border */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow */
+  margin-right: 1.5rem;
+}
+
+.habit-title {
+  font-size: 3rem;
+  font-family: "IBM Plex Mono", monospace;
+  margin-left: 1rem;
+  color: #fff;
+  margin-top: 0.3rem;
+}
+
+.habit-description {
+  font-size: 2rem;
+  font-family: "IBM Plex Mono", monospace;
+  margin-left: 1rem;
+  color: #fff;
+  margin-top: 0.3rem;
+}
