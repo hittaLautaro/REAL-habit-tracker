@@ -1,8 +1,7 @@
 package com.hitta.SpringSecurityExample.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +9,9 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "tokens")
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 
 public class Token {
     @Id

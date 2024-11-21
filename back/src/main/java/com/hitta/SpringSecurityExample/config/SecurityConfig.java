@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -33,7 +32,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request
-                    .requestMatchers("login", "register")
+                    .requestMatchers(
+                            "/auth/**",
+                            "/v2/api-docs",
+                            "/v3/api-docs"
+                    )
                     .permitAll()
                     .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults())
@@ -53,9 +56,6 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        var authManager = authConfig.getAuthenticationManager();
-
-
-        return authManager;
+        return authConfig.getAuthenticationManager();
     }
 }
