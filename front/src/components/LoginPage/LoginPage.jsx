@@ -2,16 +2,34 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./LoginPage.css";
 import UserService from "../User/UserService";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const loginData = { email, password };
 
+
     // Send loginData to the backend
+    UserService.login( {username: email, password: password})
+        .then((response) => {
+          const token = response.data
+
+          // Store the token for the session?
+
+
+          // localStorage.setItem('jwtToken', token);
+
+          // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+          console.log(token);
+
+          navigation("/home")
+        })
   };
 
   return (
@@ -22,7 +40,6 @@ const LoginPage = () => {
           <div className="form-group mb-3">
             <label htmlFor="email">Email</label>
             <input
-              type="email"
               className="form-control"
               id="email"
               placeholder="Enter email"
@@ -32,8 +49,7 @@ const LoginPage = () => {
           </div>
           <div className="form-group mb-3">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
+            <input  
               className="form-control"
               id="password"
               placeholder="Enter password"

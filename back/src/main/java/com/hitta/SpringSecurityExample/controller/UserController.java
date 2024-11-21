@@ -28,8 +28,8 @@ public class UserController {
         return service.getUsers();
     }
 
-    @GetMapping("/users/1")
-    public Users getUserById(){
-        return service.getUserById(1);
+    @GetMapping("/users/{id}")
+    public Users getUserById(@RequestParam int id){
+        return service.getUserById(id);
     }
 }
