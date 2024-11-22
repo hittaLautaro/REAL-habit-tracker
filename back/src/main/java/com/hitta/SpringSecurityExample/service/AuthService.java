@@ -3,7 +3,6 @@ package com.hitta.SpringSecurityExample.service;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,10 +10,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -34,7 +32,8 @@ public class AuthService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
 
-    public void register(RegisterRequest request){
+    public AuthResponse register(RegisterRequest request){
+
         var user = Users.builder()
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
@@ -45,7 +44,10 @@ public class AuthService {
                 .build();
 
         userRepo.save(user);
-        generateAndSaveToken(user);
+
+        return AuthResponse.builder()
+                .token(generateAndSaveToken(user))
+                .build();
     }
 
     public AuthResponse authenticate(LoginRequest request){
@@ -53,27 +55,45 @@ public class AuthService {
                 .authenticate(
                         new UsernamePasswordAuthenticationToken
                                 (request.getEmail(), request.getPassword()));
-
         System.out.println("Login successful with " + request.getEmail());
 
         var user = userRepo.findByEmail(request.getEmail());
 
-        String token = jwtService.generateToken(user.getEmail());
-
-        return AuthResponse.builder().token(token).build();
+        return AuthResponse.builder().token(createOrUpdateToken(user)).build();
     }
 
     private String generateAndSaveToken(Users user){
         var tokenValue = jwtService.generateToken(user.getEmail());
+
         var token = Token.builder()
                 .token(tokenValue)
                 .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusMinutes(15))
+                .expiresAt(LocalDateTime.now().plusDays(14))
                 .user(user)
                 .build();
 
         tokenRepo.save(token);
         return tokenValue;
+    }
+
+    public String createOrUpdateToken(Users user) {
+        Optional<Token> existingToken = tokenRepo.findByUserId(user.getId());
+
+        if (existingToken.isPresent()) {
+            var tokenValue = jwtService.generateToken(user.getEmail());
+
+            Token token = existingToken.get();
+            token.setToken(tokenValue);
+            token.setCreatedAt(LocalDateTime.now());
+            token.setExpiresAt(LocalDateTime.now().plusDays(14));
+
+            System.out.println("Updated(? a new one");
+            tokenRepo.save(token);
+            return tokenValue;
+        }else{
+            System.out.println("Generated a new one");
+            return generateAndSaveToken(user);
+        }
     }
 
     public List<Users> getUsers(){

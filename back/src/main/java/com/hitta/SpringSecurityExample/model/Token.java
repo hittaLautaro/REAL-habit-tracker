@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 
 public class Token {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "tokens_seq")
+    @SequenceGenerator(name = "tokens_seq", sequenceName = "tokens_seq", allocationSize = 1)
     private Integer id;
     private String token;
 
@@ -23,7 +24,7 @@ public class Token {
     private LocalDateTime expiresAt;
     private LocalDateTime validatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
     private Users user;
 }

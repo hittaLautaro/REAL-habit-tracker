@@ -1,6 +1,5 @@
 package com.hitta.SpringSecurityExample.service;
 
-import com.hitta.SpringSecurityExample.model.UserPrincipal;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
 
-        return new UserPrincipal(user);
+        return user;
     }
 
 }
