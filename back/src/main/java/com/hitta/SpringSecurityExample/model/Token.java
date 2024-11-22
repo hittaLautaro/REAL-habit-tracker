@@ -1,5 +1,6 @@
 package com.hitta.SpringSecurityExample.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +24,8 @@ public class Token {
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
     private LocalDateTime validatedAt;
-
+    private boolean revoked;
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private Users user;

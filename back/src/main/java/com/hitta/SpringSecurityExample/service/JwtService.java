@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class JwtService {
         this.secretkey = dotenv.get("JWT_SECRET_KEY");
     }
 
-    public String generateToken(String username) {
+    public String generateAccessToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .claims()
@@ -38,13 +40,19 @@ public class JwtService {
 
     }
 
+    public String generateRefreshToken() {
+        var secureRandom = new SecureRandom();
+        byte[] randomBytes = new byte[64];
+        secureRandom.nextBytes(randomBytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+    }
+
     private SecretKey getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretkey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String extractUserName(String token) {
-        // extract the username from jwt token
         return extractClaim(token, Claims::getSubject);
     }
 

@@ -34,6 +34,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request){
 
+        // Build user
         var user = Users.builder()
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
@@ -45,8 +46,12 @@ public class AuthService {
 
         userRepo.save(user);
 
+        String accessToken = jwtService.generateAccessToken(user.getEmail());
+        String refreshToken = generateAndSaveRefreshToken(user);
+
         return AuthResponse.builder()
-                .token(generateAndSaveToken(user))
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -55,45 +60,79 @@ public class AuthService {
                 .authenticate(
                         new UsernamePasswordAuthenticationToken
                                 (request.getEmail(), request.getPassword()));
-        System.out.println("Login successful with " + request.getEmail());
 
-        var user = userRepo.findByEmail(request.getEmail());
+        var user = (Users) authentication.getPrincipal();
 
-        return AuthResponse.builder().token(createOrUpdateToken(user)).build();
+        String accessToken = jwtService.generateAccessToken(user.getEmail());
+        String refreshToken = createOrUpdateRefreshToken(user);
+
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
-    private String generateAndSaveToken(Users user){
-        var tokenValue = jwtService.generateToken(user.getEmail());
+    private String generateAndSaveRefreshToken(Users user){
+        var tokenValue = jwtService.generateRefreshToken();
 
         var token = Token.builder()
                 .token(tokenValue)
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusDays(14))
                 .user(user)
+                .revoked(false)
                 .build();
 
         tokenRepo.save(token);
         return tokenValue;
     }
 
-    public String createOrUpdateToken(Users user) {
+    public String createOrUpdateRefreshToken(Users user) {
         Optional<Token> existingToken = tokenRepo.findByUserId(user.getId());
 
         if (existingToken.isPresent()) {
-            var tokenValue = jwtService.generateToken(user.getEmail());
-
             Token token = existingToken.get();
-            token.setToken(tokenValue);
-            token.setCreatedAt(LocalDateTime.now());
-            token.setExpiresAt(LocalDateTime.now().plusDays(14));
 
-            System.out.println("Updated(? a new one");
+            // If token is revoked or expired, generate new one
+            if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
+                token.setToken(jwtService.generateRefreshToken());
+                token.setCreatedAt(LocalDateTime.now());
+                token.setExpiresAt(LocalDateTime.now().plusDays(14));
+                token.setRevoked(false);
+            }
+
             tokenRepo.save(token);
-            return tokenValue;
-        }else{
-            System.out.println("Generated a new one");
-            return generateAndSaveToken(user);
+            return token.getToken();
         }
+
+        return generateAndSaveRefreshToken(user);
+    }
+
+    public AuthResponse generateAccessToken(String refreshToken) {
+        // Find token in database
+        Token token = tokenRepo.findByToken(refreshToken)
+                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+
+        // Validate token
+        if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Refresh token is expired or revoked");
+        }
+
+        // Generate new access token
+        String accessToken = jwtService.generateAccessToken(token.getUser().getEmail());
+
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)  // Same refresh token
+                .build();
+    }
+
+    public void revokeRefreshToken(String refreshToken) {
+        Token token = tokenRepo.findByToken(refreshToken)
+                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+
+        token.setRevoked(true);
+        tokenRepo.save(token);
     }
 
     public List<Users> getUsers(){

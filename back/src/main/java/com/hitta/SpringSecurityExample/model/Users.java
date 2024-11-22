@@ -1,5 +1,7 @@
 package com.hitta.SpringSecurityExample.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -42,6 +44,9 @@ public class Users implements UserDetails, Principal {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Token token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -76,6 +81,4 @@ public class Users implements UserDetails, Principal {
 
 
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Token token;
 }
