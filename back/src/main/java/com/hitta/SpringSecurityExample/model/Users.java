@@ -27,7 +27,7 @@ import java.util.List;
 public class Users implements UserDetails, Principal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "users_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
     private int id;
     @Column(unique = true)
