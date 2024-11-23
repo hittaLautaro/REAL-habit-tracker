@@ -1,34 +1,28 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./LoginPage.css";
-import UserService from "../User/UserService";
+import UserService from "../User/UserService.jsx";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const loginData = { email, password };
-
-
-    // Send loginData to the backend
-    UserService.login( {username: email, password: password})
+    UserService.login({ email: email, password: password })
         .then((response) => {
           const token = response.data
-
-          // Store the token for the session?
-
-
-          // localStorage.setItem('jwtToken', token);
-
+          localStorage.setItem('jwtToken', token);
           // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
+          // Testing
+          console.log(email)
+          console.log(password)
           console.log(token);
 
-          navigation("/home")
+          navigate("/home")
         })
   };
 

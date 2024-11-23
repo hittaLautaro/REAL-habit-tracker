@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_START = "http://localhost:8080";
+const API_START = "http://localhost:8080/auth";
 
 // Create an axios instance with base configuration
 const axiosInstance = axios.create({
@@ -41,7 +41,7 @@ const UserService = {
     return axiosInstance.post("/register", user);
   },
   login: (user) => {
-    return axiosInstance.post("/login", user);
+    return axiosInstance.post("/authenticate", user);
   },
   // Optionally, add a method to check if user is authenticated
   isAuthenticated: () => {
