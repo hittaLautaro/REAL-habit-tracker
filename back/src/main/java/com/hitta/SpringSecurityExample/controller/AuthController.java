@@ -8,9 +8,7 @@ import com.hitta.SpringSecurityExample.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +55,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            @CookieValue("refresh_token") String refreshToken,
+            @CookieValue(name = "refresh_token", required = false) String refreshToken,
             HttpServletResponse response
     ) {
         service.revokeRefreshToken(refreshToken);
@@ -68,9 +66,9 @@ public class AuthController {
     private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         Cookie cookie = new Cookie("refresh_token", refreshToken);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true); // for HTTPS
-        cookie.setPath("/auth/refresh"); // Only accessible for refresh endpoint
-        cookie.setMaxAge(14 * 24 * 60 * 60); // 14 days in seconds
+        cookie.setSecure(true);
+        cookie.setPath("/auth");
+        cookie.setMaxAge(14 * 24 * 60 * 60);
         response.addCookie(cookie);
     }
 
@@ -78,7 +76,7 @@ public class AuthController {
         Cookie cookie = new Cookie("refresh_token", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setPath("/auth/refresh");
+        cookie.setPath("/auth");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }

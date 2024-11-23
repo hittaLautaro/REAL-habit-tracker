@@ -62,6 +62,10 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("Token cannot be null or empty");
+        }
+
         return Jwts.parser()
                 .verifyWith(getKey())
                 .build()

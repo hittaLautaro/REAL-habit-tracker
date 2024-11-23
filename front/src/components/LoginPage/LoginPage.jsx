@@ -13,16 +13,15 @@ const LoginPage = () => {
     e.preventDefault();
     UserService.login({ email: email, password: password })
         .then((response) => {
-          const token = response.data
-          localStorage.setItem('jwtToken', token);
+          localStorage.setItem('jwtToken', response.data.accessToken);
           // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
           // Testing
-          console.log(email)
-          console.log(password)
-          console.log(token);
+          console.log("email "+email)
+          console.log("pass "+password)
+          console.log(response.data.accessToken);
 
-          navigate("/home")
+          navigate("/")
         })
   };
 

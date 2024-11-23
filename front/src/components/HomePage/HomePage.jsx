@@ -1,24 +1,43 @@
 import React, { useEffect, useState } from 'react'
 import UserService from '../User/UserService'
+import { Button } from 'bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function HomePage() {
     const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
+    
 
-    UserService.getAll().then((response) => {
-        setUsers(response.data);
-    })
+    useEffect(() => {
+      UserService.getAll().then((response) => {
+        setUsers(response.data)
+      })
+    }, [])
+
+    const handleClick = () => {
+      UserService.logout().then(() => {
+        navigate("/auth/login");
+      })
+    };
+    
 
   return (
-    <ul>
-      {users.map((user) => (
-        <p key={user.id}>
-            {user.id}-
-            {user.username}-
-            {user.password}
-        </p>
-      ))}
-    </ul>
+    <>
+      <ul style={{marginTop: 200}}>
+        {users.map((user) => (
+          <li key={user.id} style={{margin: 50}}>
+              <p>{user.username}</p>
+              <p>{user.password}</p>
+              <p>{user.dateOfBirth}</p>
+          </li>
+        ))}
+      </ul>
+
+      <button type="button" onClick={handleClick}>
+        Logout
+      </button>
+    </>
   )
 }

@@ -34,13 +34,12 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request){
 
-        // Build user
         var user = Users.builder()
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .dateOfBirth(request.getDateOfBirth())
                 .accountLocked(false)
-                .enabled(true) // For now until I have email verification
+                .enabled(true)
                 .createdDate(LocalDateTime.now())
                 .build();
 
@@ -63,7 +62,7 @@ public class AuthService {
 
         var user = (Users) authentication.getPrincipal();
 
-        String accessToken = jwtService.generateAccessToken(user.getEmail());
+        String accessToken = jwtService.generateAccessToken(request.getEmail());
         String refreshToken = createOrUpdateRefreshToken(user);
 
         return AuthResponse.builder()
@@ -93,7 +92,6 @@ public class AuthService {
         if (existingToken.isPresent()) {
             Token token = existingToken.get();
 
-            // If token is revoked or expired, generate new one
             if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
                 token.setToken(jwtService.generateRefreshToken());
                 token.setCreatedAt(LocalDateTime.now());
@@ -109,21 +107,18 @@ public class AuthService {
     }
 
     public AuthResponse generateAccessToken(String refreshToken) {
-        // Find token in database
         Token token = tokenRepo.findByToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Refresh token not found"));
 
-        // Validate token
         if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Refresh token is expired or revoked");
         }
 
-        // Generate new access token
         String accessToken = jwtService.generateAccessToken(token.getUser().getEmail());
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)  // Same refresh token
+                .refreshToken(refreshToken)
                 .build();
     }
 
