@@ -36,7 +36,7 @@ public class AuthService {
 
         var user = Users.builder()
                 .email(request.getEmail())
-                .password(encoder.encode(request.getPassword()))
+                  .password(encoder.encode(request.getPassword()))
                 .dateOfBirth(request.getDateOfBirth())
                 .accountLocked(false)
                 .enabled(true)
@@ -77,7 +77,7 @@ public class AuthService {
         var token = Token.builder()
                 .token(tokenValue)
                 .createdAt(LocalDateTime.now())
-                .expiresAt(LocalDateTime.now().plusDays(14))
+                .expiresAt(LocalDateTime.now().plusDays(7))
                 .user(user)
                 .revoked(false)
                 .build();
@@ -95,7 +95,7 @@ public class AuthService {
             if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
                 token.setToken(jwtService.generateRefreshToken());
                 token.setCreatedAt(LocalDateTime.now());
-                token.setExpiresAt(LocalDateTime.now().plusDays(14));
+                token.setExpiresAt(LocalDateTime.now().plusDays(7));
                 token.setRevoked(false);
             }
 
@@ -107,8 +107,12 @@ public class AuthService {
     }
 
     public AuthResponse generateAccessToken(String refreshToken) {
+        System.out.println("Generated new access token -> " + refreshToken);
+
         Token token = tokenRepo.findByToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+
+        System.out.println(token.toString());
 
         if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Refresh token is expired or revoked");
@@ -124,17 +128,10 @@ public class AuthService {
 
     public void revokeRefreshToken(String refreshToken) {
         Token token = tokenRepo.findByToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+                .orElseThrow(() -> new RuntimeException("Refresh token not found" + refreshToken));
 
         token.setRevoked(true);
         tokenRepo.save(token);
     }
 
-    public List<Users> getUsers(){
-        return userRepo.findAll();
-    }
-
-    public Users getUserById(Integer id) {
-        return userRepo.findById(id).orElse(null);
-    }
 }

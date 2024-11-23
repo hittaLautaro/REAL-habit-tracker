@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_START = "http://localhost:8080/auth";
+const API_START = "http://localhost:8080";
 
 let inMemoryAccessToken = null;
 
@@ -21,37 +21,52 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Add a response interceptor to handle token refresh
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // If the error is 401 and we haven't tried refreshing yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+    // Prevent infinite retry loops by checking the refresh endpoint
+    if (originalRequest._retry || originalRequest.url.includes('/auth/refresh')) {
+      return Promise.reject(error);
+    }
+
+    // If error is 401 or 403, try refreshing the token
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      originalRequest._retry = true; // Mark request as retried
 
       try {
-        // Attempt to refresh the token
-        const response = await axiosInstance.post('/refresh-token');
+        console.log("Attempting token refresh...");
+        const response = await axiosInstance.post('/auth/refresh');
+
         const { accessToken } = response.data;
-        
-        // Store new access token
+        if (!accessToken) {
+          throw new Error("No access token received from refresh.");
+        }
+
+        // Update the in-memory token and retry the original request
         inMemoryAccessToken = accessToken;
-        
-        // Retry the original request with new token
+        console.log("New token received: ", accessToken);
+
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        console.log("Retrying original request...");
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        // If refresh fails, logout user
-        UserService.logout();
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
+        console.error("Refresh token invalid or expired:", refreshError);
+
+        
+          console.log("Redirecting to login due to revoked token...");
+          UserService.logout();
+          window.location.href = '/auth/login';
+
+        return Promise.reject(refreshError); // Fail gracefully
       }
     }
-    return Promise.reject(error);
+
+    return Promise.reject(error); // Return other errors as-is
   }
 );
+
 const UserService = {
   getAll: () => {
     return axiosInstance.get("/users");
@@ -59,12 +74,16 @@ const UserService = {
   getById: (id) => {
     return axiosInstance.get(`/users/${id}`);
   },
-  register: (user) => {
-    return axiosInstance.post("/register", user);
+  register: async (user) => {
+    const response = await axiosInstance.post("/register", user);
+
+    window.location.href = '/auth/login';
+
+    return response;
   },
   login: async (user) => {
     try {
-      const response = await axiosInstance.post("/authenticate", user);
+      const response = await axiosInstance.post("/auth/authenticate", user);
       console.log('Login response:', response.data); 
       inMemoryAccessToken = response.data.accessToken;
       console.log('Stored token:', inMemoryAccessToken); 

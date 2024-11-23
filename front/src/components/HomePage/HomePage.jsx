@@ -21,6 +21,13 @@ export default function HomePage() {
         navigate("/auth/login");
       })
     };
+
+    const handleFetch = () => {
+      UserService.getAll().then((response) => {
+        console.log(response)
+        setUsers(response.data)
+      })
+    };
     
 
   return (
@@ -37,6 +44,10 @@ export default function HomePage() {
 
       <button type="button" onClick={handleClick}>
         Logout
+      </button>
+
+      <button type="button" onClick={handleFetch}>
+        fetch
       </button>
     </>
   )

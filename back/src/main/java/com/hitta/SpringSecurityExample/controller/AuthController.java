@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +45,8 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refreshAccessToken(
-            @CookieValue("refresh_token") String refreshToken,
+    public ResponseEntity<?> refreshAccessToken(
+            @CookieValue("refreshToken") String refreshToken,
             HttpServletResponse response
     ) {
         AuthResponse authResponse = service.generateAccessToken(refreshToken);
@@ -55,7 +56,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            @CookieValue(name = "refresh_token", required = false) String refreshToken,
+            @CookieValue(name = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response
     ) {
         service.revokeRefreshToken(refreshToken);
@@ -64,7 +65,7 @@ public class AuthController {
     }
 
     private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refresh_token", refreshToken);
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/auth");
@@ -73,7 +74,7 @@ public class AuthController {
     }
 
     private void deleteRefreshTokenCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("refresh_token", null);
+        Cookie cookie = new Cookie("refreshToken", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/auth");
@@ -82,14 +83,4 @@ public class AuthController {
     }
 
 
-    @GetMapping("/users")
-    public List<Users> getUsers(){
-        return service.getUsers();
-    }
-
-    @GetMapping("/users/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable int id){
-        Users user = service.getUserById(id);
-        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
-    }
 }

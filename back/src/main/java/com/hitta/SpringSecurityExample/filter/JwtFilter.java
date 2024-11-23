@@ -2,6 +2,7 @@ package com.hitta.SpringSecurityExample.filter;
 
 import com.hitta.SpringSecurityExample.service.JwtService;
 import com.hitta.SpringSecurityExample.service.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,21 +33,25 @@ public class JwtFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
-
-        if(authHeader != null && authHeader.startsWith("Bearer")){
-            token = authHeader.substring(7);
-            username = jwtService.extractUserName(token);
-        }
-
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = context.getBean(UserDetailsServiceImpl.class).loadUserByUsername(username);
-
-            if(jwtService.validateToken(token, userDetails)){
-                var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        try{
+            if(authHeader != null && authHeader.startsWith("Bearer")){
+                token = authHeader.substring(7);
+                username = jwtService.extractUserName(token);
             }
+
+            if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+                UserDetails userDetails = context.getBean(UserDetailsServiceImpl.class).loadUserByUsername(username);
+
+                if(jwtService.validateToken(token, userDetails)){
+                    var authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+        }catch(ExpiredJwtException expiredJwt){
+            System.out.println(expiredJwt.getMessage());
         }
+
 
         filterChain.doFilter(request, response);
     }
