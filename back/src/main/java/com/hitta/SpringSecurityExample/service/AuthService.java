@@ -3,6 +3,7 @@ package com.hitta.SpringSecurityExample.service;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +33,8 @@ public class AuthService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
 
-    public AuthResponse register(RegisterRequest request){
+    public AuthResponse register(RegisterRequest request) {
+        if(userRepo.findByEmail(request.getEmail()) != null) throw new RuntimeException("User with that email already exists");
 
         var user = Users.builder()
                 .email(request.getEmail())

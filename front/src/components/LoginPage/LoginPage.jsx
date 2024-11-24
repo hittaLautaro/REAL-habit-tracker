@@ -1,57 +1,85 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./LoginPage.css";
 import UserService from "../User/UserService.jsx";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // Add error state
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
+    
     UserService.login({ email: email, password: password })
-        .then((response) => {
-          localStorage.setItem('jwtToken', response.data.accessToken);
-          // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-          // Testing
-          console.log("email "+email)
-          console.log("pass "+password)
-          console.log(response.data.accessToken);
-
-          navigate("/")
-        })
+      .then((response) => {
+        localStorage.setItem('jwtToken', response.data.accessToken);
+        console.log("email "+email)
+        console.log("pass "+password)
+        console.log(response.data.accessToken);
+        navigate("/")
+      })
+      .catch((err) => {
+        // Handle different error cases
+        if (err.response) {
+          switch (err.response.status) {
+            case 401:
+              setError("Invalid email or password");
+              break;
+            case 404:
+              setError("Account not found");
+              break;
+            default:
+              setError("Login failed. Please try again.");
+          }
+        } else {
+          setError("Connection error. Please try again.");
+        }
+      });
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="card login-card p-4">
-        <h2 className="text-center mb-4">Login</h2>
+    <div className="my-5">
+      <div>
+        <h2>Login</h2>
+        {/* Add error message display */}
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
-          <div className="form-group mb-3">
+          <div>
             <label htmlFor="email">Email</label>
             <input
               className="form-control"
               id="email"
               placeholder="Enter email"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
-          <div className="form-group mb-3">
+          <div>
             <label htmlFor="password">Password</label>
             <input  
               className="form-control"
               id="password"
               placeholder="Enter password"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">
+          <button type="submit" className="btn btn-dark">
             Login
+          </button>
+          <button type="button" className="btn btn-dark" onClick={() => navigate("/auth/register")}>
+            Signup
           </button>
         </form>
       </div>

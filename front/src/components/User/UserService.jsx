@@ -75,7 +75,7 @@ const UserService = {
     return axiosInstance.get(`/users/${id}`);
   },
   register: async (user) => {
-    const response = await axiosInstance.post("/register", user);
+    const response = await axiosInstance.post("/auth/register", user);
 
     window.location.href = '/auth/login';
 
@@ -97,7 +97,7 @@ const UserService = {
   logout: async () => {
     try {
       // Call backend to invalidate refresh token
-      await axiosInstance.post("/logout");
+      await axiosInstance.post("/auth/logout");
       // Clear access token from memory
       inMemoryAccessToken = null;
       // The refresh token cookie will be cleared by the backend
@@ -114,7 +114,7 @@ const UserService = {
   // Manually refresh access token if needed
   refreshToken: async () => {
     try {
-      const response = await axiosInstance.post('/refresh-token');
+      const response = await axiosInstance.post('/auth/refresh');
       inMemoryAccessToken = response.data.accessToken;
       return response;
     } catch (error) {

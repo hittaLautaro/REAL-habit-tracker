@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./RegisterPage.css";
 import UserService from "../User/UserService.jsx";
 import { useNavigate, useNavigation } from "react-router-dom";
+
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -14,25 +15,24 @@ const RegisterPage = () => {
     e.preventDefault();
     UserService.register({ email: email, password: password, dateOfBirth: dateOfBirth})
         .then((response) => {
-          localStorage.setItem('jwtToken', response.data.accessToken);
-          // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-          // Testing
-          console.log("email "+email)
-          console.log("pass "+password)
-          console.log("dateOfBirth "+dateOfBirth)
-          console.log(response.data.accessToken);
+          if(response.status === 200){
+            localStorage.setItem('jwtToken', response.data.accessToken);
+            navigate("/auth/login")
+          }
 
-          navigate("/")
+          setEmail("")
+          setPassword("")
+          setDateOfBirth("")
         })
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="card login-card p-4">
-        <h2 className="text-center mb-4">Signup</h2>
+    <div className="mx-5 my-5 mx-auto">
+      <div>
+        <h2>Signup</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group mb-3">
+          <div>
             <label htmlFor="email">Email</label>
             <input
               className="form-control"
@@ -40,34 +40,47 @@ const RegisterPage = () => {
               placeholder="Enter email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              required
             />
           </div>
-          <div className="form-group mb-3">
+          <div>
             <label htmlFor="password">Password</label>
             <input  
               className="form-control"
               id="password"
               placeholder="Enter password"
               value={password}
+              type="password"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
-          <div className="form-group mb-3">
+          <div>
             <label htmlFor="date">Date of Birth</label>
             <input  
               className="form-control"
               id="date"
               placeholder="Enter date"
               value={dateOfBirth}
+              type="date"
               onChange={(e) => setDateOfBirth(e.target.value)}
+              required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">
+         
+          
+          <button type="submit" className="btn btn-dark">
             Signup
+          </button>
+          <button type="button" className="btn btn-dark" onClick={() => navigate("/auth/login")}>
+            Login
           </button>
         </form>
       </div>
     </div>
+
+    
   );
 };
 

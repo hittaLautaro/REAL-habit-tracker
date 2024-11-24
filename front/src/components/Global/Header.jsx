@@ -3,7 +3,7 @@ import "./Header.css";
 
 const Header = () => {
   return (
-    <nav className=" fixed-top">
+    <nav className="  sticky-top">
       <div className="container-fluid">
         <NavLink className="title" to="/">
           real.

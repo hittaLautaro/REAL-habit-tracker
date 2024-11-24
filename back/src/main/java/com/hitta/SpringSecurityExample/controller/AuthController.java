@@ -8,9 +8,11 @@ import com.hitta.SpringSecurityExample.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,25 +25,33 @@ public class AuthController {
     private AuthService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(
+    public ResponseEntity<?> register(
             @RequestBody @Valid RegisterRequest request,
             HttpServletResponse response
     ) {
-        AuthResponse authResponse = service.register(request);
-        addRefreshTokenCookie(response, authResponse.getRefreshToken());
-        return ResponseEntity.ok()
-                .body(authResponse);
+        try{
+            AuthResponse authResponse = service.register(request);
+            addRefreshTokenCookie(response, authResponse.getRefreshToken());
+            return ResponseEntity.ok()
+                    .body(authResponse);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(
+    public ResponseEntity<?> authenticate(
             @RequestBody @Valid LoginRequest request,
             HttpServletResponse response
     ) {
-        AuthResponse authResponse = service.authenticate(request);
-        addRefreshTokenCookie(response, authResponse.getRefreshToken());
-        return ResponseEntity.ok()
-                .body(authResponse);
+        try {
+            AuthResponse authResponse = service.authenticate(request);
+            addRefreshTokenCookie(response, authResponse.getRefreshToken());
+            return ResponseEntity.ok()
+                    .body(authResponse);
+        }catch(RuntimeException e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/refresh")
@@ -59,9 +69,13 @@ public class AuthController {
             @CookieValue(name = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response
     ) {
-        service.revokeRefreshToken(refreshToken);
-        deleteRefreshTokenCookie(response);
-        return ResponseEntity.ok().build();
+        try{
+            service.revokeRefreshToken(refreshToken);
+            deleteRefreshTokenCookie(response);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
