@@ -1,21 +1,15 @@
 package com.hitta.SpringSecurityExample.controller;
 
-import com.hitta.SpringSecurityExample.model.AuthResponse;
-import com.hitta.SpringSecurityExample.model.LoginRequest;
-import com.hitta.SpringSecurityExample.model.RegisterRequest;
-import com.hitta.SpringSecurityExample.model.Users;
+import com.hitta.SpringSecurityExample.dtos.AuthResponse;
+import com.hitta.SpringSecurityExample.dtos.LoginRequest;
+import com.hitta.SpringSecurityExample.dtos.RegisterRequest;
 import com.hitta.SpringSecurityExample.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,6 +29,7 @@ public class AuthController {
             return ResponseEntity.ok()
                     .body(authResponse);
         } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -50,6 +45,7 @@ public class AuthController {
             return ResponseEntity.ok()
                     .body(authResponse);
         }catch(RuntimeException e){
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -59,9 +55,14 @@ public class AuthController {
             @CookieValue("refreshToken") String refreshToken,
             HttpServletResponse response
     ) {
-        AuthResponse authResponse = service.generateAccessToken(refreshToken);
-        addRefreshTokenCookie(response, authResponse.getRefreshToken());
-        return ResponseEntity.ok(authResponse);
+        try {
+            AuthResponse authResponse = service.generateAccessToken(refreshToken);
+            addRefreshTokenCookie(response, authResponse.getRefreshToken());
+            return ResponseEntity.ok(authResponse);
+        }catch(RuntimeException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PostMapping("/logout")
@@ -74,7 +75,8 @@ public class AuthController {
             deleteRefreshTokenCookie(response);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            System.out.println(e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
     }
 

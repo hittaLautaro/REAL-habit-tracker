@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import UserService from '../User/UserService'
-import { Button } from 'bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -32,7 +31,15 @@ export default function HomePage() {
 
   return (
     <>
-      <ul style={{marginTop: 200}}>
+      <button type="button" onClick={handleClick}>
+        Logout
+      </button>
+
+      <button type="button" onClick={handleFetch}>
+        fetch
+      </button>
+
+      <ul>
         {users.map((user) => (
           <li key={user.id} style={{margin: 50}}>
               <p>{user.username}</p>
@@ -42,13 +49,7 @@ export default function HomePage() {
         ))}
       </ul>
 
-      <button type="button" onClick={handleClick}>
-        Logout
-      </button>
-
-      <button type="button" onClick={handleFetch}>
-        fetch
-      </button>
+      
     </>
   )
 }

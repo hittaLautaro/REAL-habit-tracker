@@ -26,14 +26,16 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Prevent infinite retry loops by checking the refresh endpoint
-    if (originalRequest._retry || originalRequest.url.includes('/auth/refresh')) {
+    // Don't try to refresh for auth endpoints
+    if (originalRequest.url.includes('/auth/')) {
       return Promise.reject(error);
     }
 
-    // If error is 401 or 403, try refreshing the token
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      originalRequest._retry = true; // Mark request as retried
+    // Only try to refresh if we had a token to begin with
+    if ((error.response?.status === 401 || error.response?.status === 403) 
+        && inMemoryAccessToken 
+        && !originalRequest._retry) {
+      originalRequest._retry = true;
 
       try {
         console.log("Attempting token refresh...");
@@ -44,26 +46,24 @@ axiosInstance.interceptors.response.use(
           throw new Error("No access token received from refresh.");
         }
 
-        // Update the in-memory token and retry the original request
         inMemoryAccessToken = accessToken;
-        console.log("New token received: ", accessToken);
-
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-        console.log("Retrying original request...");
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error("Refresh token invalid or expired:", refreshError);
-
         
-          console.log("Redirecting to login due to revoked token...");
-          UserService.logout();
+        // Only logout if we were previously authenticated
+        if (inMemoryAccessToken) {
+          console.log("Logging out due to invalid refresh token...");
+          await UserService.logout();
           window.location.href = '/auth/login';
+        }
 
-        return Promise.reject(refreshError); // Fail gracefully
+        return Promise.reject(refreshError);
       }
     }
 
-    return Promise.reject(error); // Return other errors as-is
+    return Promise.reject(error);
   }
 );
 

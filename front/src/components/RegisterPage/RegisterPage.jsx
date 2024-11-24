@@ -9,13 +9,20 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+    
     UserService.register({ email: email, password: password, dateOfBirth: dateOfBirth})
         .then((response) => {
-
           if(response.status === 200){
             localStorage.setItem('jwtToken', response.data.accessToken);
             navigate("/auth/login")
@@ -24,15 +31,29 @@ const RegisterPage = () => {
           setEmail("")
           setPassword("")
           setDateOfBirth("")
-        })
+        }).catch((err) => {
+          // Handle different error cases
+          if (err.response) {
+            setError("Login failed. Please try again.");
+          } else {
+            setError("Connection error. Please try again.");
+          }
+        });
   };
 
   return (
-    <div className="mx-5 my-5 mx-auto">
-      <div>
-        <h2>Signup</h2>
+    <div className="container d-flex justify-content-center align-items-center"   style={{ minHeight: "calc(100vh - 200px)" }}>
+          <div className="col-12 col-sm-8 col-md-6 col-lg-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
+       <h2 className="text-center mb-4" style={{ color: '#121212' }}>Sign up</h2>
+
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="mb-3" style={{ color: '#121212' }}>
             <label htmlFor="email">Email</label>
             <input
               className="form-control"
@@ -44,7 +65,7 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div>
+          <div className="mb-3" style={{ color: '#121212' }}>
             <label htmlFor="password">Password</label>
             <input  
               className="form-control"
@@ -56,7 +77,7 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <div>
+          <div className="mb-3" style={{ color: '#121212' }}>
             <label htmlFor="date">Date of Birth</label>
             <input  
               className="form-control"
@@ -70,12 +91,28 @@ const RegisterPage = () => {
           </div>
          
           
-          <button type="submit" className="btn btn-dark">
-            Signup
-          </button>
-          <button type="button" className="btn btn-dark" onClick={() => navigate("/auth/login")}>
-            Login
-          </button>
+          <div className="d-grid gap-2">
+                <button type="submit" className="btn btn-dark btn-md " 
+                  style={{
+                    backgroundColor: '#007bff',
+                    border: 'none',
+                    transition: 'all 0.3s',
+                    marginBottom: '10px'
+                  }}>
+                  Sign up
+                </button>
+              <button 
+                    type="button" 
+                    className="btn btn-link text-dark btn-sm"
+                    onClick={() => navigate("/auth/login")}
+                    style={{
+                      padding: 0,
+                      border: 'none',
+                      background: 'none',
+                    }}>
+                    Login
+                </button>
+          </div>
         </form>
       </div>
     </div>

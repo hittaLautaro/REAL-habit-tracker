@@ -1,4 +1,4 @@
-package com.hitta.SpringSecurityExample.model;
+package com.hitta.SpringSecurityExample.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

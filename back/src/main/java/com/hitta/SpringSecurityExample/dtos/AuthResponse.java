@@ -1,4 +1,4 @@
-package com.hitta.SpringSecurityExample.model;
+package com.hitta.SpringSecurityExample.dtos;
 
 import lombok.Builder;
 import lombok.Getter;

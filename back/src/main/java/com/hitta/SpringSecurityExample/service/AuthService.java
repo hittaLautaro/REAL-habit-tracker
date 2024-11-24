@@ -1,9 +1,11 @@
 package com.hitta.SpringSecurityExample.service;
 
+import com.hitta.SpringSecurityExample.dtos.AuthResponse;
+import com.hitta.SpringSecurityExample.dtos.LoginRequest;
+import com.hitta.SpringSecurityExample.dtos.RegisterRequest;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,7 +31,7 @@ public class AuthService {
     @Autowired
     private TokenRepo tokenRepo;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
 
     public AuthResponse register(RegisterRequest request) {

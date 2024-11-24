@@ -16,24 +16,12 @@ const LoginPage = () => {
     UserService.login({ email: email, password: password })
       .then((response) => {
         localStorage.setItem('jwtToken', response.data.accessToken);
-        console.log("email "+email)
-        console.log("pass "+password)
-        console.log(response.data.accessToken);
         navigate("/")
       })
       .catch((err) => {
         // Handle different error cases
         if (err.response) {
-          switch (err.response.status) {
-            case 401:
-              setError("Invalid email or password");
-              break;
-            case 404:
-              setError("Account not found");
-              break;
-            default:
-              setError("Login failed. Please try again.");
-          }
+          setError("Login failed. Please try again.");
         } else {
           setError("Connection error. Please try again.");
         }
@@ -41,17 +29,18 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="my-5">
-      <div>
-        <h2>Login</h2>
-        {/* Add error message display */}
+    <div className="container d-flex justify-content-center align-items-center"   style={{ minHeight: "calc(100vh - 200px)" }}>
+          <div className="col-12 col-sm-8 col-md-6 col-lg-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
+       <h2 className="text-center mb-4" style={{ color: '#121212' }}>Login</h2>
+
         {error && (
           <div className="alert alert-danger" role="alert">
             {error}
           </div>
         )}
+
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="mb-3" style={{ color: '#121212' }}>
             <label htmlFor="email">Email</label>
             <input
               className="form-control"
@@ -63,7 +52,7 @@ const LoginPage = () => {
               required
             />
           </div>
-          <div>
+          <div className="mb-3" style={{ color: '#121212' }}> 
             <label htmlFor="password">Password</label>
             <input  
               className="form-control"
@@ -75,12 +64,29 @@ const LoginPage = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-dark">
-            Login
-          </button>
-          <button type="button" className="btn btn-dark" onClick={() => navigate("/auth/register")}>
-            Signup
-          </button>
+          <div className="d-grid gap-2">
+                <button type="submit" className="btn btn-dark btn-md " 
+                  style={{
+                    backgroundColor: '#007bff',
+                    border: 'none',
+                    transition: 'all 0.3s',
+                    marginBottom: '10px'
+                  }}>
+                  Login
+                </button>
+                <button 
+                    type="button" 
+                    className="btn btn-link text-dark btn-sm"
+                    onClick={() => navigate("/auth/register")}
+                    style={{
+                      padding: 0,
+                      border: 'none',
+                      background: 'none',
+                    }}>
+                    Signup
+                </button>
+          </div>
+          
         </form>
       </div>
     </div>
