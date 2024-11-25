@@ -1,15 +1,13 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
   return (
-    <nav className="  sticky-top">
-      <div className="container-fluid">
-        <NavLink className="title" to="/">
-          real.
-        </NavLink>
-      </div>
-    </nav>
+    <nav className="navbar">
+    <NavLink className="title" to="/">
+      real.
+    </NavLink>
+  </nav>
   );
 };
 

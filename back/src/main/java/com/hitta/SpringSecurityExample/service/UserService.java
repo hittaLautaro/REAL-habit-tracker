@@ -20,4 +20,8 @@ public class UserService {
     public Users getUserById(Integer id) {
         return userRepo.findById(id).orElse(null);
     }
+
+    public Users findByUsername(String username) {
+        return userRepo.findByEmail(username);
+    }
 }

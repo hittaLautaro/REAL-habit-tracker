@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import UserService from "../User/UserService.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
+import UserService from "../utils/userService";
 import { useNavigate, useNavigation } from "react-router-dom";
 
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-const RegisterPage = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [error, setError] = useState(""); 
+  const [error, setError] = useState("")
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -21,30 +18,22 @@ const RegisterPage = () => {
       return;
     }
     
-    UserService.register({ email: email, password: password, dateOfBirth: dateOfBirth})
-        .then((response) => {
-          if(response.status === 200){
-            localStorage.setItem('jwtToken', response.data.accessToken);
-            navigate("/auth/login")
-          }
-
-          setEmail("")
-          setPassword("")
-          setDateOfBirth("")
-        }).catch((err) => {
-          // Handle different error cases
-          if (err.response) {
-            setError("Login failed. Please try again.");
-          } else {
-            setError("Connection error. Please try again.");
-          }
-        });
+    UserService.login({ email: email, password: password })
+      .then((response) => {
+        localStorage.setItem('jwtToken', response.data.accessToken);
+        navigate("/")
+      })
+      .catch((err) => {
+        if (err.response) {
+          setError("Login failed. Please try again.");
+        }
+      });
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center"   style={{ minHeight: "calc(100vh - 200px)" }}>
           <div className="col-12 col-sm-8 col-md-6 col-lg-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
-       <h2 className="text-center mb-4" style={{ color: '#121212' }}>Sign up</h2>
+       <h2 className="text-center mb-4" style={{ color: '#121212' }}>Login</h2>
 
         {error && (
           <div className="alert alert-danger" role="alert">
@@ -59,38 +48,24 @@ const RegisterPage = () => {
               className="form-control"
               id="email"
               placeholder="Enter email"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              type="email"
               required
             />
           </div>
-          <div className="mb-3" style={{ color: '#121212' }}>
+          <div className="mb-3" style={{ color: '#121212' }}> 
             <label htmlFor="password">Password</label>
             <input  
               className="form-control"
               id="password"
               placeholder="Enter password"
-              value={password}
               type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
-          <div className="mb-3" style={{ color: '#121212' }}>
-            <label htmlFor="date">Date of Birth</label>
-            <input  
-              className="form-control"
-              id="date"
-              placeholder="Enter date"
-              value={dateOfBirth}
-              type="date"
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              required
-            />
-          </div>
-         
-          
           <div className="d-grid gap-2">
                 <button type="submit" className="btn btn-dark btn-md " 
                   style={{
@@ -99,26 +74,25 @@ const RegisterPage = () => {
                     transition: 'all 0.3s',
                     marginBottom: '10px'
                   }}>
-                  Sign up
+                  Login
                 </button>
-              <button 
+                <button 
                     type="button" 
                     className="btn btn-link text-dark btn-sm"
-                    onClick={() => navigate("/auth/login")}
+                    onClick={() => navigate("/auth/register")}
                     style={{
                       padding: 0,
                       border: 'none',
                       background: 'none',
                     }}>
-                    Login
+                    Signup
                 </button>
           </div>
+          
         </form>
       </div>
     </div>
-
-    
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

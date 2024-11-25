@@ -17,3 +17,7 @@ nav {
   margin: 1.5rem;
   padding-left: 20px;
 }
+
+.title:hover {
+  color: #b1b1b1;
+}

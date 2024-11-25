@@ -1,37 +1,50 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import UserService from "../User/UserService.jsx";
+import UserService from "../utils/userService";
 import { useNavigate, useNavigation } from "react-router-dom";
 
-const LoginPage = () => {
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Add error state
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
     
-    UserService.login({ email: email, password: password })
-      .then((response) => {
-        localStorage.setItem('jwtToken', response.data.accessToken);
-        navigate("/")
-      })
-      .catch((err) => {
-        // Handle different error cases
-        if (err.response) {
-          setError("Login failed. Please try again.");
-        } else {
-          setError("Connection error. Please try again.");
-        }
-      });
+    UserService.register({ email: email, password: password, dateOfBirth: dateOfBirth})
+        .then((response) => {
+          if(response.status === 200){
+            localStorage.setItem('jwtToken', response.data.accessToken);
+            navigate("/auth/login")
+          }
+
+          setEmail("")
+          setPassword("")
+          setDateOfBirth("")
+        }).catch((err) => {
+          // Handle different error cases
+          if (err.response) {
+            setError("Login failed. Please try again.");
+          } else {
+            setError("Connection error. Please try again.");
+          }
+        });
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center"   style={{ minHeight: "calc(100vh - 200px)" }}>
           <div className="col-12 col-sm-8 col-md-6 col-lg-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
-       <h2 className="text-center mb-4" style={{ color: '#121212' }}>Login</h2>
+       <h2 className="text-center mb-4" style={{ color: '#121212' }}>Sign up</h2>
 
         {error && (
           <div className="alert alert-danger" role="alert">
@@ -46,24 +59,38 @@ const LoginPage = () => {
               className="form-control"
               id="email"
               placeholder="Enter email"
-              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              type="email"
               required
             />
           </div>
-          <div className="mb-3" style={{ color: '#121212' }}> 
+          <div className="mb-3" style={{ color: '#121212' }}>
             <label htmlFor="password">Password</label>
             <input  
               className="form-control"
               id="password"
               placeholder="Enter password"
-              type="password"
               value={password}
+              type="password"
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
+          <div className="mb-3" style={{ color: '#121212' }}>
+            <label htmlFor="date">Date of Birth</label>
+            <input  
+              className="form-control"
+              id="date"
+              placeholder="Enter date"
+              value={dateOfBirth}
+              type="date"
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              required
+            />
+          </div>
+         
+          
           <div className="d-grid gap-2">
                 <button type="submit" className="btn btn-dark btn-md " 
                   style={{
@@ -72,25 +99,26 @@ const LoginPage = () => {
                     transition: 'all 0.3s',
                     marginBottom: '10px'
                   }}>
-                  Login
+                  Sign up
                 </button>
-                <button 
+              <button 
                     type="button" 
                     className="btn btn-link text-dark btn-sm"
-                    onClick={() => navigate("/auth/register")}
+                    onClick={() => navigate("/auth/login")}
                     style={{
                       padding: 0,
                       border: 'none',
                       background: 'none',
                     }}>
-                    Signup
+                    Login
                 </button>
           </div>
-          
         </form>
       </div>
     </div>
+
+    
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

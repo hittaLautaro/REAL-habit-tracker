@@ -7,6 +7,8 @@ import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.HabitService;
 import com.hitta.SpringSecurityExample.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -26,8 +28,9 @@ public class HabitController {
 
     // get all habits
     @GetMapping("/")
-    public List<HabitResponse> getAll(@RequestParam Integer user_id){
-        return habitService.getAllHabitsByUserId(user_id);
+    public List<HabitResponse> getAll(@AuthenticationPrincipal UserDetails userDetails) {
+        Users user = userService.findByUsername(userDetails.getUsername());
+        return habitService.getAllHabitsByUserId(user.getId());
     }
 
     @GetMapping("/{id}")

@@ -4,13 +4,11 @@ const API_START = "http://localhost:8080";
 
 let inMemoryAccessToken = null;
 
-// Create an axios instance with base configuration
 const axiosInstance = axios.create({
   baseURL: API_START,
   withCredentials: true
 });
 
-// Add a request interceptor to include the access token
 axiosInstance.interceptors.request.use(
   (config) => {
     if (inMemoryAccessToken) {
@@ -26,12 +24,10 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Don't try to refresh for auth endpoints
     if (originalRequest.url.includes('/auth/')) {
       return Promise.reject(error);
     }
 
-    // Only try to refresh if we had a token to begin with
     if ((error.response?.status === 401 || error.response?.status === 403) 
         && inMemoryAccessToken 
         && !originalRequest._retry) {
@@ -41,18 +37,17 @@ axiosInstance.interceptors.response.use(
         console.log("Attempting token refresh...");
         const response = await axiosInstance.post('/auth/refresh');
 
-        const { accessToken } = response.data;
+        const { jwtToken } = response.data.accessToken;
         if (!accessToken) {
           throw new Error("No access token received from refresh.");
         }
 
-        inMemoryAccessToken = accessToken;
-        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+        inMemoryAccessToken = jwtToken;
+        originalRequest.headers['Authorization'] = `Bearer ${jwtToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error("Refresh token invalid or expired:", refreshError);
         
-        // Only logout if we were previously authenticated
         if (inMemoryAccessToken) {
           console.log("Logging out due to invalid refresh token...");
           await UserService.logout();
@@ -68,59 +63,27 @@ axiosInstance.interceptors.response.use(
 );
 
 const UserService = {
-  getAll: () => {
-    return axiosInstance.get("/users");
-  },
-  getById: (id) => {
-    return axiosInstance.get(`/users/${id}`);
+  login: async (user) => {
+    const response = await axiosInstance.post("/auth/authenticate", user);
+    inMemoryAccessToken = response.data.accessToken;
+    return response;
   },
   register: async (user) => {
     const response = await axiosInstance.post("/auth/register", user);
-
     window.location.href = '/auth/login';
-
     return response;
   },
-  login: async (user) => {
-    try {
-      const response = await axiosInstance.post("/auth/authenticate", user);
-      console.log('Login response:', response.data); 
-      inMemoryAccessToken = response.data.accessToken;
-      console.log('Stored token:', inMemoryAccessToken); 
-      return response;
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    }
-  },
-
   logout: async () => {
-    try {
-      // Call backend to invalidate refresh token
-      await axiosInstance.post("/auth/logout");
-      // Clear access token from memory
-      inMemoryAccessToken = null;
-      // The refresh token cookie will be cleared by the backend
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+    await axiosInstance.post("/auth/logout");
+    inMemoryAccessToken = null;
   },
-
-  // Check if user is authenticated
   isAuthenticated: () => {
     return !!inMemoryAccessToken;
   },
-
-  // Manually refresh access token if needed
   refreshToken: async () => {
-    try {
-      const response = await axiosInstance.post('/auth/refresh');
-      inMemoryAccessToken = response.data.accessToken;
-      return response;
-    } catch (error) {
-      console.error('Token refresh error:', error);
-      throw error;
-    }
+    const response = await axiosInstance.post('/auth/refresh');
+    inMemoryAccessToken = response.data.accessToken;
+    return response;
   }
 };
 

@@ -2,10 +2,13 @@ package com.hitta.SpringSecurityExample.controller;
 
 import com.hitta.SpringSecurityExample.dtos.CategoryRequest;
 import com.hitta.SpringSecurityExample.dtos.CategoryResponse;
+import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.CategoryService;
 import com.hitta.SpringSecurityExample.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +25,9 @@ public class CategoryController {
         private UserService userService;
 
         @GetMapping("/")
-        public List<CategoryResponse> getAll(@RequestParam Integer user_id){
-            return categoryService.findAllByUserId(user_id);
+        public List<CategoryResponse> getAll(@AuthenticationPrincipal UserDetails userDetails){
+            Users user = userService.findByUsername(userDetails.getUsername());
+            return categoryService.findAllByUserId(user.getId());
         }
 
         @PostMapping("/")

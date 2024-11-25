@@ -22,6 +22,7 @@ public class HabitMapper {
     public HabitResponse habitToResponse(Habit habit){
         return HabitResponse.builder()
                 .name(habit.getName())
+                .id(habit.getId())
                 .build();
     }
 

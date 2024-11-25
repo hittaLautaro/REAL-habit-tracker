@@ -20,6 +20,7 @@ public class CategoryMapper {
     public CategoryResponse categoryToResponse(Category category){
         return CategoryResponse.builder()
                 .name(category.getName())
+                .id(category.getId())
                 .build();
     }
 
