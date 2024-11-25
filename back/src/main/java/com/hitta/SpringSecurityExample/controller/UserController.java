@@ -15,17 +15,17 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    @GetMapping("")
-    public List<Users> getUsers(){
-        return userService.getUsers();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable int id){
-        Users user = userService.getUserById(id);
-        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
-    }
+//    @Autowired
+//    private UserService userService;
+//
+//    @GetMapping("")
+//    public List<Users> getUsers(){
+//        return userService.getUsers();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Users> getUserById(@PathVariable int id){
+//        Users user = userService.getUserById(id);
+//        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+//    }
 }
