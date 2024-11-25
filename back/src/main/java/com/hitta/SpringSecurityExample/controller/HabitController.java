@@ -1,17 +1,19 @@
 package com.hitta.SpringSecurityExample.controller;
 
-import com.hitta.SpringSecurityExample.dtos.HabitRequest;
+import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
+import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.HabitService;
 import com.hitta.SpringSecurityExample.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -40,13 +42,19 @@ public class HabitController {
 
     // post a habit
     @PostMapping("/")
-    public HabitResponse save(@RequestBody HabitRequest request){
+    public HabitResponse save(@RequestBody HabitCreateRequest request){
         return habitService.save(request);
     }
 
+    @Transactional
+    @PutMapping("/updateAll")
+    public ResponseEntity<Void> updateHabitsOrder(@RequestBody List<HabitUpdateRequest> habitRequests) {
+        habitService.updateHabitsOrder(habitRequests);
+        return ResponseEntity.ok().build();
+    }
 
     @PutMapping("/{id}")
-    public HabitResponse update(@PathVariable Integer id, @RequestBody HabitRequest request) {
+    public HabitResponse update(@PathVariable Integer id, @RequestBody HabitUpdateRequest request) {
         return habitService.update(id, request);
     }
 

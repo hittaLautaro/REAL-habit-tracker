@@ -1,11 +1,9 @@
 package com.hitta.SpringSecurityExample.service;
 
-import com.hitta.SpringSecurityExample.dtos.CategoryRequest;
-import com.hitta.SpringSecurityExample.dtos.CategoryResponse;
-import com.hitta.SpringSecurityExample.dtos.HabitRequest;
+import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
+import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
 import com.hitta.SpringSecurityExample.mappers.HabitMapper;
-import com.hitta.SpringSecurityExample.model.Category;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class HabitService {
@@ -33,29 +30,26 @@ public class HabitService {
         return habitMapper.habitsToResponses(habits);
     }
 
-    public HabitResponse save( HabitRequest request){
+    public HabitResponse save( HabitCreateRequest request){
         Users user = userService.getUserById(request.getUserId());
 
         if(user == null) throw new IllegalArgumentException("User not found");
 
-        Habit habit = habitMapper.requestToHabit(request);
+        Habit habit = habitMapper.createReqToHabit(request);
 
         habit = habitRepo.save(habit);
 
         return habitMapper.habitToResponse(habit);
     }
 
-    public HabitResponse update(Integer id, HabitRequest request){
+    public HabitResponse update(Integer id, HabitUpdateRequest request){
         Habit habit = habitRepo.findById(id).orElse(null);
 
         if(habit == null) throw new IllegalArgumentException("Category not found");
 
-        Users user = userService.getUserById(request.getUserId());
-
-        if(user == null) throw new IllegalArgumentException("User not found");
-
-        habit.setUser(user);
         habit.setName(request.getName());
+        habit.setCompleted(request.isCompleted());
+        habit.setPosition(request.getPosition());
 
         habit = habitRepo.save(habit);
 
@@ -72,5 +66,13 @@ public class HabitService {
 
     public void deleteById(Integer id) {
         habitRepo.deleteById(id);
+    }
+
+    public void updateHabitsOrder(List<HabitUpdateRequest> habitUpdateRequests) {
+        habitUpdateRequests.forEach(habitRequest -> {
+            Habit habit = habitRepo.findById(habitRequest.getId()).orElseThrow();
+            habit.setPosition(habitRequest.getPosition());
+            habitRepo.save(habit);
+        });
     }
 }

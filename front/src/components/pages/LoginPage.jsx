@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import UserService from "../utils/userService";
+import UserService from "../utils/authService";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 const LoginPage = () => {
@@ -20,7 +20,7 @@ const LoginPage = () => {
     
     UserService.login({ email: email, password: password })
       .then((response) => {
-        localStorage.setItem('jwtToken', response.data.accessToken);
+        console.log(response.data)
         navigate("/")
       })
       .catch((err) => {

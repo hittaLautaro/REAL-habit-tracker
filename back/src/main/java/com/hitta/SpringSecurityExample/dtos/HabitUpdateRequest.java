@@ -7,7 +7,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryRequest {
+public class HabitUpdateRequest {
+    private Integer id;
     private String name;
-    private Integer userId;
+    private boolean isCompleted;
+    private Integer position;
 }

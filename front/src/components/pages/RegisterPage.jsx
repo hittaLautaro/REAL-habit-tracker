@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UserService from "../utils/userService";
+import UserService from "../utils/authService";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 import 'bootstrap';
@@ -24,7 +24,7 @@ const RegisterPage = () => {
     UserService.register({ email: email, password: password, dateOfBirth: dateOfBirth})
         .then((response) => {
           if(response.status === 200){
-            localStorage.setItem('jwtToken', response.data.accessToken);
+            TokenService.setToken(response.data.accessToken)
             navigate("/auth/login")
           }
 

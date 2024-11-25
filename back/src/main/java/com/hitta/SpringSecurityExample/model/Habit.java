@@ -34,9 +34,9 @@ public class Habit {
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category; // Optional
+//    @ManyToOne
+//    @JoinColumn(name = "category_id")
+//    private Category category; // Optional
 
     @NotBlank
     @NotNull
@@ -45,7 +45,14 @@ public class Habit {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
+
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
+
+    @NotNull
+    private boolean isCompleted;
+
+    @NotNull
+    private Integer position;
 }

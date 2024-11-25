@@ -1,10 +1,8 @@
 package com.hitta.SpringSecurityExample.mappers;
 
-import com.hitta.SpringSecurityExample.dtos.CategoryRequest;
-import com.hitta.SpringSecurityExample.dtos.CategoryResponse;
-import com.hitta.SpringSecurityExample.dtos.HabitRequest;
+import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
+import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
-import com.hitta.SpringSecurityExample.model.Category;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
@@ -26,14 +24,25 @@ public class HabitMapper {
                 .build();
     }
 
-    public Habit requestToHabit(HabitRequest request){
+    public Habit createReqToHabit(HabitCreateRequest request){
         Users user = userRepo.findById(request.getUserId()).orElse(null);
 
         if(user == null) throw new IllegalArgumentException("User not found");
 
         return Habit.builder()
                 .name(request.getName())
+                .isCompleted(false)
+                .position(0)
                 .user(user)
+                .build();
+
+    }
+
+    public Habit updateReqToHabit(HabitUpdateRequest request){
+        return Habit.builder()
+                .name(request.getName())
+                .position(request.getPosition())
+                .isCompleted(request.isCompleted())
                 .build();
 
     }

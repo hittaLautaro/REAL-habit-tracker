@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryResponse{
-    private Integer id;
+public class HabitCreateRequest {
     private String name;
+    private Integer userId;
 }
