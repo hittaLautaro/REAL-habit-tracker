@@ -9,5 +9,4 @@ import lombok.*;
 @AllArgsConstructor
 public class HabitCreateRequest {
     private String name;
-    private Integer userId;
 }

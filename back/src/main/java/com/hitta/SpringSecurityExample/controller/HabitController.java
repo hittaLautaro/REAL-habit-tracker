@@ -42,8 +42,9 @@ public class HabitController {
 
     // post a habit
     @PostMapping("/")
-    public HabitResponse save(@RequestBody HabitCreateRequest request){
-        return habitService.save(request);
+    public HabitResponse save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody HabitCreateRequest request){
+        Users user = userService.findByUsername(userDetails.getUsername());
+        return habitService.save(user, request);
     }
 
     @Transactional

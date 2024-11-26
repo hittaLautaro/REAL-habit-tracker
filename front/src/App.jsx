@@ -10,7 +10,6 @@ import RegisterPage from "./components/pages/RegisterPage.jsx";
 const App = () => {
   return (
     <div className="main-app">
-      <Header />
       <Routes>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/" element={<HomePage />} />

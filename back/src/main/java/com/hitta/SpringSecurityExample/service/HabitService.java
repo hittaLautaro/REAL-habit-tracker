@@ -30,15 +30,9 @@ public class HabitService {
         return habitMapper.habitsToResponses(habits);
     }
 
-    public HabitResponse save( HabitCreateRequest request){
-        Users user = userService.getUserById(request.getUserId());
-
-        if(user == null) throw new IllegalArgumentException("User not found");
-
-        Habit habit = habitMapper.createReqToHabit(request);
-
+    public HabitResponse save(Users user, HabitCreateRequest request){
+        Habit habit = habitMapper.createReqToHabit(user, request);
         habit = habitRepo.save(habit);
-
         return habitMapper.habitToResponse(habit);
     }
 

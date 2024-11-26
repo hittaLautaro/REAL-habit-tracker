@@ -24,11 +24,7 @@ public class HabitMapper {
                 .build();
     }
 
-    public Habit createReqToHabit(HabitCreateRequest request){
-        Users user = userRepo.findById(request.getUserId()).orElse(null);
-
-        if(user == null) throw new IllegalArgumentException("User not found");
-
+    public Habit createReqToHabit(Users user, HabitCreateRequest request){
         return Habit.builder()
                 .name(request.getName())
                 .isCompleted(false)

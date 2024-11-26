@@ -32,7 +32,6 @@ const RegisterPage = () => {
           setPassword("")
           setDateOfBirth("")
         }).catch((err) => {
-          // Handle different error cases
           if (err.response) {
             setError("Login failed. Please try again.");
           } else {
