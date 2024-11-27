@@ -42,6 +42,16 @@ public class Habit {
     @NotNull
     private String name;
 
+    @NotNull
+    private Integer frequency;
+
+    @NotBlank
+    @NotNull
+    private String daily;
+
+    @NotNull
+    private Integer timesDone;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;

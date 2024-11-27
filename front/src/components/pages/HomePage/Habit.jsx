@@ -1,5 +1,5 @@
 import React from 'react'
-import HabitService from '../utils/habitService';
+import HabitService from '../../utils/habitService';
 import Swal from 'sweetalert2';
 
 const Habit = ( {habit, fetchHabits } ) => {
@@ -13,6 +13,7 @@ const Habit = ( {habit, fetchHabits } ) => {
             showCancelButton: true,
             confirmButtonText: "Update habit",
             showLoaderOnConfirm: true,
+            inputValue: habit.name,
             preConfirm: async ( updatedName ) => {
             HabitService.update( habit.id, { name: updatedName } )
             .then(() =>{

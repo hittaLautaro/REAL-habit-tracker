@@ -2,8 +2,7 @@
 import { Route, Routes } from "react-router-dom";
 import "./index.css";
 
-import Header from "./components/Global/Header";
-import HomePage from "./components/pages/HomePage.jsx";
+import HomePage from "./components/pages/HomePage/HomePage.jsx";
 import LoginPage from "./components/pages/LoginPage.jsx";
 import RegisterPage from "./components/pages/RegisterPage.jsx";
 
