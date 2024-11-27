@@ -47,7 +47,7 @@ public class Habit {
 
     @NotBlank
     @NotNull
-    private String daily;
+        private String daily;
 
     @NotNull
     private Integer timesDone;

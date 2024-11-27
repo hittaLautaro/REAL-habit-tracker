@@ -11,7 +11,7 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HomePage = () => {
-  const [habits, setHabits] = useState([]);
+  // const [habits, setHabits] = useState([]);
   const [completed, setCompleted] = useState([])
   const [uncompleted, setUncompleted] = useState([])
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const HomePage = () => {
 
   const fetchHabits = async () => {
     await HabitService.getAll().then((response) => {
-      setHabits(response.data)
+      // setHabits(response.data)
       setCompleted(response.data.filter((habit) => habit.isCompleted))
       setUncompleted(response.data.filter((habit) => !habit.isCompleted))
       console.log(response.data)
@@ -91,7 +91,7 @@ const HomePage = () => {
       <Header />
       <div className="d-flex align-items-center">
         <h1 className='m-4'>Todo habits</h1>
-        <HabitModal />
+        <HabitModal fetchHabits={fetchHabits}/>
         {/* <button type="button" className="btn btn-dark m-2" onClick={handleAddHabit}>Add</button> */}
         <button type="button" className="btn btn-dark m-2" onClick={handleRemoveAllHabits}> Delete all </button>
       </div>

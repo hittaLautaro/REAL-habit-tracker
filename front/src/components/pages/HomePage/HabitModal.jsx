@@ -4,11 +4,12 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import HabitService from '../../utils/habitService';
 
-function HabitModal() {
+function HabitModal( {fetchHabits} ) {
   const [show, setShow] = useState(false);
   const [habitName, setHabitName] = useState('');
   const [habitFrequency, setHabitFrequency] = useState('');
   const [habitDaily, setHabitDaily] = useState(null);
+  const [err, setError] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -31,7 +32,10 @@ function HabitModal() {
             name: habitName, 
             frequency: habitFrequency,
             daily: habitDaily
+        }).then( () => {
+            fetchHabits();
         })
+        
 
     handleClose();
   };
@@ -49,6 +53,11 @@ function HabitModal() {
         keyboard={false}
         dialogClassName='modal-custom modal-dialog-centered'
       >
+        {err && (
+            <div className="alert alert-danger mt-3 mx-3 mb-0" role="alert">
+              {err}
+            </div>
+          )}
         <Modal.Header closeButton>
           <Modal.Title className='display-6'>Add Habit</Modal.Title>
         </Modal.Header>
@@ -70,7 +79,6 @@ function HabitModal() {
                 type="number"
                 rows={3}
                 placeholder="Frequency"
-                value={habitFrequency}
                 onChange={(e) => setHabitFrequency(e.target.value)}
               />
             </Form.Group>
