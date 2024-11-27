@@ -11,6 +11,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HomePage = () => {
   const [habits, setHabits] = useState([]);
+  const [completed, setCompleted] = useState([])
+  const [uncompleted, setUncompleted] = useState([])
   const navigate = useNavigate();
 
   const handleAddHabit = () => {
@@ -72,6 +74,8 @@ const HomePage = () => {
   const fetchHabits = async () => {
     await HabitService.getAll().then((response) => {
       setHabits(response.data)
+      setCompleted(response.data.filter((habit) => habit.completed))
+      setUncompleted(response.data.filter((habit) => !habit.completed))
       console.log(response.data)
     });
   };
@@ -85,18 +89,30 @@ const HomePage = () => {
     <div>
       <Header />
       <div className="d-flex align-items-center">
-        <h1 className='m-4'>Habits</h1>
+        <h1 className='m-4'>Todo habits</h1>
         <button type="button" className="btn btn-dark m-2" onClick={handleAddHabit}>Add</button>
         <button type="button" className="btn btn-dark m-2" onClick={handleRemoveAllHabits}> Delete all </button>
       </div>
+        { uncompleted.length <= 0 ? <p className='m-5'> You've finished for today! </p> : 
+          <div className="habit-list">
+            {uncompleted.map((habit) => (
+              <div key={habit.id} >
+                <Habit habit={habit} fetchHabits={fetchHabits}/>
+              </div>
+            ))} 
+          </div>
+        }
 
-        { habits.length <= 0 ? <h2 className='m-5'> You have no habits. </h2> : <div className="habit-list">
-          {habits.map((habit) => (
-            <div key={habit.id} >
-              <Habit habit={habit} fetchHabits={fetchHabits}/>
-            </div>
-          ))} 
-        </div>
+        <h1 className='m-4'>Finished</h1>
+        { completed.length <= 0 ? <p className='m-5'> You have no completed habits. </p> : 
+          <div className="habit-list">
+            
+            {completed.map((habit) => (
+              <div key={habit.id} >
+                <Habit habit={habit} fetchHabits={fetchHabits}/>
+              </div>
+            ))} 
+          </div>
         }
     </div>
 
