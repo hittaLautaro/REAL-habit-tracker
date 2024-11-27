@@ -20,6 +20,10 @@ const habitService = {
   deleteById: async (id) => {
     await axiosInstance.delete(`/habits/${id}`);
   },
+
+  deleteAll: async () => {
+    await axiosInstance.delete(`/habits/`);
+  },
 };
 
 export default habitService;

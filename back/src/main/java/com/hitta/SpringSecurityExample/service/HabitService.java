@@ -69,4 +69,8 @@ public class HabitService {
             habitRepo.save(habit);
         });
     }
+
+    public void deleteAll(Integer userId) {
+        habitRepo.deleteAllByUserId(userId);
+    }
 }

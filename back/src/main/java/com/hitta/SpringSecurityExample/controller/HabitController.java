@@ -65,4 +65,11 @@ public class HabitController {
         habitService.deleteById(id);
     }
 
+    @Transactional
+    @DeleteMapping("/")
+    public void delete(@AuthenticationPrincipal UserDetails userDetails) {
+        Users user = userService.findByUsername(userDetails.getUsername());
+        habitService.deleteAll(user.getId());
+    }
+
 }
