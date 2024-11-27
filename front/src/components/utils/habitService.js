@@ -13,8 +13,8 @@ const habitService = {
     return await axiosInstance.post('/habits/', request);
   },
 
-  update: async (id, request) => {
-    return await axiosInstance.put(`/habits/${id}`, request);
+  update: async ( id , request) => {
+    return await axiosInstance.patch(`/habits/${id}`, request);
   },
 
   deleteById: async (id) => {

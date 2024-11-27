@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'; // If you're using react-router
 import UserService from '../utils/authService.js'
 import HabitService from '../utils/habitService.js';
 import Header from '../Global/Header.jsx';
-import Swal from 'sweetalert2';
+import Swal from 'sweetalert2'
+import Habit from './Habit.jsx';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,13 +12,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const HomePage = () => {
   const [habits, setHabits] = useState([]);
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    UserService.logout().then(() => {
-      localStorage.clear();
-      navigate("/auth/login");
-    })
-  };
 
   const handleAddHabit = () => {
     Swal.fire({
@@ -89,15 +83,16 @@ const HomePage = () => {
     
     <div>
       <Header />
-      <button type="button" className="btn btn-dark m-2" onClick={handleLogout}>Logout</button>
-      <button type="button" className="btn btn-dark m-2" onClick={handleAddHabit}>Add</button>
-      <button type="button" className="btn btn-dark m-2" onClick={handleRemoveAllHabits}> Delete all </button>
-      <h1>Habits</h1>
-        { habits.length <= 0 ? <h2> No habits were found </h2> : <div className="habit-list">
-          {habits.map((x) => (
-            <div key={x.id} className="border border-dark p-3 habit-item">
-              <p>{x.id}</p>
-              <h2>{x.name}</h2>
+      <div className="d-flex align-items-center">
+        <h1 className='m-4'>Habits</h1>
+        <button type="button" className="btn btn-dark m-2" onClick={handleAddHabit}>Add</button>
+        <button type="button" className="btn btn-dark m-2" onClick={handleRemoveAllHabits}> Delete all </button>
+      </div>
+
+        { habits.length <= 0 ? <h2 className='m-5'> You have no habits. </h2> : <div className="habit-list">
+          {habits.map((habit) => (
+            <div key={habit.id} >
+              <Habit habit={habit} fetchHabits={fetchHabits}/>
             </div>
           ))} 
         </div>

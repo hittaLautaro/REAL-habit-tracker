@@ -41,7 +41,12 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center"   style={{ minHeight: "calc(100vh - 200px)" }}>
+    <div className="d-flex flex-column align-items-center justify-content-center my-5">
+      <div className="text-center mb-4 my-5">
+        <h1 className="display-3">Real.</h1>
+        <h1 className="h3">Habits & tasks tracker</h1>
+      </div>
+      <div className="container d-flex justify-content-center align-items-center"   style={{ minHeight: "calc(100vh - 450px)" }}>
           <div className="col-12 col-sm-8 col-md-6 col-lg-4 p-4 rounded shadow" style={{ backgroundColor: '#f8f9fa' }}>
        <h2 className="text-center mb-4" style={{ color: '#121212' }}>Sign up</h2>
 
@@ -115,7 +120,7 @@ const RegisterPage = () => {
         </form>
       </div>
     </div>
-
+    </div>
     
   );
 };

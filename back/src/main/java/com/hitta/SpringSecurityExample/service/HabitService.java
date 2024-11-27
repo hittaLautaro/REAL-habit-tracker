@@ -41,9 +41,17 @@ public class HabitService {
 
         if(habit == null) throw new IllegalArgumentException("Category not found");
 
-        habit.setName(request.getName());
-        habit.setCompleted(request.isCompleted());
-        habit.setPosition(request.getPosition());
+        if (request.getName() != null) {
+            habit.setName(request.getName());
+        }
+        if (request.getPosition() != null) {
+            habit.setPosition(request.getPosition());
+        }
+        // For boolean, you might need a different check
+        if (request.isCompleted()) {
+            habit.setCompleted(request.isCompleted());
+        }
+
 
         habit = habitRepo.save(habit);
 
@@ -62,13 +70,13 @@ public class HabitService {
         habitRepo.deleteById(id);
     }
 
-    public void updateHabitsOrder(List<HabitUpdateRequest> habitUpdateRequests) {
-        habitUpdateRequests.forEach(habitRequest -> {
-            Habit habit = habitRepo.findById(habitRequest.getId()).orElseThrow();
-            habit.setPosition(habitRequest.getPosition());
-            habitRepo.save(habit);
-        });
-    }
+//    public void updateHabitsOrder(List<HabitUpdateRequest> habitUpdateRequests) {
+//        habitUpdateRequests.forEach(habitRequest -> {
+//            Habit habit = habitRepo.findById(habitRequest.getId()).orElseThrow();
+//            habit.setPosition(habitRequest.getPosition());
+//            habitRepo.save(habit);
+//        });
+//    }
 
     public void deleteAll(Integer userId) {
         habitRepo.deleteAllByUserId(userId);

@@ -47,14 +47,14 @@ public class HabitController {
         return habitService.save(user, request);
     }
 
-    @Transactional
-    @PutMapping("/updateAll")
-    public ResponseEntity<Void> updateHabitsOrder(@RequestBody List<HabitUpdateRequest> habitRequests) {
-        habitService.updateHabitsOrder(habitRequests);
-        return ResponseEntity.ok().build();
-    }
+//    @Transactional
+//    @PutMapping("/updateAll")
+//    public ResponseEntity<Void> updateHabitsOrder(@RequestBody List<HabitUpdateRequest> habitRequests) {
+//        habitService.updateHabitsOrder(habitRequests);
+//        return ResponseEntity.ok().build();
+//    }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public HabitResponse update(@PathVariable Integer id, @RequestBody HabitUpdateRequest request) {
         return habitService.update(id, request);
     }
