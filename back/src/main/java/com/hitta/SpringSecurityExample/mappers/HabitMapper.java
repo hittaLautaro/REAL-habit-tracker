@@ -33,7 +33,6 @@ public class HabitMapper {
                 .name(request.getName())
                 .isCompleted(false)
                 .frequency(request.getFrequency())
-                .daily(request.getDaily())
                 .timesDone(0)
                 .position(0)
                 .user(user)

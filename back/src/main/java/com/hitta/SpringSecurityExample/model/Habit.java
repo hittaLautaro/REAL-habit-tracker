@@ -45,10 +45,6 @@ public class Habit {
     @NotNull
     private Integer frequency;
 
-    @NotBlank
-    @NotNull
-        private String daily;
-
     @NotNull
     private Integer timesDone;
 

@@ -16,36 +16,6 @@ const HomePage = () => {
   const [uncompleted, setUncompleted] = useState([])
   const navigate = useNavigate();
 
-  // const handleAddHabit = () => {
-  //   Swal.fire({
-  //     title: "Enter the name of the habit",
-  //     input: "text",
-  //     inputAttributes: {
-  //       autocapitalize: "on"
-  //     },
-  //     showCancelButton: true,
-  //     confirmButtonText: "Add habit",
-  //     showLoaderOnConfirm: true,
-  //     preConfirm: async ( habitName ) => {
-  //       HabitService.save( { name: habitName })
-  //       .then(() =>{
-  //         fetchHabits();
-  //       }
-  //     );
-        
-  //     },
-  //     allowOutsideClick: () => !Swal.isLoading()
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Swal.fire({
-  //         title: "Added!",
-  //         text: "New habit has ben added",
-  //         icon: "success"
-  //       });
-  //     }
-  //   });
-  // };
-
   const handleRemoveAllHabits = () => {
     Swal.fire({
       title: "Are you sure?",

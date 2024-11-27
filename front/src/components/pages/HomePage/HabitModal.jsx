@@ -8,7 +8,6 @@ function HabitModal( {fetchHabits} ) {
   const [show, setShow] = useState(false);
   const [habitName, setHabitName] = useState('');
   const [habitFrequency, setHabitFrequency] = useState('');
-  const [habitDaily, setHabitDaily] = useState(null);
   const [err, setError] = useState("");
 
   const handleClose = () => setShow(false);
@@ -31,7 +30,6 @@ function HabitModal( {fetchHabits} ) {
         {
             name: habitName, 
             frequency: habitFrequency,
-            daily: habitDaily
         }).then( () => {
             fetchHabits();
         })
@@ -67,7 +65,7 @@ function HabitModal( {fetchHabits} ) {
               <Form.Label className='h5'>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Name"
+                placeholder="Ex: Go running"
                 value={habitName}
                 onChange={(e) => setHabitName(e.target.value)}
                 required
@@ -78,24 +76,10 @@ function HabitModal( {fetchHabits} ) {
               <Form.Control
                 type="number"
                 rows={3}
-                placeholder="Frequency"
+                placeholder="Ex: 3"
                 onChange={(e) => setHabitFrequency(e.target.value)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="habitDaily">
-                <Form.Label className='h5'>Daily or Weekly</Form.Label>
-                <Form.Control
-                    as="select"
-                    value={habitDaily}
-                    onChange={(e) => setHabitDaily(e.target.value)}
-                >
-                    <option value="daily">Daily</option>
-                    <option value="weekly">Weekly</option>
-                </Form.Control>
-            </Form.Group>
-
-
-
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
                 Close
