@@ -55,14 +55,23 @@ const Habit = ( {habit, fetchHabits } ) => {
           }
         });
       };
-3
+
+      const handleComplete = async () => {
+        await HabitService.update( habit.id, {completed:!habit.completed} )
+            .then(() =>{
+              fetchHabits();
+        })
+      };
+
   return (
     <div className="border border-dark mx-5 my-3 habit-item">
         <button type="button" className="btn btn-dark m-2" onClick={handleNameChange}>Update</button>
         <button type="button" className="btn btn-dark m-2" onClick={handleDelete}>Delete</button>
+        <button type="button" className="btn btn-dark m-2" onClick={handleComplete}>Check</button>
         <div className='m-4'>
             <p> {habit.id} </p>
             <h4> {habit.name} </h4>
+            <p> {habit.completed ? "Completed" : "Uncompleted"} </p>
         </div>
     </div>
   )

@@ -56,6 +56,7 @@ public class HabitController {
 
     @PatchMapping("/{id}")
     public HabitResponse update(@PathVariable Integer id, @RequestBody HabitUpdateRequest request) {
+        System.out.println(request.toString());
         return habitService.update(id, request);
     }
 

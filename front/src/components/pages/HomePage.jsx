@@ -72,6 +72,7 @@ const HomePage = () => {
   const fetchHabits = async () => {
     await HabitService.getAll().then((response) => {
       setHabits(response.data)
+      console.log(response.data)
     });
   };
 

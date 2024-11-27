@@ -21,8 +21,6 @@ public class HabitService {
     @Autowired
     private HabitMapper habitMapper;
 
-    @Autowired
-    private UserService userService;
 
     public List<HabitResponse> getAllHabitsByUserId(Integer userId){
         List<Habit> habits = habitRepo.findAllByUserId(userId);
@@ -47,8 +45,10 @@ public class HabitService {
         if (request.getPosition() != null) {
             habit.setPosition(request.getPosition());
         }
-        // For boolean, you might need a different check
-        if (request.isCompleted()) {
+
+        System.out.println(habit.isCompleted());
+        System.out.println(request.isCompleted());
+        if (habit.isCompleted() != request.isCompleted()) {
             habit.setCompleted(request.isCompleted());
         }
 

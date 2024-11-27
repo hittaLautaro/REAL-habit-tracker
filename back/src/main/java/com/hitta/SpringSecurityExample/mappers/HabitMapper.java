@@ -21,6 +21,10 @@ public class HabitMapper {
         return HabitResponse.builder()
                 .name(habit.getName())
                 .id(habit.getId())
+                .isCompleted(habit.isCompleted())
+                .createdDate(habit.getCreatedDate())
+                .lastModifiedDate(habit.getLastModifiedDate())
+                .position(habit.getPosition())
                 .build();
     }
 
