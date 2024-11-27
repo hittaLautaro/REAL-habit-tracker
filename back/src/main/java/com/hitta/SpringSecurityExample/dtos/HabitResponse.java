@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class HabitResponse{
     private Integer id;
     private String name;
-    private boolean isCompleted;
+    private Boolean isCompleted;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private Integer position;

@@ -57,7 +57,7 @@ const Habit = ( {habit, fetchHabits } ) => {
       };
 
       const handleComplete = async () => {
-        await HabitService.update( habit.id, {completed:!habit.completed} )
+        await HabitService.update( habit.id, {isCompleted: habit.isCompleted == null ? true : !habit.isCompleted } )
             .then(() =>{
               fetchHabits();
         })
@@ -71,7 +71,7 @@ const Habit = ( {habit, fetchHabits } ) => {
         <div className='m-4'>
             <p> {habit.id} </p>
             <h4> {habit.name} </h4>
-            <p> {habit.completed ? "Completed" : "Uncompleted"} </p>
+            <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
         </div>
     </div>
   )

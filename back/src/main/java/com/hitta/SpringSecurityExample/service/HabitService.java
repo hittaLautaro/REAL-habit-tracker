@@ -47,9 +47,9 @@ public class HabitService {
         }
 
         System.out.println(habit.isCompleted());
-        System.out.println(request.isCompleted());
-        if (habit.isCompleted() != request.isCompleted()) {
-            habit.setCompleted(request.isCompleted());
+        System.out.println("bool -> " + request.getIsCompleted());
+        if (request.getIsCompleted() != null && habit.isCompleted() != request.getIsCompleted()) {
+            habit.setCompleted(request.getIsCompleted());
         }
 
 

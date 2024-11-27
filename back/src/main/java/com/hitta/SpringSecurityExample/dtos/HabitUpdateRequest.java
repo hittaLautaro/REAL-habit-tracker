@@ -10,6 +10,6 @@ import lombok.*;
 @ToString
 public class HabitUpdateRequest {
     private String name;
-    private boolean isCompleted;
+    private Boolean isCompleted;
     private Integer position;
 }

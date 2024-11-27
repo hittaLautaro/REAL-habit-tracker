@@ -42,7 +42,7 @@ public class HabitMapper {
         return Habit.builder()
                 .name(request.getName())
                 .position(request.getPosition())
-                .isCompleted(request.isCompleted())
+                .isCompleted(request.getIsCompleted())
                 .build();
 
     }

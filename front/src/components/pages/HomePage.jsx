@@ -74,8 +74,8 @@ const HomePage = () => {
   const fetchHabits = async () => {
     await HabitService.getAll().then((response) => {
       setHabits(response.data)
-      setCompleted(response.data.filter((habit) => habit.completed))
-      setUncompleted(response.data.filter((habit) => !habit.completed))
+      setCompleted(response.data.filter((habit) => habit.isCompleted))
+      setUncompleted(response.data.filter((habit) => !habit.isCompleted))
       console.log(response.data)
     });
   };
