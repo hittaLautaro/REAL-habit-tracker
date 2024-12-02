@@ -40,20 +40,13 @@ public class HabitService {
     public HabitResponse update(Integer id, HabitUpdateRequest request){
         Habit habit = habitRepo.findById(id).orElse(null);
 
-        if(habit == null) throw new IllegalArgumentException("Category not found");
+        if(habit == null) throw new IllegalArgumentException("Habit not found");
 
-        if (request.getName() != null) {
-            habit.setName(request.getName());
-        }
-        if (request.getPosition() != null) {
-            habit.setPosition(request.getPosition());
-        }
-
-        System.out.println(habit.isCompleted());
-        System.out.println("bool -> " + request.getIsCompleted());
-        if (request.getIsCompleted() != null && habit.isCompleted() != request.getIsCompleted()) {
-            habit.setCompleted(request.getIsCompleted());
-        }
+        if(request.getName() != null)           habit.setName(request.getName());
+        if(request.getFrequency() != null)      habit.setFrequency(request.getFrequency());
+        if(request.getActiveDays() != null)     habit.setActiveDays(request.getActiveDays());
+        if(request.getPosition() != null)       habit.setPosition(request.getPosition());
+        if(request.getIsCompleted() != null)    habit.setCompleted(request.getIsCompleted());
 
         habit = habitRepo.save(habit);
 

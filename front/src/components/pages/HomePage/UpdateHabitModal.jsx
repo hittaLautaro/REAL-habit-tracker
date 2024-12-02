@@ -4,11 +4,11 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import HabitService from "../../utils/habitService";
 
-function UpdateHabitModal({ fetchHabits }) {
+function UpdateHabitModal({ habit, fetchHabits }) {
   const [show, setShow] = useState(false);
-  const [habitName, setHabitName] = useState("");
-  const [habitDays, setHabitDays] = useState("");
-  const [habitFrequency, setHabitFrequency] = useState("");
+  const [habitName, setHabitName] = useState(habit.name);
+  const [habitFrequency, setHabitFrequency] = useState(habit.frequency);
+  const [selectedDays, setSelectedDays] = useState(habit.activeDays);
   const [err, setError] = useState("");
 
   const handleClose = () => setShow(false);
@@ -27,15 +27,12 @@ function UpdateHabitModal({ fetchHabits }) {
       return;
     }
 
-    if (!habitDays || habitDays <= 0) {
-      setError("At least a day has to be selected");
-      return;
-    }
+    console.log(selectedDays);
 
-    HabitService.save({
+    HabitService.update(habit.id, {
       name: habitName,
       frequency: habitFrequency,
-      habitDays: habitDays,
+      activeDays: selectedDays,
     }).then(() => {
       fetchHabits();
     });
@@ -62,7 +59,7 @@ function UpdateHabitModal({ fetchHabits }) {
           </div>
         )}
         <Modal.Header closeButton>
-          <Modal.Title className="display-6">Add Habit</Modal.Title>
+          <Modal.Title className="display-6">Update Habit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
@@ -70,7 +67,6 @@ function UpdateHabitModal({ fetchHabits }) {
               <Form.Label className="h5">Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Ex: Go running"
                 value={habitName}
                 onChange={(e) => setHabitName(e.target.value)}
                 required
@@ -81,7 +77,7 @@ function UpdateHabitModal({ fetchHabits }) {
               <Form.Control
                 type="number"
                 rows={3}
-                placeholder="Ex: 3"
+                value={habitFrequency}
                 onChange={(e) => setHabitFrequency(e.target.value)}
               />
             </Form.Group>
@@ -89,13 +85,13 @@ function UpdateHabitModal({ fetchHabits }) {
               <Form.Label className="h5">Days of the week</Form.Label>
               <div>
                 {[
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday",
-                  "Sunday",
+                  "MONDAY",
+                  "TUESDAY",
+                  "WEDNESDAY",
+                  "THURSDAY",
+                  "FRIDAY",
+                  "SATURDAY",
+                  "SUNDAY",
                 ].map((day) => (
                   <Form.Check
                     key={day}
@@ -103,6 +99,7 @@ function UpdateHabitModal({ fetchHabits }) {
                     id={`day-${day}`}
                     label={day}
                     checked={selectedDays.includes(day)}
+                    value={selectedDays}
                     onChange={(e) => {
                       if (e.target.checked) {
                         setSelectedDays([...selectedDays, day]);

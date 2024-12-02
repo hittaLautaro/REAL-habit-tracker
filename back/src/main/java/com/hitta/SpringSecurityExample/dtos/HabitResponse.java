@@ -2,7 +2,9 @@ package com.hitta.SpringSecurityExample.dtos;
 
 import lombok.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,4 +19,8 @@ public class HabitResponse{
     private LocalDateTime lastModifiedDate;
     private Integer position;
     private Integer userId;
+    private Integer frequency;
+    private Integer streak;
+    private Integer totalTimesDone;
+    private Set<DayOfWeek> activeDays;
 }

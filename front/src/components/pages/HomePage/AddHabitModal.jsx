@@ -9,6 +9,7 @@ function AddHabitModal({ fetchHabits }) {
   const [habitName, setHabitName] = useState("");
   const [habitFrequency, setHabitFrequency] = useState("");
   const [err, setError] = useState("");
+  const [selectedDays, setSelectedDays] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -77,6 +78,35 @@ function AddHabitModal({ fetchHabits }) {
                 placeholder="Ex: 3"
                 onChange={(e) => setHabitFrequency(e.target.value)}
               />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="habitDays">
+              <Form.Label className="h5">Days of the week</Form.Label>
+              <div>
+                {[
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday",
+                ].map((day) => (
+                  <Form.Check
+                    key={day}
+                    type="checkbox"
+                    id={`day-${day}`}
+                    label={day}
+                    checked={selectedDays.includes(day)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedDays([...selectedDays, day]);
+                      } else {
+                        setSelectedDays(selectedDays.filter((d) => d !== day));
+                      }
+                    }}
+                  />
+                ))}
+              </div>
             </Form.Group>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>

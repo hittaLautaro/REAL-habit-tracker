@@ -68,11 +68,7 @@ public class AuthService {
                                 (request.getEmail(), request.getPassword()));
 
         var user = (Users) authentication.getPrincipal();
-
-        System.out.println(request.getTime_zone());
-
         user.setTime_zone(request.getTime_zone());
-
         userRepo.save(user);
 
         String accessToken = jwtService.generateAccessToken(request.getEmail());
@@ -120,13 +116,8 @@ public class AuthService {
     }
 
     public AuthResponse generateAccessToken(String refreshToken) {
-        System.out.println("Generated new access token -> " + refreshToken);
-
         Token token = tokenRepo.findByToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Refresh token not found"));
-
-        System.out.println(token.toString());
-
         if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Refresh token is expired or revoked");
         }
@@ -141,7 +132,7 @@ public class AuthService {
 
     public void revokeRefreshToken(String refreshToken) {
         Token token = tokenRepo.findByToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Refresh token not found" + refreshToken));
+                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
 
         token.setRevoked(true);
         tokenRepo.save(token);

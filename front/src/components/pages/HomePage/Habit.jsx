@@ -4,33 +4,6 @@ import Swal from "sweetalert2";
 import UpdateHabitModal from "./UpdateHabitModal.jsx";
 
 const Habit = ({ habit, fetchHabits }) => {
-  const handleNameChange = () => {
-    Swal.fire({
-      title: "Enter new name of the habit",
-      input: "text",
-      inputAttributes: {
-        autocapitalize: "on",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Update habit",
-      showLoaderOnConfirm: true,
-      inputValue: habit.name,
-      preConfirm: async (updatedName) => {
-        HabitService.update(habit.id, { name: updatedName }).then(() => {
-          fetchHabits();
-        });
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Updated!",
-          text: "Habit has been updated",
-          icon: "success",
-        });
-      }
-    });
-  };
-
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -66,7 +39,7 @@ const Habit = ({ habit, fetchHabits }) => {
 
   return (
     <div className="border border-dark mx-5 my-3 habit-item">
-      <UpdateHabitModal />
+      <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
       <button type="button" className="btn btn-dark m-2" onClick={handleDelete}>
         Delete
       </button>

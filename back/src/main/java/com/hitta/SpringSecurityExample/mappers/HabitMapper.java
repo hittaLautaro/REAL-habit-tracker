@@ -25,6 +25,11 @@ public class HabitMapper {
                 .createdDate(habit.getCreatedDate())
                 .lastModifiedDate(habit.getLastModifiedDate())
                 .position(habit.getPosition())
+                .frequency(habit.getFrequency())
+                .streak(habit.getStreak())
+                .totalTimesDone(habit.getTotalTimesDone())
+                .userId(habit.getUser().getId())
+                .activeDays(habit.getActiveDays())
                 .build();
     }
 
@@ -38,15 +43,6 @@ public class HabitMapper {
                 .user(user)
                 .totalTimesDone(0)
                 .streak(0)
-                .build();
-
-    }
-
-    public Habit updateReqToHabit(HabitUpdateRequest request){
-        return Habit.builder()
-                .name(request.getName())
-                .position(request.getPosition())
-                .isCompleted(request.getIsCompleted())
                 .build();
 
     }
