@@ -42,6 +42,7 @@ public class HabitMapper {
                 .position(0)
                 .user(user)
                 .totalTimesDone(0)
+                .activeDays(request.getActiveDays())
                 .streak(0)
                 .build();
 

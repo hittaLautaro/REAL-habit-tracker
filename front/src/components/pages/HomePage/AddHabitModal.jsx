@@ -30,7 +30,11 @@ function AddHabitModal({ fetchHabits }) {
     HabitService.save({
       name: habitName,
       frequency: habitFrequency,
+      activeDays: selectedDays,
     }).then(() => {
+      setHabitName("");
+      setHabitFrequency("");
+      setSelectedDays([]);
       fetchHabits();
     });
 
@@ -83,13 +87,13 @@ function AddHabitModal({ fetchHabits }) {
               <Form.Label className="h5">Days of the week</Form.Label>
               <div>
                 {[
-                  "Monday",
-                  "Tuesday",
-                  "Wednesday",
-                  "Thursday",
-                  "Friday",
-                  "Saturday",
-                  "Sunday",
+                  "MONDAY",
+                  "TUESDAY",
+                  "WEDNESDAY",
+                  "THURSDAY",
+                  "FRIDAY",
+                  "SATURDAY",
+                  "SUNDAY",
                 ].map((day) => (
                   <Form.Check
                     key={day}
