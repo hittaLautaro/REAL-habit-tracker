@@ -37,18 +37,14 @@ public class UserService {
     // RUNS EVERY MINUTE
     @Scheduled(cron = "0 * * * * *")
     public void processDueResets() {
-        System.out.println("Method called every minute");
         List<Users> users = userRepo.findAll();
 
         for (Users user : users) {
             ZoneId userZone = ZoneId.of(user.getTime_zone());
             LocalDateTime nowInUserZone = ZonedDateTime.now(userZone).toLocalDateTime();
-
-            System.out.println(userZone);
-
+            
             // Check if it's exactly 12:00 AM in the user time zone
             if (nowInUserZone.getHour() == 0 && nowInUserZone.getMinute() == 0) {
-                System.out.println("Time is correct, submiting stats!");
                 resetUserHabits(user);
             }
         }
