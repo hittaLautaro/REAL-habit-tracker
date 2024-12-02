@@ -12,13 +12,13 @@ const DaySelector = ({ changeHabits }) => {
   return (
     <div className="m-5 d-flex justify-content-center">
       {[
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
       ].map((day, index) => (
         <button
           key={day}
@@ -28,9 +28,9 @@ const DaySelector = ({ changeHabits }) => {
               : "btn-light text-black"
           }`}
           style={{ width: "60px", height: "60px", fontSize: "24px" }}
-          onClick={() => handleClick(index, day)}
+          onClick={() => handleClick(index, day.toUpperCase())}
         >
-          {day}
+          {day.slice(0, 2)}
         </button>
       ))}
     </div>
