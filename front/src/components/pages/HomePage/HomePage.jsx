@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // If you're using react-router
+import { useNavigate } from "react-router-dom";
 import UserService from "../../utils/authService.js";
 import HabitService from "../../utils/habitService.js";
 import Header from "../../Global/Header.jsx";
@@ -9,9 +9,11 @@ import AddHabitModal from "./AddHabitModal.jsx";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Button } from "react-bootstrap";
+import DaySelector from "./DaySelector.jsx";
 
 const HomePage = () => {
-  // const [habits, setHabits] = useState([]);
+  const [habits, setHabits] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [uncompleted, setUncompleted] = useState([]);
   const navigate = useNavigate();
@@ -43,11 +45,18 @@ const HomePage = () => {
 
   const fetchHabits = async () => {
     await HabitService.getAll().then((response) => {
-      // setHabits(response.data)
+      setHabits(response.data);
       setCompleted(response.data.filter((habit) => habit.isCompleted));
       setUncompleted(response.data.filter((habit) => !habit.isCompleted));
-      console.log(response.data);
     });
+  };
+
+  const changeHabits = (selectedDay) => {
+    const filteredHabits = habits.filter((habit) =>
+      habit.activeDays.includes(selectedDay)
+    );
+    setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
+    setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
   };
 
   useEffect(() => {
@@ -58,6 +67,7 @@ const HomePage = () => {
     <div>
       <Header />
       <div className="container-fluid">
+        <DaySelector changeHabits={changeHabits} />
         <div className="row">
           <div className="col-sm">
             <div className="d-flex align-items-center">
@@ -68,12 +78,11 @@ const HomePage = () => {
                 className="btn btn-dark m-2"
                 onClick={handleRemoveAllHabits}
               >
-                {" "}
-                Delete all{" "}
+                Delete all
               </button>
             </div>
             {uncompleted.length <= 0 ? (
-              <p className="m-5"> You've finished for today! </p>
+              <p className="m-5">You've finished for today!</p>
             ) : (
               <div className="habit-list">
                 {uncompleted.map((habit) => (
@@ -89,7 +98,7 @@ const HomePage = () => {
               <h1 className="m-4">Finished</h1>
             </div>
             {completed.length <= 0 ? (
-              <p className="m-5"> You have no completed habits. </p>
+              <p className="m-5">You have no completed habits.</p>
             ) : (
               <div className="habit-list">
                 {completed.map((habit) => (
