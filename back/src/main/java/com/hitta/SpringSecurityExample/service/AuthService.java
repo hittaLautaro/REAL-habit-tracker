@@ -47,6 +47,7 @@ public class AuthService {
                 .createdDate(LocalDateTime.now())
                 .time_zone(request.getTime_zone())
                 .nextReset(LocalDateTime.now())
+                .streak(0)
                 .build();
 
         userRepo.save(user);
