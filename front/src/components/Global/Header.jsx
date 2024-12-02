@@ -4,7 +4,6 @@ import UserService from "../utils/authService";
 import Swal from "sweetalert2";
 
 const Header = () => {
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -17,25 +16,23 @@ const Header = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, logout!",
       preConfirm: async () => {
-        
-      UserService.logout().then(() => {
-        localStorage.clear();
-        navigate("/auth/login");
-      })
+        UserService.logout().then(() => {
+          localStorage.clear();
+          navigate("/auth/login");
+        });
       },
     });
-
   };
 
   return (
     <nav className="navbar">
-    <NavLink className="title" to="/">
-      <h2>
-        Real
-      </h2>
-    </NavLink>
-    <button type="button" className="btn btn-dark m-2" onClick={handleLogout}>Logout</button>
-  </nav>
+      <NavLink className="title" to="/">
+        <h2>Real</h2>
+      </NavLink>
+      <button type="button" className="btn btn-dark m-2" onClick={handleLogout}>
+        Logout
+      </button>
+    </nav>
   );
 };
 

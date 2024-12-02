@@ -1,18 +1,18 @@
-import axios from 'axios';
+import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080",
-  withCredentials: true 
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('jwtToken');
-    
+    const token = localStorage.getItem("jwtToken");
+
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
-    
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -23,25 +23,28 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry) {
+    if (
+      (error.response?.status === 401 || error.response?.status === 403) &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
-       try {
+      try {
         const response = await axios.post(
-          'http://localhost:8080/auth/refresh', 
+          "http://localhost:8080/auth/refresh",
           {},
           {
-            withCredentials: true 
+            withCredentials: true,
           }
         );
 
-        localStorage.setItem('jwtToken', response.data.accessToken)
+        localStorage.setItem("jwtToken", response.data.accessToken);
 
         return axiosInstance(originalRequest);
-       } catch (refreshError) {
-         window.location.href = '/auth/login'; // Refresh token expirado
-         return Promise.reject(refreshError);
-        }
+      } catch (refreshError) {
+        window.location.href = "/auth/login"; // Refresh token expirado
+        return Promise.reject(refreshError);
+      }
     }
 
     return Promise.reject(error);

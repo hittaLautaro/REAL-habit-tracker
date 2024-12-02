@@ -2,7 +2,7 @@ import axiosInstance from "./axiosInstance";
 
 const habitService = {
   getAll: async () => {
-    return await axiosInstance.get('/habits/');
+    return await axiosInstance.get("/habits/");
   },
 
   findById: async (id) => {
@@ -10,10 +10,10 @@ const habitService = {
   },
 
   save: async (request) => {
-    return await axiosInstance.post('/habits/', request);
+    return await axiosInstance.post("/habits/", request);
   },
 
-  update: async ( id , request) => {
+  update: async (id, request) => {
     return await axiosInstance.patch(`/habits/${id}`, request);
   },
 

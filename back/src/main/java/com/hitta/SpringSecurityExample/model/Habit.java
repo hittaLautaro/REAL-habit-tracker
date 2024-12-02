@@ -10,8 +10,10 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Table(name = "habits")
 @Entity
@@ -60,6 +62,11 @@ public class Habit {
 
     @NotNull
     private boolean isCompleted = false;
+
+    @ElementCollection
+    @CollectionTable(name = "habit_days", joinColumns = @JoinColumn(name = "habit_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<DayOfWeek> activeDays;
 
     @NotNull
     private Integer position;

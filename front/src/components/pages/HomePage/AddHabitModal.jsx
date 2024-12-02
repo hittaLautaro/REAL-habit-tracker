@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import HabitService from '../../utils/habitService';
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import HabitService from "../../utils/habitService";
 
-function HabitModal( {fetchHabits} ) {
+function AddHabitModal({ fetchHabits }) {
   const [show, setShow] = useState(false);
-  const [habitName, setHabitName] = useState('');
-  const [habitFrequency, setHabitFrequency] = useState('');
+  const [habitName, setHabitName] = useState("");
+  const [habitFrequency, setHabitFrequency] = useState("");
   const [err, setError] = useState("");
 
   const handleClose = () => setShow(false);
@@ -17,23 +17,21 @@ function HabitModal( {fetchHabits} ) {
     e.preventDefault();
 
     if (!habitName.trim()) {
-        setError('Habit name is required');
-        return;
-      }
-      
-      if (!habitFrequency || habitFrequency <= 0) {
-        setError('Habit frequency must be a positive number');
-        return;
-      }
+      setError("Habit name is required");
+      return;
+    }
 
-    HabitService.save(
-        {
-            name: habitName, 
-            frequency: habitFrequency,
-        }).then( () => {
-            fetchHabits();
-        })
-        
+    if (!habitFrequency || habitFrequency <= 0) {
+      setError("Habit frequency must be a positive number");
+      return;
+    }
+
+    HabitService.save({
+      name: habitName,
+      frequency: habitFrequency,
+    }).then(() => {
+      fetchHabits();
+    });
 
     handleClose();
   };
@@ -49,20 +47,20 @@ function HabitModal( {fetchHabits} ) {
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
-        dialogClassName='modal-custom modal-dialog-centered'
+        dialogClassName="modal-custom modal-dialog-centered"
       >
         {err && (
-            <div className="alert alert-danger mt-3 mx-3 mb-0" role="alert">
-              {err}
-            </div>
-          )}
+          <div className="alert alert-danger mt-3 mx-3 mb-0" role="alert">
+            {err}
+          </div>
+        )}
         <Modal.Header closeButton>
-          <Modal.Title className='display-6'>Add Habit</Modal.Title>
+          <Modal.Title className="display-6">Add Habit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="habitName">
-              <Form.Label className='h5'>Name</Form.Label>
+              <Form.Label className="h5">Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Ex: Go running"
@@ -72,7 +70,7 @@ function HabitModal( {fetchHabits} ) {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="habitDescription">
-              <Form.Label className='h5'>Frequency </Form.Label>
+              <Form.Label className="h5">Frequency </Form.Label>
               <Form.Control
                 type="number"
                 rows={3}
@@ -95,4 +93,4 @@ function HabitModal( {fetchHabits} ) {
   );
 }
 
-export default HabitModal;
+export default AddHabitModal;

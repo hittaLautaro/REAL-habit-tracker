@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // If you're using react-router
-import UserService from '../../utils/authService.js'
-import HabitService from '../../utils/habitService.js';
-import Header from '../../Global/Header.jsx';
-import Swal from 'sweetalert2'
-import Habit from './Habit.jsx';
-import HabitModal from './HabitModal.jsx';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // If you're using react-router
+import UserService from "../../utils/authService.js";
+import HabitService from "../../utils/habitService.js";
+import Header from "../../Global/Header.jsx";
+import Swal from "sweetalert2";
+import Habit from "./Habit.jsx";
+import AddHabitModal from "./AddHabitModal.jsx";
 
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const HomePage = () => {
   // const [habits, setHabits] = useState([]);
-  const [completed, setCompleted] = useState([])
-  const [uncompleted, setUncompleted] = useState([])
+  const [completed, setCompleted] = useState([]);
+  const [uncompleted, setUncompleted] = useState([]);
   const navigate = useNavigate();
 
   const handleRemoveAllHabits = () => {
@@ -26,17 +26,16 @@ const HomePage = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
       preConfirm: async () => {
-        HabitService.deleteAll()
-        .then(() =>{
+        HabitService.deleteAll().then(() => {
           fetchHabits();
-        })
+        });
       },
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
           title: "Deleted!",
           text: "Your habits have been deleted.",
-          icon: "success"
+          icon: "success",
         });
       }
     });
@@ -45,9 +44,9 @@ const HomePage = () => {
   const fetchHabits = async () => {
     await HabitService.getAll().then((response) => {
       // setHabits(response.data)
-      setCompleted(response.data.filter((habit) => habit.isCompleted))
-      setUncompleted(response.data.filter((habit) => !habit.isCompleted))
-      console.log(response.data)
+      setCompleted(response.data.filter((habit) => habit.isCompleted));
+      setUncompleted(response.data.filter((habit) => !habit.isCompleted));
+      console.log(response.data);
     });
   };
 
@@ -56,51 +55,54 @@ const HomePage = () => {
   }, [navigate]);
 
   return (
-    
-
     <div>
       <Header />
-      <div className='container-fluid'>
-          <div className='row'>
-            <div className='col-sm'>
-              <div className="d-flex align-items-center">
-                <h1 className='m-4'>Todo habits</h1>
-                <HabitModal fetchHabits={fetchHabits}/>
-                {/* <button type="button" className="btn btn-dark m-2" onClick={handleAddHabit}>Add</button> */}
-                <button type="button" className="btn btn-dark m-2" onClick={handleRemoveAllHabits}> Delete all </button>
-              </div>
-                { uncompleted.length <= 0 ? <p className='m-5'> You've finished for today! </p> : 
-                  <div className="habit-list">
-                    {uncompleted.map((habit) => (
-                      <div key={habit.id} >
-                        <Habit habit={habit} fetchHabits={fetchHabits}/>
-                      </div>
-                    ))} 
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm">
+            <div className="d-flex align-items-center">
+              <h1 className="m-4">Todo habits</h1>
+              <AddHabitModal fetchHabits={fetchHabits} />
+              <button
+                type="button"
+                className="btn btn-dark m-2"
+                onClick={handleRemoveAllHabits}
+              >
+                {" "}
+                Delete all{" "}
+              </button>
+            </div>
+            {uncompleted.length <= 0 ? (
+              <p className="m-5"> You've finished for today! </p>
+            ) : (
+              <div className="habit-list">
+                {uncompleted.map((habit) => (
+                  <div key={habit.id}>
+                    <Habit habit={habit} fetchHabits={fetchHabits} />
                   </div>
-                }
-            </div>
-            <div className='col-sm'>
-              <div className="d-flex align-items-center">
-              <h1 className='m-4'>Finished</h1>
+                ))}
               </div>
-              { completed.length <= 0 ? <p className='m-5'> You have no completed habits. </p> : 
-                <div className="habit-list">
-                  
-                  {completed.map((habit) => (
-                    <div key={habit.id} >
-                      <Habit habit={habit} fetchHabits={fetchHabits}/>
-                    </div>
-                  ))} 
-                </div>
-              
-              }
-              
-            </div>
+            )}
           </div>
+          <div className="col-sm">
+            <div className="d-flex align-items-center">
+              <h1 className="m-4">Finished</h1>
+            </div>
+            {completed.length <= 0 ? (
+              <p className="m-5"> You have no completed habits. </p>
+            ) : (
+              <div className="habit-list">
+                {completed.map((habit) => (
+                  <div key={habit.id}>
+                    <Habit habit={habit} fetchHabits={fetchHabits} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
-
-    
   );
 };
 
