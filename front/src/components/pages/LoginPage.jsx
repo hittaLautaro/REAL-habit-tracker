@@ -12,15 +12,17 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
+    const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     if (password.length < 8) {
       setError("Password must be at least 8 characters long");
       return;
     }
     
-    UserService.login({ email: email, password: password })
+    UserService.login({ email: email, password: password, time_zone: currentTimeZone})
       .then((response) => {
         console.log(response.data)
+        console.log(currentTimeZone)
         navigate("/")
       })
       .catch((err) => {

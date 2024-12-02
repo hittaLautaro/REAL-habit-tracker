@@ -34,10 +34,6 @@ public class Habit {
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "category_id")
-//    private Category category; // Optional
-
     @NotBlank
     @NotNull
     private String name;
@@ -46,7 +42,13 @@ public class Habit {
     private Integer frequency;
 
     @NotNull
-    private Integer timesDone;
+    private Integer timesDone = 0;
+
+    @NotNull
+    private Integer totalTimesDone = 0;
+
+    @NotNull
+    private Integer streak = 0;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -57,8 +59,12 @@ public class Habit {
     private LocalDateTime lastModifiedDate;
 
     @NotNull
-    private boolean isCompleted;
+    private boolean isCompleted = false;
 
     @NotNull
     private Integer position;
+
+    public boolean isFullyCompleted() {
+        return this.timesDone >= this.frequency;
+    }
 }

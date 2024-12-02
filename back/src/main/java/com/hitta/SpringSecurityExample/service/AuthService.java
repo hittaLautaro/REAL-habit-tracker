@@ -39,11 +39,14 @@ public class AuthService {
 
         var user = Users.builder()
                 .email(request.getEmail())
-                  .password(encoder.encode(request.getPassword()))
+                .password(encoder.encode(request.getPassword()))
                 .dateOfBirth(request.getDateOfBirth())
+                .time_zone(request.getTime_zone())
                 .accountLocked(false)
                 .enabled(true)
                 .createdDate(LocalDateTime.now())
+                .time_zone(request.getTime_zone())
+                .nextReset(LocalDateTime.now())
                 .build();
 
         userRepo.save(user);
@@ -64,6 +67,12 @@ public class AuthService {
                                 (request.getEmail(), request.getPassword()));
 
         var user = (Users) authentication.getPrincipal();
+
+        System.out.println(request.getTime_zone());
+
+        user.setTime_zone(request.getTime_zone());
+
+        userRepo.save(user);
 
         String accessToken = jwtService.generateAccessToken(request.getEmail());
         String refreshToken = createOrUpdateRefreshToken(user);

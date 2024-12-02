@@ -1,6 +1,9 @@
 spring:
+    task:
+        scheduling:
+            enabled: true
     application:
-      name: SpringSecurityExample
+        name: SpringSecurityExample
     datasource:
         url: jdbc:postgresql://localhost:5432/realtrackerdb
         username: postgres

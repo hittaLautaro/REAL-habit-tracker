@@ -3,6 +3,7 @@ package com.hitta.SpringSecurityExample.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -38,24 +39,23 @@ public class Users implements UserDetails, Principal {
     private LocalDate dateOfBirth;
     private boolean accountLocked;
     private boolean enabled;
-
+    @NotNull
+    private Integer streak;
+    @NotNull
+    private String time_zone;
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
-
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModifiedDate;
-
     @JsonManagedReference
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Token token;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Habit> habits;
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Category> categories;
+    @Column(name = "next_reset", nullable = false)
+    private LocalDateTime nextReset;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,12 +82,8 @@ public class Users implements UserDetails, Principal {
         return true;
     }
 
-
     @Override
     public String getName() {
         return email;
     }
-
-
-
 }

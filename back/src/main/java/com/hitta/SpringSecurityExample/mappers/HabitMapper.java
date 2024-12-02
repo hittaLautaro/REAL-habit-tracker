@@ -36,6 +36,8 @@ public class HabitMapper {
                 .timesDone(0)
                 .position(0)
                 .user(user)
+                .totalTimesDone(0)
+                .streak(0)
                 .build();
 
     }

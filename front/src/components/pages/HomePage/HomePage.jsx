@@ -57,35 +57,47 @@ const HomePage = () => {
 
   return (
     
+
     <div>
       <Header />
-      <div className="d-flex align-items-center">
-        <h1 className='m-4'>Todo habits</h1>
-        <HabitModal fetchHabits={fetchHabits}/>
-        {/* <button type="button" className="btn btn-dark m-2" onClick={handleAddHabit}>Add</button> */}
-        <button type="button" className="btn btn-dark m-2" onClick={handleRemoveAllHabits}> Delete all </button>
+      <div className='container-fluid'>
+          <div className='row'>
+            <div className='col-sm'>
+              <div className="d-flex align-items-center">
+                <h1 className='m-4'>Todo habits</h1>
+                <HabitModal fetchHabits={fetchHabits}/>
+                {/* <button type="button" className="btn btn-dark m-2" onClick={handleAddHabit}>Add</button> */}
+                <button type="button" className="btn btn-dark m-2" onClick={handleRemoveAllHabits}> Delete all </button>
+              </div>
+                { uncompleted.length <= 0 ? <p className='m-5'> You've finished for today! </p> : 
+                  <div className="habit-list">
+                    {uncompleted.map((habit) => (
+                      <div key={habit.id} >
+                        <Habit habit={habit} fetchHabits={fetchHabits}/>
+                      </div>
+                    ))} 
+                  </div>
+                }
+            </div>
+            <div className='col-sm'>
+              <div className="d-flex align-items-center">
+              <h1 className='m-4'>Finished</h1>
+              </div>
+              { completed.length <= 0 ? <p className='m-5'> You have no completed habits. </p> : 
+                <div className="habit-list">
+                  
+                  {completed.map((habit) => (
+                    <div key={habit.id} >
+                      <Habit habit={habit} fetchHabits={fetchHabits}/>
+                    </div>
+                  ))} 
+                </div>
+              
+              }
+              
+            </div>
+          </div>
       </div>
-        { uncompleted.length <= 0 ? <p className='m-5'> You've finished for today! </p> : 
-          <div className="habit-list">
-            {uncompleted.map((habit) => (
-              <div key={habit.id} >
-                <Habit habit={habit} fetchHabits={fetchHabits}/>
-              </div>
-            ))} 
-          </div>
-        }
-
-        <h1 className='m-4'>Finished</h1>
-        { completed.length <= 0 ? <p className='m-5'> You have no completed habits. </p> : 
-          <div className="habit-list">
-            
-            {completed.map((habit) => (
-              <div key={habit.id} >
-                <Habit habit={habit} fetchHabits={fetchHabits}/>
-              </div>
-            ))} 
-          </div>
-        }
     </div>
 
     

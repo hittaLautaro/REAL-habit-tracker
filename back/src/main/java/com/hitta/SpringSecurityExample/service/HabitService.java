@@ -7,9 +7,13 @@ import com.hitta.SpringSecurityExample.mappers.HabitMapper;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
+import com.hitta.SpringSecurityExample.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -20,7 +24,6 @@ public class HabitService {
 
     @Autowired
     private HabitMapper habitMapper;
-
 
     public List<HabitResponse> getAllHabitsByUserId(Integer userId){
         List<Habit> habits = habitRepo.findAllByUserId(userId);
@@ -52,7 +55,6 @@ public class HabitService {
             habit.setCompleted(request.getIsCompleted());
         }
 
-
         habit = habitRepo.save(habit);
 
         return habitMapper.habitToResponse(habit);
@@ -70,15 +72,12 @@ public class HabitService {
         habitRepo.deleteById(id);
     }
 
-//    public void updateHabitsOrder(List<HabitUpdateRequest> habitUpdateRequests) {
-//        habitUpdateRequests.forEach(habitRequest -> {
-//            Habit habit = habitRepo.findById(habitRequest.getId()).orElseThrow();
-//            habit.setPosition(habitRequest.getPosition());
-//            habitRepo.save(habit);
-//        });
-//    }
-
     public void deleteAll(Integer userId) {
         habitRepo.deleteAllByUserId(userId);
     }
+
+    public boolean checkHabitCompletion(Habit habit){
+        return habit.isCompleted();
+    }
+
 }
