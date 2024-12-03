@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import HabitService from "../../utils/habitService.js";
 import Header from "../../Global/Header.jsx";
 import Swal from "sweetalert2";
-import Habit from "./Habit.jsx";
+import HabitList from "./HabitList.jsx";
 import AddHabitModal from "./AddHabitModal.jsx";
 
 import "bootstrap";
@@ -11,7 +11,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DaySelector from "./DaySelector.jsx";
 
 const HomePage = () => {
-  const getCurrentDay = () => {
+  const isCurrentDate = (day) => {
     const days = [
       "SUNDAY",
       "MONDAY",
@@ -21,13 +21,16 @@ const HomePage = () => {
       "FRIDAY",
       "SATURDAY",
     ];
-    return days[new Date().getDay()];
+    return days[new Date().getDay()] === day;
   };
 
   const [habits, setHabits] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [uncompleted, setUncompleted] = useState([]);
-  const [selectedDay, setSelectedDay] = useState(getCurrentDay());
+  const [selectedDay, setSelectedDay] = useState("");
+  const [todayIsSelected, setTodayIsSelected] = useState(true);
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   const handleRemoveAllHabits = () => {
@@ -55,16 +58,21 @@ const HomePage = () => {
   };
 
   const fetchHabits = async () => {
+    setLoading(true);
     try {
       const response = await HabitService.getAll();
       setHabits(response.data);
     } catch (error) {
       console.error("Error fetching habits:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const changeHabits = (day) => {
+    if (day === selectedDay) return;
     setSelectedDay(day);
+    setTodayIsSelected(day);
   };
 
   useEffect(() => {
@@ -72,11 +80,14 @@ const HomePage = () => {
   }, [navigate]);
 
   useEffect(() => {
+    setLoading(true);
     const filteredHabits = habits.filter((habit) =>
       habit.activeDays.includes(selectedDay)
     );
     setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
     setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
+    setTodayIsSelected(isCurrentDate(selectedDay));
+    setLoading(false);
   }, [habits, selectedDay]);
 
   return (
@@ -97,32 +108,28 @@ const HomePage = () => {
                 Delete all
               </button>
             </div>
-            {uncompleted.length <= 0 ? (
-              <p className="m-5">You've finished for today!</p>
+            {loading ? (
+              <p> Loading...</p>
             ) : (
-              <div className="habit-list">
-                {uncompleted.map((habit) => (
-                  <div key={habit.id}>
-                    <Habit habit={habit} fetchHabits={fetchHabits} />
-                  </div>
-                ))}
-              </div>
+              <HabitList
+                todays={todayIsSelected}
+                habits={uncompleted}
+                fetchHabits={fetchHabits}
+              />
             )}
           </div>
           <div className="col-sm">
             <div className="d-flex align-items-center">
               <h1 className="m-4">Finished</h1>
             </div>
-            {completed.length <= 0 ? (
-              <p className="m-5">You have no completed habits.</p>
+            {loading ? (
+              <p> Loading...</p>
             ) : (
-              <div className="habit-list">
-                {completed.map((habit) => (
-                  <div key={habit.id}>
-                    <Habit habit={habit} fetchHabits={fetchHabits} />
-                  </div>
-                ))}
-              </div>
+              <HabitList
+                todays={todayIsSelected}
+                habits={completed}
+                fetchHabits={fetchHabits}
+              />
             )}
           </div>
         </div>

@@ -3,7 +3,7 @@ import HabitService from "../../utils/habitService";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "./UpdateHabitModal.jsx";
 
-const Habit = ({ habit, fetchHabits }) => {
+const Habit = ({ todays, habit, fetchHabits }) => {
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -37,7 +37,16 @@ const Habit = ({ habit, fetchHabits }) => {
     });
   };
 
-  return (
+  return !todays ? (
+    <div className="border border-dark mx-5 my-3 habit-item">
+      <div className="m-4">
+        <p> {habit.id} </p>
+        <h4> {habit.name} </h4>
+        <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
+        <p> {habit.activeDays.toString()} </p>
+      </div>
+    </div>
+  ) : (
     <div className="border border-dark mx-5 my-3 habit-item">
       <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
       <button type="button" className="btn btn-dark m-2" onClick={handleDelete}>
