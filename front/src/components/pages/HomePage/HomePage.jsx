@@ -68,7 +68,7 @@ const HomePage = () => {
       <Header />
       <div className="container-fluid">
         <DaySelector changeHabits={changeHabits} />
-        <div className="row">
+        <div className="mx-5 row">
           <div className="col-sm">
             <div className="d-flex align-items-center">
               <h1 className="m-4">Todo habits</h1>

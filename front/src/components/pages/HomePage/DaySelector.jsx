@@ -23,9 +23,7 @@ const DaySelector = ({ changeHabits }) => {
         <button
           key={day}
           className={`mx-2 btn rounded-circle fw-bold ${
-            selectedDay === index
-              ? "btn-dark text-white"
-              : "btn-light text-black"
+            selectedDay === index ? "text-white" : "btn-light text-black"
           }`}
           style={{ width: "60px", height: "60px", fontSize: "24px" }}
           onClick={() => handleClick(index, day.toUpperCase())}

@@ -54,6 +54,7 @@ const Habit = ({ habit, fetchHabits }) => {
         <p> {habit.id} </p>
         <h4> {habit.name} </h4>
         <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
+        <p> {habit.activeDays.toString()} </p>
       </div>
     </div>
   );
