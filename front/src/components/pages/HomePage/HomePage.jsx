@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserService from "../../utils/authService.js";
 import HabitService from "../../utils/habitService.js";
 import Header from "../../Global/Header.jsx";
 import Swal from "sweetalert2";
@@ -9,13 +8,26 @@ import AddHabitModal from "./AddHabitModal.jsx";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button } from "react-bootstrap";
 import DaySelector from "./DaySelector.jsx";
 
 const HomePage = () => {
+  const getCurrentDay = () => {
+    const days = [
+      "SUNDAY",
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+    ];
+    return days[new Date().getDay()];
+  };
+
   const [habits, setHabits] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [uncompleted, setUncompleted] = useState([]);
+  const [selectedDay, setSelectedDay] = useState(getCurrentDay());
   const navigate = useNavigate();
 
   const handleRemoveAllHabits = () => {
@@ -28,9 +40,8 @@ const HomePage = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
       preConfirm: async () => {
-        HabitService.deleteAll().then(() => {
-          fetchHabits();
-        });
+        await HabitService.deleteAll();
+        fetchHabits();
       },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -44,24 +55,29 @@ const HomePage = () => {
   };
 
   const fetchHabits = async () => {
-    await HabitService.getAll().then((response) => {
+    try {
+      const response = await HabitService.getAll();
       setHabits(response.data);
-      setCompleted(response.data.filter((habit) => habit.isCompleted));
-      setUncompleted(response.data.filter((habit) => !habit.isCompleted));
-    });
+    } catch (error) {
+      console.error("Error fetching habits:", error);
+    }
   };
 
-  const changeHabits = (selectedDay) => {
-    const filteredHabits = habits.filter((habit) =>
-      habit.activeDays.includes(selectedDay)
-    );
-    setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
-    setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
+  const changeHabits = (day) => {
+    setSelectedDay(day);
   };
 
   useEffect(() => {
     fetchHabits();
   }, [navigate]);
+
+  useEffect(() => {
+    const filteredHabits = habits.filter((habit) =>
+      habit.activeDays.includes(selectedDay)
+    );
+    setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
+    setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
+  }, [habits, selectedDay]);
 
   return (
     <div>
