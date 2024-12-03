@@ -39,6 +39,7 @@ const Habit = ({ todays, habit, fetchHabits }) => {
 
   return !todays ? (
     <div className="border border-dark mx-5 my-3 habit-item">
+      <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
       <div className="m-4">
         <p> {habit.id} </p>
         <h4> {habit.name} </h4>
