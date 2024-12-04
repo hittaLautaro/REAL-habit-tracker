@@ -37,37 +37,45 @@ const Habit = ({ todays, habit, fetchHabits }) => {
     });
   };
 
-  return !todays ? (
-    <div className="border border-dark mx-5 my-3 habit-item">
-      <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
-      <div className="m-4">
-        <p> {habit.id} </p>
-        <h4> {habit.name} </h4>
-        <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
-        <p> {habit.activeDays.toString()} </p>
+  if (todays) {
+    return (
+      <div className="border border-dark mx-5 my-3 habit-item">
+        <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
+        <button
+          type="button"
+          className="btn btn-dark m-2"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
+        <button
+          type="button"
+          className="btn btn-dark m-2"
+          onClick={handleComplete}
+        >
+          Check
+        </button>
+        <div className="m-4">
+          <p> {habit.id} </p>
+          <h4> {habit.name} </h4>
+          <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
+          <p> {habit.activeDays.toString()} </p>
+        </div>
       </div>
-    </div>
-  ) : (
-    <div className="border border-dark mx-5 my-3 habit-item">
-      <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
-      <button type="button" className="btn btn-dark m-2" onClick={handleDelete}>
-        Delete
-      </button>
-      <button
-        type="button"
-        className="btn btn-dark m-2"
-        onClick={handleComplete}
-      >
-        Check
-      </button>
-      <div className="m-4">
-        <p> {habit.id} </p>
-        <h4> {habit.name} </h4>
-        <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
-        <p> {habit.activeDays.toString()} </p>
+    );
+  } else {
+    return (
+      <div className="border border-dark mx-5 my-3 habit-item">
+        <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
+        <div className="m-4">
+          <p> {habit.id} </p>
+          <h4> {habit.name} </h4>
+          <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
+          <p> {habit.activeDays.toString()} </p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Habit;

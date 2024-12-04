@@ -11,7 +11,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DaySelector from "./DaySelector.jsx";
 
 const HomePage = () => {
-  const isCurrentDate = (day) => {
+  const getToday = () => {
     const days = [
       "SUNDAY",
       "MONDAY",
@@ -21,14 +21,13 @@ const HomePage = () => {
       "FRIDAY",
       "SATURDAY",
     ];
-    return days[new Date().getDay()] === day;
+    return days[new Date().getDay()];
   };
 
   const [habits, setHabits] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [uncompleted, setUncompleted] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
-  const [todayIsSelected, setTodayIsSelected] = useState(true);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -58,8 +57,8 @@ const HomePage = () => {
   };
 
   const fetchHabits = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const response = await HabitService.getAll();
       setHabits(response.data);
     } catch (error) {
@@ -72,7 +71,6 @@ const HomePage = () => {
   const changeHabits = (day) => {
     if (day === selectedDay) return;
     setSelectedDay(day);
-    setTodayIsSelected(day);
   };
 
   useEffect(() => {
@@ -80,14 +78,11 @@ const HomePage = () => {
   }, [navigate]);
 
   useEffect(() => {
-    setLoading(true);
     const filteredHabits = habits.filter((habit) =>
       habit.activeDays.includes(selectedDay)
     );
     setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
     setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
-    setTodayIsSelected(isCurrentDate(selectedDay));
-    setLoading(false);
   }, [habits, selectedDay]);
 
   return (
@@ -112,7 +107,7 @@ const HomePage = () => {
               <p> Loading...</p>
             ) : (
               <HabitList
-                todays={todayIsSelected}
+                todays={selectedDay}
                 habits={uncompleted}
                 fetchHabits={fetchHabits}
               />
@@ -126,7 +121,7 @@ const HomePage = () => {
               <p> Loading...</p>
             ) : (
               <HabitList
-                todays={todayIsSelected}
+                todays={selectedDay}
                 habits={completed}
                 fetchHabits={fetchHabits}
               />

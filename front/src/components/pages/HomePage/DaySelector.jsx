@@ -3,16 +3,17 @@ import { useState, useEffect } from "react";
 
 const DaySelector = ({ changeHabits }) => {
   // Function to get current day index
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
   const getCurrentDayIndex = () => {
-    const days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
     return new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
   };
 
@@ -20,15 +21,6 @@ const DaySelector = ({ changeHabits }) => {
 
   // Use effect to trigger changeHabits with initial day
   useEffect(() => {
-    const days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
     changeHabits(days[selectedDay].toUpperCase());
   }, []);
 
@@ -39,15 +31,7 @@ const DaySelector = ({ changeHabits }) => {
 
   return (
     <div className="m-5 d-flex justify-content-center">
-      {[
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ].map((day, index) => (
+      {days.map((day, index) => (
         <button
           key={day}
           className={`mx-2 btn rounded-circle fw-bold ${
