@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import UserService from "../utils/authService";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -24,9 +24,7 @@ const LoginPage = () => {
       password: password,
       time_zone: currentTimeZone,
     })
-      .then((response) => {
-        console.log(response.data);
-        console.log(currentTimeZone);
+      .then(() => {
         navigate("/");
       })
       .catch((err) => {
