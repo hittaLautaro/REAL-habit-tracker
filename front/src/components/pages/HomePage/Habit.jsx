@@ -38,19 +38,14 @@ const Habit = ({ habit, fetchHabits }) => {
   };
 
   return (
-    <div className="border border-dark rounded bg-dark text-light m-3 p-3 d-flex justify-content-between align-items-center">
-      {/* Habit Information Section */}
+    <div className="border border-dark rounded bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
       <div>
         <p className="m-0">ID: {habit.id}</p>
         <h4 className="m-0">{habit.name}</h4>
-        <p className="m-0">{habit.isCompleted ? "Completed" : "Uncompleted"}</p>
-        <p className="m-0">
-          {habit.activeDays.join(", ").replace(/,([^,]*)$/, " &$1")}{" "}
-          {/* Format as Monday, Wednesday & Friday */}
-        </p>
+        <p className="m-0">{habit.isCompleted ? "✔️" : "❌"}</p>
+        <p className="m-0">{habit.activeDays.toString()}</p>
       </div>
 
-      {/* Buttons Section */}
       <div className="text-end">
         <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
         <button

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import UserService from "../utils/authService";
+import UserService from "../../utils/authService";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import "../../global/styles.css";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -50,8 +52,8 @@ const RegisterPage = () => {
   return (
     <div className="d-flex flex-column align-items-center justify-content-center my-5">
       <div className="text-center mb-4 my-5">
-        <h1 className="display-3">Real.</h1>
-        <h1 className="h3">Habits & tasks tracker</h1>
+        <h1 className="custom-font fs-big">real.</h1>
+        <h3 className="custom-font">Simple & customizable habit tracker!</h3>
       </div>
       <div
         className="container d-flex justify-content-center align-items-center"

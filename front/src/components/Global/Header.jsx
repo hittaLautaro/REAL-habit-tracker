@@ -3,6 +3,8 @@ import "./Header.css";
 import UserService from "../utils/authService";
 import Swal from "sweetalert2";
 
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -27,10 +29,10 @@ const Header = () => {
   return (
     <nav className="navbar">
       <NavLink className="title" to="/">
-        <h2>Real</h2>
+        <h2>real.</h2>
       </NavLink>
-      <button type="button" className="btn btn-dark m-2" onClick={handleLogout}>
-        Logout
+      <button className="logout-btn" aria-label="Logout" onClick={handleLogout}>
+        <i className="bi bi-box-arrow-right"></i>
       </button>
     </nav>
   );

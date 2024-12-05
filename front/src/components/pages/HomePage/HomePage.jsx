@@ -82,11 +82,11 @@ const HomePage = () => {
   }, [habits]);
 
   return (
-    <div>
+    <div className="bg-black">
       <Header />
       <div className="container-fluid">
-        <div className="mx-5 row">
-          <div className="col-sm">
+        <div className="mx-5 row ">
+          <div className="col-sm border border-dark m-3">
             <div className="d-flex align-items-center">
               <h1 className="m-4">Todo habits</h1>
               <AddHabitModal fetchHabits={fetchHabits} />
@@ -99,17 +99,17 @@ const HomePage = () => {
               </button>
             </div>
             {loading ? (
-              <p> Loading...</p>
+              <p className="m-5"> Loading...</p>
             ) : (
               <HabitList habits={uncompleted} fetchHabits={fetchHabits} />
             )}
           </div>
-          <div className="col-sm">
+          <div className="col-sm border border-dark m-3">
             <div className="d-flex align-items-center">
               <h1 className="m-4">Finished</h1>
             </div>
             {loading ? (
-              <p> Loading...</p>
+              <p className="m-5"> Loading...</p>
             ) : (
               <HabitList habits={completed} fetchHabits={fetchHabits} />
             )}

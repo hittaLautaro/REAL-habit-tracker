@@ -10,7 +10,7 @@
   left: 0;
   width: 100%;
   padding: 20px 100px;
-  background: rgb(33, 33, 33);
+  background: rgb(194, 32, 32);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +33,7 @@
 }
 
 .main-app {
-  background-color: #0a0a0a; /* Dark background color */
+  background-color: #000000; /* Dark background color */
   color: #fff; /* Optional: Set text color to white to contrast */
   margin: 0;
   padding: 0;
