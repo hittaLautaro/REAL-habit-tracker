@@ -12,7 +12,6 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [error, setError] = useState("");
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -32,10 +31,8 @@ const RegisterPage = () => {
     })
       .then((response) => {
         if (response.status === 200) {
-          TokenService.setToken(response.data.accessToken);
           navigate("/auth/login");
         }
-
         setEmail("");
         setPassword("");
         setDateOfBirth("");
