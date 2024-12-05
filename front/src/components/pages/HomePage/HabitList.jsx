@@ -1,10 +1,7 @@
 import React from "react";
 import Habit from "./Habit";
 
-const HabitList = ({ todays, habits, fetchHabits }) => {
-  console.log(todays);
-  console.log(habits);
-
+const HabitList = ({ isToday, selectedDay, habits, fetchHabits }) => {
   if (!habits || habits.length <= 0) {
     return <p className="m-5"> No habits here. </p>;
   }
@@ -12,8 +9,8 @@ const HabitList = ({ todays, habits, fetchHabits }) => {
     <div className="">
       {habits.map((habit) => (
         <div key={habit.id}>
-          {habit.activeDays.includes(todays) && (
-            <Habit todays={todays} habit={habit} fetchHabits={fetchHabits} />
+          {habit.activeDays.includes(selectedDay) && (
+            <Habit isToday={isToday} habit={habit} fetchHabits={fetchHabits} />
           )}
         </div>
       ))}

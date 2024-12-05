@@ -19,7 +19,6 @@ const DaySelector = ({ changeHabits }) => {
 
   const [selectedDay, setSelectedDay] = useState(getCurrentDayIndex());
 
-  // Use effect to trigger changeHabits with initial day
   useEffect(() => {
     changeHabits(days[selectedDay].toUpperCase());
   }, []);

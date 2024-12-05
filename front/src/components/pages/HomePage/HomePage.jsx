@@ -11,17 +11,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DaySelector from "./DaySelector.jsx";
 
 const HomePage = () => {
+  const days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
   const getToday = () => {
-    const days = [
-      "SUNDAY",
-      "MONDAY",
-      "TUESDAY",
-      "WEDNESDAY",
-      "THURSDAY",
-      "FRIDAY",
-      "SATURDAY",
-    ];
-    return days[new Date().getDay()];
+    return days[
+      new Date().getDay() === 0 ? 6 : new Date().getDay() - 1
+    ].toUpperCase();
   };
 
   const [habits, setHabits] = useState([]);
@@ -107,7 +110,8 @@ const HomePage = () => {
               <p> Loading...</p>
             ) : (
               <HabitList
-                todays={selectedDay}
+                isToday={selectedDay === getToday()}
+                selectedDay={selectedDay}
                 habits={uncompleted}
                 fetchHabits={fetchHabits}
               />
@@ -121,7 +125,7 @@ const HomePage = () => {
               <p> Loading...</p>
             ) : (
               <HabitList
-                todays={selectedDay}
+                isToday={selectedDay === getToday()}
                 habits={completed}
                 fetchHabits={fetchHabits}
               />
