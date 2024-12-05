@@ -63,7 +63,7 @@ const AllHabitsPage = () => {
     try {
       setLoading(true);
       const response = await HabitService.getAll();
-      setHabits(response.data);
+      setHabits(response.data.reverse());
     } catch (error) {
       console.error("Error fetching habits:", error);
     } finally {

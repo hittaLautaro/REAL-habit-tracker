@@ -22,7 +22,7 @@ public class HabitService {
     private HabitMapper habitMapper;
 
     public List<HabitResponse> getAllHabitsByUserId(Integer userId){
-        List<Habit> habits = habitRepo.findAllByUserId(userId);
+        List<Habit> habits = habitRepo.findAllByUserIdOrderByLastModifiedDate(userId);
 
         return habitMapper.habitsToResponses(habits);
     }

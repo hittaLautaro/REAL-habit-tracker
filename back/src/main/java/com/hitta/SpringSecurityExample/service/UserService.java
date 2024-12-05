@@ -53,7 +53,7 @@ public class UserService {
 
     // DAILY RESET
     private void resetUserHabits(Users user) {
-        List<Habit> userHabits = habitRepo.findAllByUserId(user.getId());
+        List<Habit> userHabits = habitRepo.findAllByUserIdOrderByLastModifiedDate(user.getId());
 
         boolean allCompleted = true;
 

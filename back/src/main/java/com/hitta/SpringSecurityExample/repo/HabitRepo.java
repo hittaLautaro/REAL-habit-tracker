@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface HabitRepo extends JpaRepository<Habit, Integer> {
-    List<Habit> findAllByUserId(int userId);
+    List<Habit> findAllByUserIdOrderByLastModifiedDate(int userId);
 
     void deleteAllByUserId(int userId);
 }
