@@ -3,7 +3,7 @@ import HabitService from "../../utils/habitService";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "./UpdateHabitModal.jsx";
 
-const Habit = ({ isToday, habit, fetchHabits }) => {
+const Habit = ({ habit, fetchHabits }) => {
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -37,47 +37,39 @@ const Habit = ({ isToday, habit, fetchHabits }) => {
     });
   };
 
-  if (isToday) {
-    console.log({ isToday });
-    return (
-      <div className="border border-dark mx-5 my-3 habit-item">
+  return (
+    <div className="border border-dark rounded bg-dark text-light m-3 p-3 d-flex justify-content-between align-items-center">
+      {/* Habit Information Section */}
+      <div>
+        <p className="m-0">ID: {habit.id}</p>
+        <h4 className="m-0">{habit.name}</h4>
+        <p className="m-0">{habit.isCompleted ? "Completed" : "Uncompleted"}</p>
+        <p className="m-0">
+          {habit.activeDays.join(", ").replace(/,([^,]*)$/, " &$1")}{" "}
+          {/* Format as Monday, Wednesday & Friday */}
+        </p>
+      </div>
+
+      {/* Buttons Section */}
+      <div className="text-end">
         <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
         <button
           type="button"
-          className="btn btn-dark m-2"
+          className="btn btn-outline-light mx-1"
           onClick={handleDelete}
         >
           Delete
         </button>
         <button
           type="button"
-          className="btn btn-dark m-2"
+          className="btn btn-outline-light mx-1"
           onClick={handleComplete}
         >
           Check
         </button>
-        <div className="m-4">
-          <p> {habit.id} </p>
-          <h4> {habit.name} </h4>
-          <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
-          <p> {habit.activeDays.toString()} </p>
-        </div>
       </div>
-    );
-  } else {
-    console.log({ isToday });
-    return (
-      <div className="border border-dark mx-5 my-3 habit-item">
-        <UpdateHabitModal habit={habit} fetchHabits={fetchHabits} />
-        <div className="m-4">
-          <p> {habit.id} </p>
-          <h4> {habit.name} </h4>
-          <p> {habit.isCompleted ? "Completed" : "Uncompleted"} </p>
-          <p> {habit.activeDays.toString()} </p>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default Habit;

@@ -8,7 +8,6 @@ import AddHabitModal from "./AddHabitModal.jsx";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import DaySelector from "./DaySelector.jsx";
 
 const HomePage = () => {
   const days = [
@@ -30,7 +29,6 @@ const HomePage = () => {
   const [habits, setHabits] = useState([]);
   const [completed, setCompleted] = useState([]);
   const [uncompleted, setUncompleted] = useState([]);
-  const [selectedDay, setSelectedDay] = useState("");
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -71,28 +69,22 @@ const HomePage = () => {
     }
   };
 
-  const changeHabits = (day) => {
-    if (day === selectedDay) return;
-    setSelectedDay(day);
-  };
-
   useEffect(() => {
     fetchHabits();
   }, [navigate]);
 
   useEffect(() => {
     const filteredHabits = habits.filter((habit) =>
-      habit.activeDays.includes(selectedDay)
+      habit.activeDays.includes(getToday())
     );
     setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
     setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
-  }, [habits, selectedDay]);
+  }, [habits]);
 
   return (
     <div>
       <Header />
       <div className="container-fluid">
-        <DaySelector changeHabits={changeHabits} />
         <div className="mx-5 row">
           <div className="col-sm">
             <div className="d-flex align-items-center">
@@ -109,12 +101,7 @@ const HomePage = () => {
             {loading ? (
               <p> Loading...</p>
             ) : (
-              <HabitList
-                isToday={selectedDay === getToday()}
-                selectedDay={selectedDay}
-                habits={uncompleted}
-                fetchHabits={fetchHabits}
-              />
+              <HabitList habits={uncompleted} fetchHabits={fetchHabits} />
             )}
           </div>
           <div className="col-sm">
@@ -124,11 +111,7 @@ const HomePage = () => {
             {loading ? (
               <p> Loading...</p>
             ) : (
-              <HabitList
-                isToday={selectedDay === getToday()}
-                habits={completed}
-                fetchHabits={fetchHabits}
-              />
+              <HabitList habits={completed} fetchHabits={fetchHabits} />
             )}
           </div>
         </div>
