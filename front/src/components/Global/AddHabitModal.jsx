@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import HabitService from "../../utils/habitService";
+import HabitService from "../utils/habitService";
 
 function AddHabitModal({ fetchHabits }) {
   const [show, setShow] = useState(false);
@@ -43,8 +43,8 @@ function AddHabitModal({ fetchHabits }) {
 
   return (
     <>
-      <Button variant="btn btn-dark" onClick={handleShow}>
-        Add New Habit
+      <Button variant="btn btn-outline-light" onClick={handleShow}>
+        <i className="bi bi-plus-circle"></i>
       </Button>
 
       <Modal

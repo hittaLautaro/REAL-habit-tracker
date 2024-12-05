@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HabitService from "../../utils/habitService";
 import Swal from "sweetalert2";
-import UpdateHabitModal from "../../global/UpdateHabitModal.jsx";
+import UpdateHabitModal from "../../global/UpdateHabitModal";
 
 import "../../global/styles.css";
 
@@ -30,14 +30,6 @@ const Habit = ({ habit, fetchHabits }) => {
           icon: "success",
         });
       }
-    });
-  };
-
-  const handleComplete = async () => {
-    await HabitService.update(habit.id, {
-      isCompleted: habit.isCompleted == null ? true : !habit.isCompleted,
-    }).then(() => {
-      fetchHabits();
     });
   };
 
@@ -82,14 +74,6 @@ const Habit = ({ habit, fetchHabits }) => {
               onClick={handleDelete}
             >
               Delete
-            </button>
-          </li>
-          <li>
-            <button
-              className="dropdown-item custom-font"
-              onClick={handleComplete}
-            >
-              {habit.isCompleted ? "Uncheck" : "Check"}
             </button>
           </li>
         </ul>

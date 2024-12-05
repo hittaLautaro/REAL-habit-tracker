@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+import "../global/styles.css";
+
 const Header = () => {
   const navigate = useNavigate();
 
@@ -28,12 +30,33 @@ const Header = () => {
 
   return (
     <nav className="navbar">
-      <NavLink className="title" to="/">
-        <h2>real.</h2>
-      </NavLink>
-      <button className="logout-btn" aria-label="Logout" onClick={handleLogout}>
-        <i className="bi bi-box-arrow-right"></i>
-      </button>
+      <div className="navbar-content">
+        <NavLink className="title" to="/">
+          <h2>real.</h2>
+        </NavLink>
+
+        {/* Centered Links */}
+        <div className="navbar-links">
+          <NavLink to="/" className="nav-link text-light mx-3 custom-font">
+            to-do
+          </NavLink>
+          <NavLink
+            to="/habits"
+            className="nav-link text-light mx-3 custom-font"
+          >
+            my habits
+          </NavLink>
+        </div>
+
+        {/* Logout Button */}
+        <button
+          className="logout-btn"
+          aria-label="Logout"
+          onClick={handleLogout}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
     </nav>
   );
 };

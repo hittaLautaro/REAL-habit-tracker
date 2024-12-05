@@ -8,6 +8,13 @@ nav {
   border-bottom: 0.5px solid #313131;
 }
 
+.navbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .title {
   font-size: 1.5rem;
   font-family: "IBM Plex Mono", monospace;
@@ -23,6 +30,23 @@ nav {
 
 .title:hover {
   color: #b1b1b1;
+}
+
+/* Center the navbar links */
+.navbar-links {
+  display: flex;
+  justify-content: center;
+  flex: 1; /* Allow the navbar links to take available space */
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #b1b1b1;
+  text-decoration: underline;
 }
 
 .logout-btn {

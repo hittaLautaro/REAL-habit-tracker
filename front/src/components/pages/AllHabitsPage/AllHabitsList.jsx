@@ -1,9 +1,9 @@
 import React from "react";
-import Habit from "./Habit";
+import Habit from "../../pages/AllHabitsPage/Habit";
 
 import "../../global/styles.css";
 
-const HabitList = ({ habits, fetchHabits }) => {
+const AllHabitsList = ({ habits, fetchHabits }) => {
   if (!habits || habits.length <= 0) {
     return <p className="m-4 custom-font"> No habits here. </p>;
   }
@@ -18,4 +18,4 @@ const HabitList = ({ habits, fetchHabits }) => {
   );
 };
 
-export default HabitList;
+export default AllHabitsList;

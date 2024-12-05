@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import HabitService from "../../utils/habitService.js";
 import Header from "../../Global/Header.jsx";
 import Swal from "sweetalert2";
-import HabitList from "./HabitList.jsx";
 import AddHabitModal from "../../global/AddHabitModal.jsx";
+import AllHabitsList from "./AllHabitsList.jsx";
 
 import "../../global/styles.css";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const HomePage = () => {
+const AllHabitsPage = () => {
   const days = [
     "Monday",
     "Tuesday",
@@ -38,12 +38,12 @@ const HomePage = () => {
   const handleRemoveAllHabits = () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "This will delete all your habits!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Delete",
       preConfirm: async () => {
         await HabitService.deleteAll();
         fetchHabits();
@@ -90,7 +90,7 @@ const HomePage = () => {
         <div className="mx-5 row ">
           <div className="col-sm border border-dark m-3">
             <div className="d-flex align-items-center">
-              <h3 className="m-4 custom-font">to-do</h3>
+              <h3 className="m-4 custom-font">my habits</h3>
               <AddHabitModal fetchHabits={fetchHabits} />
               <button
                 type="button"
@@ -103,17 +103,7 @@ const HomePage = () => {
             {loading ? (
               <p className="m-5 custom-font"> loading...</p>
             ) : (
-              <HabitList habits={uncompleted} fetchHabits={fetchHabits} />
-            )}
-          </div>
-          <div className="col-sm border border-dark m-3">
-            <div className="d-flex align-items-center">
-              <h3 className="m-4 custom-font">finished</h3>
-            </div>
-            {loading ? (
-              <p className="m-5 custom-font"> loading...</p>
-            ) : (
-              <HabitList habits={completed} fetchHabits={fetchHabits} />
+              <AllHabitsList habits={habits} fetchHabits={fetchHabits} />
             )}
           </div>
         </div>
@@ -122,4 +112,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default AllHabitsPage;
