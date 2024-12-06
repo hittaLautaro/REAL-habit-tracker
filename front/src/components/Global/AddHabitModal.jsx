@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import HabitService from "../utils/habitService";
 
-function AddHabitModal({ fetchHabits }) {
+import { HabitContext } from "../contexts/HabitContext";
+
+function AddHabitModal() {
+  const { addHabit } = useContext(HabitContext);
+
   const [show, setShow] = useState(false);
   const [habitName, setHabitName] = useState("");
   const [habitFrequency, setHabitFrequency] = useState("");
@@ -27,16 +30,15 @@ function AddHabitModal({ fetchHabits }) {
       return;
     }
 
-    HabitService.save({
+    addHabit({
       name: habitName,
       frequency: habitFrequency,
       activeDays: selectedDays,
-    }).then(() => {
-      setHabitName("");
-      setHabitFrequency("");
-      setSelectedDays([]);
-      fetchHabits();
     });
+
+    setHabitName("");
+    setHabitFrequency("");
+    setSelectedDays([]);
 
     handleClose();
   };

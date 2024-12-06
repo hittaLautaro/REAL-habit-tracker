@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import HabitService from "../../utils/habitService.js";
-import Header from "../../Global/Header.jsx";
+import Header from "../../global/Header.jsx";
 import Swal from "sweetalert2";
 import AddHabitModal from "../../global/AddHabitModal.jsx";
 import AllHabitsList from "./AllHabitsList.jsx";
+
+import { HabitContext } from "../../contexts/HabitContext";
 
 import "../../global/styles.css";
 
@@ -12,26 +14,8 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllHabitsPage = () => {
-  const days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-
-  const getToday = () => {
-    return days[
-      new Date().getDay() === 0 ? 6 : new Date().getDay() - 1
-    ].toUpperCase();
-  };
-
-  const [habits, setHabits] = useState([]);
-  const [completed, setCompleted] = useState([]);
-  const [uncompleted, setUncompleted] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { habits, loading, deleteAllHabits, fetchHabits } =
+    useContext(HabitContext);
 
   const navigate = useNavigate();
 
@@ -45,8 +29,7 @@ const AllHabitsPage = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Delete",
       preConfirm: async () => {
-        await HabitService.deleteAll();
-        fetchHabits();
+        await deleteAllHabits();
       },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -59,29 +42,9 @@ const AllHabitsPage = () => {
     });
   };
 
-  const fetchHabits = async () => {
-    try {
-      setLoading(true);
-      const response = await HabitService.getAll();
-      setHabits(response.data.reverse());
-    } catch (error) {
-      console.error("Error fetching habits:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchHabits();
+    fetchHabits;
   }, [navigate]);
-
-  useEffect(() => {
-    const filteredHabits = habits.filter((habit) =>
-      habit.activeDays.includes(getToday())
-    );
-    setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
-    setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
-  }, [habits]);
 
   return (
     <div>
@@ -91,7 +54,7 @@ const AllHabitsPage = () => {
           <div className="col-sm border border-dark m-3">
             <div className="d-flex align-items-center">
               <h3 className="m-4 custom-font">my habits</h3>
-              <AddHabitModal fetchHabits={fetchHabits} />
+              <AddHabitModal />
               <button
                 type="button"
                 className="m-2 btn btn-outline-light"
@@ -103,7 +66,7 @@ const AllHabitsPage = () => {
             {loading ? (
               <p className="m-5 custom-font"> loading...</p>
             ) : (
-              <AllHabitsList habits={habits} fetchHabits={fetchHabits} />
+              <AllHabitsList habits={habits} />
             )}
           </div>
         </div>

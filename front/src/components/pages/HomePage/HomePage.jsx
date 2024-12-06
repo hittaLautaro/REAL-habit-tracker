@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import HabitService from "../../utils/habitService.js";
-import Header from "../../Global/Header.jsx";
+import React, { useContext, useEffect, useState } from "react";
+import { HabitContext } from "../../contexts/HabitContext";
+import Header from "../../global/Header.jsx";
 import Swal from "sweetalert2";
 import HabitList from "./HabitList.jsx";
 import AddHabitModal from "../../global/AddHabitModal.jsx";
 
-import "../../global/styles.css";
-
-import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-
 const HomePage = () => {
+  const { habits, loading, deleteAllHabits } = useContext(HabitContext);
+
   const days = [
     "Monday",
     "Tuesday",
@@ -21,19 +17,18 @@ const HomePage = () => {
     "Saturday",
     "Sunday",
   ];
-
-  const getToday = () => {
-    return days[
-      new Date().getDay() === 0 ? 6 : new Date().getDay() - 1
-    ].toUpperCase();
-  };
-
-  const [habits, setHabits] = useState([]);
+  const getToday = () =>
+    days[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1].toUpperCase();
   const [completed, setCompleted] = useState([]);
   const [uncompleted, setUncompleted] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    const filteredHabits = habits.filter((habit) =>
+      habit.activeDays.includes(getToday())
+    );
+    setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
+    setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
+  }, [habits]);
 
   const handleRemoveAllHabits = () => {
     Swal.fire({
@@ -45,53 +40,24 @@ const HomePage = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
       preConfirm: async () => {
-        await HabitService.deleteAll();
-        fetchHabits();
+        await deleteAllHabits();
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your habits have been deleted.",
-          icon: "success",
-        });
+        Swal.fire("Deleted!", "Your habits have been deleted.", "success");
       }
     });
   };
-
-  const fetchHabits = async () => {
-    try {
-      setLoading(true);
-      const response = await HabitService.getAll();
-      setHabits(response.data);
-    } catch (error) {
-      console.error("Error fetching habits:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchHabits();
-  }, [navigate]);
-
-  useEffect(() => {
-    const filteredHabits = habits.filter((habit) =>
-      habit.activeDays.includes(getToday())
-    );
-    setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
-    setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
-  }, [habits]);
 
   return (
     <div>
       <Header />
       <div className="container-fluid">
-        <div className="mx-5 row ">
+        <div className="mx-5 row">
           <div className="col-sm border border-dark m-3">
             <div className="d-flex align-items-center">
               <h3 className="m-4 custom-font">to-do</h3>
-              <AddHabitModal fetchHabits={fetchHabits} />
+              <AddHabitModal />
               <button
                 type="button"
                 className="m-2 btn btn-outline-light"
@@ -101,9 +67,9 @@ const HomePage = () => {
               </button>
             </div>
             {loading ? (
-              <p className="m-5 custom-font"> loading...</p>
+              <p className="m-5 custom-font">loading...</p>
             ) : (
-              <HabitList habits={uncompleted} fetchHabits={fetchHabits} />
+              <HabitList habits={uncompleted} />
             )}
           </div>
           <div className="col-sm border border-dark m-3">
@@ -111,9 +77,9 @@ const HomePage = () => {
               <h3 className="m-4 custom-font">finished</h3>
             </div>
             {loading ? (
-              <p className="m-5 custom-font"> loading...</p>
+              <p className="m-5 custom-font">loading...</p>
             ) : (
-              <HabitList habits={completed} fetchHabits={fetchHabits} />
+              <HabitList habits={completed} />
             )}
           </div>
         </div>

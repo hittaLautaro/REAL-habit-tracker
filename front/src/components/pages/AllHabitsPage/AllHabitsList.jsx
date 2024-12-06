@@ -3,7 +3,7 @@ import Habit from "../../pages/AllHabitsPage/Habit";
 
 import "../../global/styles.css";
 
-const AllHabitsList = ({ habits, fetchHabits }) => {
+const AllHabitsList = ({ habits }) => {
   if (!habits || habits.length <= 0) {
     return <p className="m-4 custom-font"> No habits here. </p>;
   }
@@ -11,7 +11,7 @@ const AllHabitsList = ({ habits, fetchHabits }) => {
     <div className="">
       {habits.map((habit) => (
         <div key={habit.id}>
-          <Habit habit={habit} fetchHabits={fetchHabits} />
+          <Habit habit={habit} />
         </div>
       ))}
     </div>

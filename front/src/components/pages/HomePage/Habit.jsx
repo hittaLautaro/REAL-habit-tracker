@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import HabitService from "../../utils/habitService";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "../../global/UpdateHabitModal.jsx";
+import { HabitContext } from "../../contexts/HabitContext.jsx";
 
 import "../../global/styles.css";
 
-const Habit = ({ habit, fetchHabits }) => {
+const Habit = ({ habit }) => {
+  const { deleteHabit, updateHabit } = useContext(HabitContext);
+
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = () => {
@@ -18,9 +21,7 @@ const Habit = ({ habit, fetchHabits }) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
       preConfirm: async () => {
-        HabitService.deleteById(habit.id).then(() => {
-          fetchHabits();
-        });
+        deleteHabit(habit.id);
       },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -34,10 +35,8 @@ const Habit = ({ habit, fetchHabits }) => {
   };
 
   const handleComplete = async () => {
-    await HabitService.update(habit.id, {
+    updateHabit(habit.id, {
       isCompleted: habit.isCompleted == null ? true : !habit.isCompleted,
-    }).then(() => {
-      fetchHabits();
     });
   };
 
@@ -51,9 +50,6 @@ const Habit = ({ habit, fetchHabits }) => {
         <h4 className="m-0 custom-font">
           {habit.isCompleted ? "✔️" : "❌"} {habit.name}
         </h4>
-        <p className="m-0 custom-font">
-          {habit.frequency} --- {habit.activeDays.toString()}
-        </p>
       </div>
 
       {/* Dropdown menu in the top-right */}
@@ -99,7 +95,6 @@ const Habit = ({ habit, fetchHabits }) => {
       {showModal && (
         <UpdateHabitModal
           habit={habit}
-          fetchHabits={fetchHabits}
           handleClose={() => setShowModal(false)} // Close the modal when triggered
         />
       )}

@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import HabitService from "../../utils/habitService";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "../../global/UpdateHabitModal";
 
+import { HabitContext } from "../../contexts/HabitContext";
+
 import "../../global/styles.css";
 
-const Habit = ({ habit, fetchHabits }) => {
+const Habit = ({ habit }) => {
+  const { deleteHabit, fetchHabits } = useContext(HabitContext);
+
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = () => {
@@ -18,9 +22,7 @@ const Habit = ({ habit, fetchHabits }) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
       preConfirm: async () => {
-        HabitService.deleteById(habit.id).then(() => {
-          fetchHabits();
-        });
+        deleteHabit(habit.id);
       },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -40,9 +42,7 @@ const Habit = ({ habit, fetchHabits }) => {
   return (
     <div className="border border-dark rounded bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
       <div>
-        <h4 className="m-0 custom-font">
-          {habit.isCompleted ? "✔️" : "❌"} {habit.name}
-        </h4>
+        <h4 className="m-0 custom-font">{habit.name}</h4>
         <p className="m-0 custom-font">
           {habit.frequency} --- {habit.activeDays.toString()}
         </p>

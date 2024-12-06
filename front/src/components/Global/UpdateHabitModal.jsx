@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import HabitService from "../utils/habitService";
 
-function UpdateHabitModal({ habit, fetchHabits, handleClose }) {
+import { HabitContext } from "../contexts/HabitContext";
+
+function UpdateHabitModal({ habit, handleClose }) {
+  const { updateHabit } = useContext(HabitContext);
   const [habitName, setHabitName] = useState(habit.name);
   const [habitFrequency, setHabitFrequency] = useState(habit.frequency);
   const [selectedDays, setSelectedDays] = useState(habit.activeDays);
@@ -23,14 +26,13 @@ function UpdateHabitModal({ habit, fetchHabits, handleClose }) {
       return;
     }
 
-    HabitService.update(habit.id, {
+    updateHabit(habit.id, {
       name: habitName,
       frequency: habitFrequency,
       activeDays: selectedDays,
-    }).then(() => {
-      fetchHabits();
-      handleClose(); // Close the modal after submission
     });
+
+    handleClose();
   };
 
   return (
