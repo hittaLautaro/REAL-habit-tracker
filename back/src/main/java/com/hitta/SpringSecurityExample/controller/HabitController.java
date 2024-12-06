@@ -47,12 +47,12 @@ public class HabitController {
         return habitService.save(user, request);
     }
 
-//    @Transactional
-//    @PutMapping("/updateAll")
-//    public ResponseEntity<Void> updateHabitsOrder(@RequestBody List<HabitUpdateRequest> habitRequests) {
-//        habitService.updateHabitsOrder(habitRequests);
-//        return ResponseEntity.ok().build();
-//    }
+    @Transactional
+    @PatchMapping("/")
+    public ResponseEntity<Void> updateHabits(@RequestBody List<HabitUpdateRequest> habitRequests) {
+        habitService.updateHabits(habitRequests);
+        return ResponseEntity.ok().build();
+    }
 
     @PatchMapping("/{id}")
     public HabitResponse update(@PathVariable Integer id, @RequestBody HabitUpdateRequest request) {

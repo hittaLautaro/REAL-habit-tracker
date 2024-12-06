@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { HabitContext } from "../../contexts/HabitContext";
 import Header from "../../global/Header.jsx";
 import Swal from "sweetalert2";
@@ -14,9 +14,7 @@ const HomePage = () => {
     todo: [],
     finished: [],
   });
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-
-  const { habits, loading, deleteAllHabits, updateHabitOrder } =
+  const { habits, loading, deleteAllHabits, updateHabitsOrdersAndCompletions } =
     useContext(HabitContext);
 
   const days = [
@@ -46,58 +44,48 @@ const HomePage = () => {
     });
   }, [habits]);
 
+  const debounceSave = useRef(
+    _.debounce(async (updatedHabits) => {
+      console.log(updatedHabits); // This should now print the correct array
+      const allHabits = [...updatedHabits.todo, ...updatedHabits.finished];
+      updateHabitsOrdersAndCompletions(allHabits);
+    }, 500)
+  ).current;
+
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
-    // If no destination, do nothing
     if (!destination) return;
 
-    // Create a copy of local habits to modify
+    if (source.droppableId === destination.droppableId) return;
+
+    // Clone local habits for modification
     const newLocalHabits = { ...localHabits };
 
-    // Remove from source list
+    // Remove item from source and add to destination
     const [reorderedItem] = newLocalHabits[source.droppableId].splice(
       source.index,
       1
     );
 
-    // Add to destination list
+    if (destination.droppableId === "finished") {
+      reorderedItem.isCompleted = true;
+    } else if (source.droppableId === "finished") {
+      reorderedItem.isCompleted = false;
+    }
+
     newLocalHabits[destination.droppableId].splice(
       destination.index,
       0,
       reorderedItem
     );
 
-    // Update local state immediately
+    // Update state immediately
     setLocalHabits(newLocalHabits);
-    setHasUnsavedChanges(true);
-  };
 
-  const handleSaveChanges = async () => {
-    try {
-      // Call context method to save the updated habits
-      await updateHabitOrder(localHabits);
+    console.log(newLocalHabits); // Verify this shows the correct state
 
-      // Reset the unsaved changes flag
-      setHasUnsavedChanges(false);
-
-      // Optional: Show a success toast
-      Swal.fire({
-        icon: "success",
-        title: "Habits Updated",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    } catch (error) {
-      // Handle any errors during save
-      Swal.fire({
-        icon: "error",
-        title: "Save Failed",
-        text: "There was an issue saving your habits. Please try again.",
-      });
-    }
+    debounceSave(newLocalHabits); // Ensure debounced save uses the updated state
   };
 
   const handleRemoveAllHabits = () => {

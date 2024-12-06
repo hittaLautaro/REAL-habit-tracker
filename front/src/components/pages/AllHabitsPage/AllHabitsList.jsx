@@ -7,7 +7,7 @@ const AllHabitsList = ({ habits }) => {
   const allHabits = [...habits.todo, ...habits.finished]; // merge
 
   if (!allHabits || allHabits.length <= 0) {
-    return <p className="m-4 custom-font">No habits here.</p>;
+    return <p className="m-4 custom-font">You've got no habits.</p>;
   }
 
   return (

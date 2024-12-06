@@ -7,7 +7,7 @@ import { Draggable } from "@hello-pangea/dnd";
 
 import "../../global/styles.css";
 
-const Habit = ({ habit, index }) => {
+const Habit = ({ habit, index, categoryEmoji }) => {
   const { deleteHabit, updateHabit, addHabit } = useContext(HabitContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -65,7 +65,7 @@ const Habit = ({ habit, index }) => {
           <div className="border border-dark rounded custom-min-height bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
             <div>
               <h4 className="m-0 custom-font">
-                {habit.isCompleted ? "✔️" : "❌"} {habit.name}
+                {categoryEmoji} {habit.name}
               </h4>
             </div>
 

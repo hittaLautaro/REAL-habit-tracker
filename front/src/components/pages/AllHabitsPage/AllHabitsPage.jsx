@@ -63,11 +63,13 @@ const AllHabitsPage = () => {
                 <i className="bi bi-trash"></i>
               </button>
             </div>
-            {loading ? (
-              <p className="m-5 custom-font"> loading...</p>
-            ) : (
-              <AllHabitsList habits={habits} />
-            )}
+            <div className="habit-list">
+              {loading ? (
+                <p className="m-5 custom-font"> loading...</p>
+              ) : (
+                <AllHabitsList habits={habits} />
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class HabitService {
@@ -40,9 +41,9 @@ public class HabitService {
 
         if(request.getName() != null)           habit.setName(request.getName());
         if(request.getFrequency() != null)      habit.setFrequency(request.getFrequency());
-        if(request.getActiveDays() != null)     habit.setActiveDays(request.getActiveDays());
         if(request.getPosition() != null)       habit.setPosition(request.getPosition());
         if(request.getIsCompleted() != null)    habit.setCompleted(request.getIsCompleted());
+        if(request.getActiveDays() != null && !areSetsEqual(request.getActiveDays(), habit.getActiveDays()))     habit.setActiveDays(request.getActiveDays());
 
         habit = habitRepo.save(habit);
 
@@ -69,4 +70,20 @@ public class HabitService {
         return habit.isCompleted();
     }
 
+    public void updateHabits(List<HabitUpdateRequest> habitRequests) {
+        for(HabitUpdateRequest request : habitRequests){
+            System.out.println(request.toString());
+            update(request.getId(), request);
+        }
+    }
+
+    private <T> boolean areSetsEqual(Set<T> set1, Set<T> set2) {
+        if (set1 == null || set2 == null) {
+            return set1 == set2; // Both null means equal
+        }
+        if (set1.size() != set2.size()) {
+            return false; // Different sizes, not equal
+        }
+        return set1.containsAll(set2) && set2.containsAll(set1); // Ensure both sets contain each other's elements
+    }
 }

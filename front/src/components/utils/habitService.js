@@ -17,6 +17,10 @@ const habitService = {
     return await axiosInstance.patch(`/habits/${id}`, request);
   },
 
+  updateAll: async (request) => {
+    return await axiosInstance.patch(`/habits/`, request);
+  },
+
   deleteById: async (id) => {
     await axiosInstance.delete(`/habits/${id}`);
   },

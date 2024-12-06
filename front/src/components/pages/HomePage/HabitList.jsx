@@ -4,8 +4,10 @@ import { Droppable } from "@hello-pangea/dnd";
 import "../../global/styles.css";
 
 const HabitList = ({ droppableId, habits }) => {
+  console.log(droppableId);
+
   return (
-    <div className="">
+    <div>
       <Droppable droppableId={droppableId} isDropDisabled={false}>
         {(provided) => (
           <div
@@ -19,11 +21,18 @@ const HabitList = ({ droppableId, habits }) => {
           >
             {habits.length > 0 ? (
               habits.map((habit, index) => (
-                <Habit key={habit.id} habit={habit} index={index} />
+                <Habit
+                  key={habit.id}
+                  habit={habit}
+                  index={index}
+                  categoryEmoji={droppableId === "finished" ? "✔️" : "❌"}
+                />
               ))
             ) : (
               <p className="m-4 custom-font">
-                No habits here. Drop to finish them.
+                {droppableId === "finished"
+                  ? "You've no habits finished."
+                  : "You've finished all your habits!"}
               </p>
             )}
             {provided.placeholder}

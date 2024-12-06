@@ -12,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 public class HabitUpdateRequest {
+    private Integer id;
     private String name;
     private Boolean isCompleted;
     private Integer frequency;

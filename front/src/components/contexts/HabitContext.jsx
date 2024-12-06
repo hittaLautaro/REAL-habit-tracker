@@ -34,39 +34,6 @@ const HabitProvider = ({ children }) => {
     fetchHabits();
   };
 
-  const updateHabitOrder = async (source, destination, habit) => {
-    const sourceCategory = source.droppableId;
-    const destCategory = destination.droppableId;
-
-    // Update the habit completion status
-    const updatedData = {
-      isCompleted: destCategory === "finished",
-    };
-
-    // Update the habit in the backend
-    await HabitService.update(habit.id, updatedData);
-
-    // Update the habits state using the context's setHabits
-    setHabits((prevHabits) => {
-      const sourceCategoryHabits = prevHabits[sourceCategory].filter(
-        (h) => h.id !== habit.id
-      );
-      const destinationCategoryHabits = [
-        ...prevHabits[destCategory],
-        { ...habit, isCompleted: updatedData.isCompleted },
-      ];
-
-      return {
-        ...prevHabits,
-        [sourceCategory]: sourceCategoryHabits,
-        [destCategory]: destinationCategoryHabits,
-      };
-    });
-
-    // Fetch updated habits from the server
-    fetchHabits();
-  };
-
   const deleteHabit = async (id) => {
     await HabitService.deleteById(id);
     await fetchHabits();
@@ -75,6 +42,10 @@ const HabitProvider = ({ children }) => {
   const deleteAllHabits = async () => {
     await HabitService.deleteAll();
     fetchHabits();
+  };
+
+  const updateHabitsOrdersAndCompletions = async (localHabits) => {
+    await HabitService.updateAll(localHabits);
   };
 
   useEffect(() => {
@@ -91,7 +62,7 @@ const HabitProvider = ({ children }) => {
         deleteHabit,
         deleteAllHabits,
         fetchHabits,
-        updateHabitOrder,
+        updateHabitsOrdersAndCompletions,
       }}
     >
       {children}
