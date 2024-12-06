@@ -8,7 +8,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import "../../global/styles.css";
 
 const Habit = ({ habit, index }) => {
-  const { deleteHabit, updateHabit } = useContext(HabitContext);
+  const { deleteHabit, updateHabit, addHabit } = useContext(HabitContext);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -38,6 +38,14 @@ const Habit = ({ habit, index }) => {
   const handleComplete = async () => {
     updateHabit(habit.id, {
       isCompleted: habit.isCompleted == null ? true : !habit.isCompleted,
+    });
+  };
+
+  const handleDuplicate = async () => {
+    addHabit({
+      name: habit.name,
+      frequency: habit.frequency,
+      activeDays: habit.activeDays,
     });
   };
 
@@ -97,6 +105,14 @@ const Habit = ({ habit, index }) => {
                     onClick={handleComplete}
                   >
                     {habit.isCompleted ? "Uncheck" : "Check"}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item custom-font"
+                    onClick={handleDuplicate}
+                  >
+                    Duplicate
                   </button>
                 </li>
               </ul>

@@ -11,3 +11,10 @@
 .custom-min-height {
   min-height: 110px;
 }
+
+.habit-list {
+  min-height: 75vh;
+  max-height: 75vh; /* Adjust as needed */
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
