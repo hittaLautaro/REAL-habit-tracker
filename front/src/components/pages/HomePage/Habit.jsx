@@ -3,10 +3,11 @@ import HabitService from "../../utils/habitService";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "../../global/UpdateHabitModal.jsx";
 import { HabitContext } from "../../contexts/HabitContext.jsx";
+import { Draggable } from "@hello-pangea/dnd";
 
 import "../../global/styles.css";
 
-const Habit = ({ habit }) => {
+const Habit = ({ habit, index }) => {
   const { deleteHabit, updateHabit } = useContext(HabitContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -41,64 +42,76 @@ const Habit = ({ habit }) => {
   };
 
   const handleEdit = () => {
-    setShowModal(true); // Open the modal by setting the state to true
+    setShowModal(true);
   };
 
   return (
-    <div className="border border-dark rounded bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
-      <div>
-        <h4 className="m-0 custom-font">
-          {habit.isCompleted ? "✔️" : "❌"} {habit.name}
-        </h4>
-      </div>
-
-      {/* Dropdown menu in the top-right */}
-      <div className="dropdown text-end">
-        <button
-          className="btn btn-outline-light dropdown-toggle custom-font"
-          type="button"
-          id={`dropdownMenuButton-${habit.id}`}
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
+    <Draggable draggableId={habit.id.toString()} index={index}>
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className="habit-item"
         >
-          <i className="bi bi-gear"></i>
-        </button>
-        <ul
-          className="dropdown-menu"
-          aria-labelledby={`dropdownMenuButton-${habit.id}`}
-        >
-          <li>
-            <button className="dropdown-item custom-font" onClick={handleEdit}>
-              Edit
-            </button>
-          </li>
-          <li>
-            <button
-              className="dropdown-item custom-font"
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
-          </li>
-          <li>
-            <button
-              className="dropdown-item custom-font"
-              onClick={handleComplete}
-            >
-              {habit.isCompleted ? "Uncheck" : "Check"}
-            </button>
-          </li>
-        </ul>
-      </div>
+          <div className="border border-dark rounded custom-min-height bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
+            <div>
+              <h4 className="m-0 custom-font">
+                {habit.isCompleted ? "✔️" : "❌"} {habit.name}
+              </h4>
+            </div>
 
-      {/* Show the UpdateHabitModal when showModal is true */}
-      {showModal && (
-        <UpdateHabitModal
-          habit={habit}
-          handleClose={() => setShowModal(false)} // Close the modal when triggered
-        />
+            <div className="dropdown text-end">
+              <button
+                className="btn btn-outline-light dropdown-toggle custom-font"
+                type="button"
+                id={`dropdownMenuButton-${habit.id}`}
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i className="bi bi-gear"></i>
+              </button>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby={`dropdownMenuButton-${habit.id}`}
+              >
+                <li>
+                  <button
+                    className="dropdown-item custom-font"
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item custom-font"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item custom-font"
+                    onClick={handleComplete}
+                  >
+                    {habit.isCompleted ? "Uncheck" : "Check"}
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {showModal && (
+              <UpdateHabitModal
+                habit={habit}
+                handleClose={() => setShowModal(false)}
+              />
+            )}
+          </div>
+        </div>
       )}
-    </div>
+    </Draggable>
   );
 };
 

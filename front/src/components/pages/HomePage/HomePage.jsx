@@ -4,9 +4,11 @@ import Header from "../../global/Header.jsx";
 import Swal from "sweetalert2";
 import HabitList from "./HabitList.jsx";
 import AddHabitModal from "../../global/AddHabitModal.jsx";
+import { DragDropContext } from "@hello-pangea/dnd";
 
 const HomePage = () => {
-  const { habits, loading, deleteAllHabits } = useContext(HabitContext);
+  const { habits, loading, deleteAllHabits, updateHabitOrder } =
+    useContext(HabitContext);
 
   const days = [
     "Monday",
@@ -23,12 +25,29 @@ const HomePage = () => {
   const [uncompleted, setUncompleted] = useState([]);
 
   useEffect(() => {
-    const filteredHabits = habits.filter((habit) =>
+    const filteredTodo = habits.finished.filter((habit) =>
       habit.activeDays.includes(getToday())
     );
-    setCompleted(filteredHabits.filter((habit) => habit.isCompleted));
-    setUncompleted(filteredHabits.filter((habit) => !habit.isCompleted));
+    setCompleted(filteredTodo);
+
+    const filteredFinished = habits.todo.filter((habit) =>
+      habit.activeDays.includes(getToday())
+    );
+    setUncompleted(filteredFinished);
   }, [habits]);
+
+  const onDragEnd = async (result) => {
+    const { source, destination } = result;
+
+    if (!destination) return;
+
+    // Find the dragged habit
+    const sourceCategory = habits[source.droppableId];
+    const [movedHabit] = sourceCategory.splice(source.index, 1);
+
+    // Update the habit order in the backend
+    await updateHabitOrder(source, destination, movedHabit);
+  };
 
   const handleRemoveAllHabits = () => {
     Swal.fire({
@@ -50,41 +69,51 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <Header />
-      <div className="container-fluid">
-        <div className="mx-5 row">
-          <div className="col-sm border border-dark m-3">
-            <div className="d-flex align-items-center">
-              <h3 className="m-4 custom-font">to-do</h3>
-              <AddHabitModal />
-              <button
-                type="button"
-                className="m-2 btn btn-outline-light"
-                onClick={handleRemoveAllHabits}
-              >
-                <i className="bi bi-trash"></i>
-              </button>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div>
+        <Header />
+        <div className="container-fluid">
+          <div className="mx-5 row">
+            <div className="col-sm border border-dark m-3">
+              <div className="d-flex align-items-center">
+                <h3 className="m-4 custom-font">to-do</h3>
+                <AddHabitModal />
+                <button
+                  type="button"
+                  className="m-2 btn btn-outline-light"
+                  onClick={handleRemoveAllHabits}
+                >
+                  <i className="bi bi-trash"></i>
+                </button>
+              </div>
+              {loading ? (
+                <p className="m-5 custom-font">loading...</p>
+              ) : (
+                <HabitList
+                  habits={uncompleted}
+                  title="To-Do"
+                  droppableId="todo"
+                />
+              )}
             </div>
-            {loading ? (
-              <p className="m-5 custom-font">loading...</p>
-            ) : (
-              <HabitList habits={uncompleted} />
-            )}
-          </div>
-          <div className="col-sm border border-dark m-3">
-            <div className="d-flex align-items-center">
-              <h3 className="m-4 custom-font">finished</h3>
+            <div className="col-sm border border-dark m-3">
+              <div className="d-flex align-items-center">
+                <h3 className="m-4 custom-font">finished</h3>
+              </div>
+              {loading ? (
+                <p className="m-5 custom-font">loading...</p>
+              ) : (
+                <HabitList
+                  habits={completed}
+                  title="Finished"
+                  droppableId="finished"
+                />
+              )}
             </div>
-            {loading ? (
-              <p className="m-5 custom-font">loading...</p>
-            ) : (
-              <HabitList habits={completed} />
-            )}
           </div>
         </div>
       </div>
-    </div>
+    </DragDropContext>
   );
 };
 

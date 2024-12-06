@@ -7,3 +7,7 @@
 .fs-big {
   font-size: 5rem;
 }
+
+.custom-min-height {
+  min-height: 110px;
+}
