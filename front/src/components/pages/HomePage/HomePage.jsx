@@ -49,18 +49,25 @@ const HomePage = () => {
       console.log(updatedHabits); // This should now print the correct array
       const allHabits = [...updatedHabits.todo, ...updatedHabits.finished];
       updateHabitsOrdersAndCompletions(allHabits);
-    }, 500)
+    }, 1000)
   ).current;
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
+    console.log(source);
+    console.log(destination);
+
     if (!destination) return;
 
-    if (source.droppableId === destination.droppableId) return;
+    if (
+      source.droppableId === destination.droppableId &&
+      destination.index === source.index
+    )
+      return;
 
-    // Clone local habits for modification
-    const newLocalHabits = { ...localHabits };
+    // Clone local habits for modification (deep copy for safety)
+    const newLocalHabits = JSON.parse(JSON.stringify(localHabits));
 
     // Remove item from source and add to destination
     const [reorderedItem] = newLocalHabits[source.droppableId].splice(
@@ -68,12 +75,16 @@ const HomePage = () => {
       1
     );
 
+    // Update isCompleted based on destination
     if (destination.droppableId === "finished") {
       reorderedItem.isCompleted = true;
     } else if (source.droppableId === "finished") {
       reorderedItem.isCompleted = false;
+    } else {
+      console.warn("Unhandled droppableId:", destination.droppableId);
     }
 
+    // Add item to the destination
     newLocalHabits[destination.droppableId].splice(
       destination.index,
       0,
@@ -83,9 +94,11 @@ const HomePage = () => {
     // Update state immediately
     setLocalHabits(newLocalHabits);
 
-    console.log(newLocalHabits); // Verify this shows the correct state
+    // Debugging logs
+    console.log("Updated local habits:", newLocalHabits);
 
-    debounceSave(newLocalHabits); // Ensure debounced save uses the updated state
+    // Debounced backend save
+    debounceSave(newLocalHabits);
   };
 
   const handleRemoveAllHabits = () => {

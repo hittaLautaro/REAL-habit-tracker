@@ -44,7 +44,7 @@ const Habit = ({ habit }) => {
       <div>
         <h4 className="m-0 custom-font">{habit.name}</h4>
         <p className="m-0 custom-font">
-          {habit.frequency} --- {habit.activeDays.toString()}
+          Frequency: {habit.frequency} Days: {habit.activeDays.toString()}
         </p>
       </div>
 
