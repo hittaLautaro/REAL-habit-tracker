@@ -46,7 +46,7 @@ function AddHabitModal() {
   return (
     <>
       <Button variant="btn btn-outline-light" onClick={handleShow}>
-        <i className="bi bi-plus-circle"></i>
+        <i class="bi bi-plus-lg"></i>
       </Button>
 
       <Modal

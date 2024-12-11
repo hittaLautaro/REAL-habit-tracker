@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import UserService from "../../utils/authService";
+import AuthService from "../../utils/authService";
 import { useNavigate } from "react-router-dom";
 
 import "../../global/styles.css";
@@ -21,7 +21,7 @@ const LoginPage = () => {
       return;
     }
 
-    UserService.login({
+    AuthService.login({
       email: email,
       password: password,
       time_zone: currentTimeZone,

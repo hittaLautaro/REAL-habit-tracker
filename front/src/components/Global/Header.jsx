@@ -37,13 +37,10 @@ const Header = () => {
 
         {/* Centered Links */}
         <div className="navbar-links">
-          <NavLink to="/" className="nav-link text-light mx-3 custom-font">
+          <NavLink to="/habits" className="nav-link mx-3 custom-font">
             to-do
           </NavLink>
-          <NavLink
-            to="/habits"
-            className="nav-link text-light mx-3 custom-font"
-          >
+          <NavLink to="/all-habits" className="nav-link mx-3 custom-font">
             my habits
           </NavLink>
         </div>

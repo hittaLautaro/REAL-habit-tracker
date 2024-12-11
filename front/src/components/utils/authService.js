@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-const UserService = {
+const AuthService = {
   login: async (user) => {
     const response = await axiosInstance.post("/auth/authenticate", user);
     localStorage.setItem("jwtToken", response.data.accessToken);
@@ -22,4 +22,4 @@ const UserService = {
   },
 };
 
-export default UserService;
+export default AuthService;

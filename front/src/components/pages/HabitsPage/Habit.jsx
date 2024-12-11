@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import HabitService from "../../utils/habitService";
+import HabitService from "../../utils/habitService.js";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "../../global/UpdateHabitModal.jsx";
 import { HabitContext } from "../../contexts/HabitContext.jsx";

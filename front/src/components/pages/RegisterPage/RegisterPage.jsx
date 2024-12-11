@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UserService from "../../utils/authService";
+import AuthService from "../../utils/authService";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 import "bootstrap";
@@ -23,7 +23,7 @@ const RegisterPage = () => {
       return;
     }
 
-    UserService.register({
+    AuthService.register({
       email: email,
       password: password,
       dateOfBirth: dateOfBirth,

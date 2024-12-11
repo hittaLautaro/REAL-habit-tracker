@@ -1,7 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap");
 
 .custom-font {
   font-family: "IBM Plex Mono", monospace;
+  font-weight: 600; /* Semi-bold */
+}
+
+.custom-font-normal {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400; /* Normal */
 }
 
 .fs-big {
