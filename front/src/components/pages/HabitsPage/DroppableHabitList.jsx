@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Habit from "./Habit";
 import { Droppable } from "@hello-pangea/dnd";
 import "../../global/styles.css";
@@ -9,26 +9,30 @@ import { HabitContext } from "../../contexts/HabitContext";
 import DraggableHabit from "./DraggableHabit";
 
 const DroppableHabitList = ({ droppableId, habits }) => {
+  const [localHabits, setLocalHabits] = useState([]);
   const { updateHabitsOrdersAndCompletions } = useContext(HabitContext);
+  console.log("Prop habits");
+  console.log(habits);
+
+  useEffect(() => {
+    setLocalHabits(habits);
+  }, [habits]);
 
   const debounceSave = useRef(
     _.debounce(async (updatedHabits) => {
+      console.log("Updated Habits"); // This should now print the correct array
       console.log(updatedHabits); // This should now print the correct array
-      const allHabits = [...updatedHabits.todo, ...updatedHabits.finished];
-      updateHabitsOrdersAndCompletions(allHabits);
+      updateHabitsOrdersAndCompletions(updatedHabits);
     }, 1000)
   ).current;
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
-    // If no destination (e.g., item was dropped outside), do nothing
     if (!destination) return;
 
-    // If the source and destination indexes are the same, do nothing
     if (source.index === destination.index) return;
 
-    // Clone local habits for modification
     const newLocalHabits = [...localHabits];
 
     // Remove item from source and insert at destination
@@ -58,8 +62,8 @@ const DroppableHabitList = ({ droppableId, habits }) => {
               flexDirection: "column",
             }}
           >
-            {habits.length > 0 ? (
-              habits.map((habit, index) => (
+            {localHabits.length > 0 ? (
+              localHabits.map((habit, index) => (
                 <DraggableHabit
                   key={habit.id}
                   habit={habit}

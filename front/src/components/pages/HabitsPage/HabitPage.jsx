@@ -72,9 +72,9 @@ const HabitPage = () => {
     <div>
       <Header />
       <div className="container-fluid">
-        <div className="mx-5 row">
-          <div className="col-sm m-3">
-            <div className="d-flex align-items-center justify-content-between">
+        <div className="mx-5 row ">
+          <div className="col-sm border border-dark m-3">
+            <div className="d-flex align-items-center justify-content-between ">
               <div className="d-flex align-items-center">
                 <h3 className="m-4 custom-font">to-do</h3>
                 <AddHabitModal />
@@ -93,7 +93,7 @@ const HabitPage = () => {
                 </button>
               </div>
             </div>
-            <div className="border border-dark habit-list">
+            <div className="habit-list">
               {loading ? (
                 <p className="m-5 custom-font">loading...</p>
               ) : (
