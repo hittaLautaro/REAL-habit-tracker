@@ -8,6 +8,7 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import _ from "lodash";
 
 import "../../global/styles.css";
+import DroppableHabitList from "./DroppableHabitList.jsx";
 
 const HabitPage = () => {
   const [localHabits, setLocalHabits] = useState({
@@ -46,63 +47,6 @@ const HabitPage = () => {
     });
   }, [habits]);
 
-  const debounceSave = useRef(
-    _.debounce(async (updatedHabits) => {
-      console.log(updatedHabits); // This should now print the correct array
-      const allHabits = [...updatedHabits.todo, ...updatedHabits.finished];
-      updateHabitsOrdersAndCompletions(allHabits);
-    }, 1000)
-  ).current;
-
-  const onDragEnd = (result) => {
-    const { source, destination } = result;
-
-    console.log(source);
-    console.log(destination);
-
-    if (!destination) return;
-
-    if (
-      source.droppableId === destination.droppableId &&
-      destination.index === source.index
-    )
-      return;
-
-    // Clone local habits for modification (deep copy for safety)
-    const newLocalHabits = JSON.parse(JSON.stringify(localHabits));
-
-    // Remove item from source and add to destination
-    const [reorderedItem] = newLocalHabits[source.droppableId].splice(
-      source.index,
-      1
-    );
-
-    // Update isCompleted based on destination
-    if (destination.droppableId === "finished") {
-      reorderedItem.isCompleted = true;
-    } else if (source.droppableId === "finished") {
-      reorderedItem.isCompleted = false;
-    } else {
-      console.warn("Unhandled droppableId:", destination.droppableId);
-    }
-
-    // Add item to the destination
-    newLocalHabits[destination.droppableId].splice(
-      destination.index,
-      0,
-      reorderedItem
-    );
-
-    // Update state immediately
-    setLocalHabits(newLocalHabits);
-
-    // Debugging logs
-    console.log("Updated local habits:", newLocalHabits);
-
-    // Debounced backend save
-    debounceSave(newLocalHabits);
-  };
-
   const handleRemoveAllHabits = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -125,64 +69,64 @@ const HabitPage = () => {
   const handleSelectList = () => {};
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div>
-        <Header />
-        <div className="container-fluid">
-          <div className="mx-5 row">
-            <div className="col-sm m-3">
-              <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center">
-                  <h3 className="m-4 custom-font">to-do</h3>
-                  <AddHabitModal />
-                  <button
-                    type="button"
-                    className="m-2 btn btn-outline-light"
-                    onClick={handleRemoveAllHabits}
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                  <button
-                    className="btn btn-outline-light custom-font"
-                    onClick={handleSelectList}
-                  >
-                    <i class="bi bi-arrow-clockwise"></i>
-                  </button>
-                </div>
-              </div>
-              <div className="border border-dark habit-list">
-                {loading ? (
-                  <p className="m-5 custom-font">loading...</p>
-                ) : (
-                  <HabitList
-                    habits={localHabits.todo}
-                    title="To-Do"
-                    droppableId="todo"
-                  />
-                )}
+    <div>
+      <Header />
+      <div className="container-fluid">
+        <div className="mx-5 row">
+          <div className="col-sm m-3">
+            <div className="d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center">
+                <h3 className="m-4 custom-font">to-do</h3>
+                <AddHabitModal />
+                <button
+                  type="button"
+                  className="m-2 btn btn-outline-light"
+                  onClick={handleRemoveAllHabits}
+                >
+                  <i className="bi bi-trash"></i>
+                </button>
+                <button
+                  className="btn btn-outline-light custom-font"
+                  onClick={handleSelectList}
+                >
+                  <i className="bi bi-arrow-clockwise"></i>
+                </button>
               </div>
             </div>
-            <div className="col-sm m-3">
-              <div className="d-flex align-items-center">
-                <h3 className="m-4 custom-font">finished</h3>
-              </div>
-              <div className="border border-dark habit-list">
-                {loading ? (
-                  <p className="m-5 custom-font">loading...</p>
-                ) : (
-                  <HabitList
-                    habits={localHabits.finished}
-                    title="Finished"
-                    droppableId="finished"
-                  />
-                )}
-              </div>
+            <div className="border border-dark habit-list">
+              {loading ? (
+                <p className="m-5 custom-font">loading...</p>
+              ) : (
+                <DroppableHabitList
+                  droppableId="todo"
+                  habits={localHabits.todo}
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
-    </DragDropContext>
+    </div>
   );
 };
 
 export default HabitPage;
+
+{
+  /* <div className="col-sm m-3">
+  <div className="d-flex align-items-center">
+    <h3 className="m-4 custom-font">finished</h3>
+  </div>
+  <div className="border border-dark habit-list">
+    {loading ? (
+      <p className="m-5 custom-font">loading...</p>
+    ) : (
+      <HabitList
+        habits={localHabits.finished}
+        title="Finished"
+        droppableId="finished"
+      />
+    )}
+  </div>
+</div>; */
+}

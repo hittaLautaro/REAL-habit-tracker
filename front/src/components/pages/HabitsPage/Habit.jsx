@@ -54,80 +54,66 @@ const Habit = ({ habit, index, categoryEmoji }) => {
   };
 
   return (
-    <Draggable draggableId={habit.id.toString()} index={index}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className="habit-item"
+    <div className="border border-dark rounded custom-min-height bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
+      <div>
+        <h4 className="m-0 custom-font">
+          {categoryEmoji} {habit.name}
+        </h4>
+      </div>
+
+      <div className="dropdown text-end">
+        <button
+          className="btn btn-outline-light dropdown-toggle custom-font"
+          type="button"
+          id={`dropdownMenuButton-${habit.id}`}
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
         >
-          <div className="border border-dark rounded custom-min-height bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
-            <div>
-              <h4 className="m-0 custom-font">
-                {categoryEmoji} {habit.name}
-              </h4>
-            </div>
+          <i className="bi bi-gear"></i>
+        </button>
+        <ul
+          className="dropdown-menu"
+          aria-labelledby={`dropdownMenuButton-${habit.id}`}
+        >
+          <li>
+            <button className="dropdown-item custom-font" onClick={handleEdit}>
+              Edit
+            </button>
+          </li>
+          <li>
+            <button
+              className="dropdown-item custom-font"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          </li>
+          <li>
+            <button
+              className="dropdown-item custom-font"
+              onClick={handleComplete}
+            >
+              {habit.isCompleted ? "Uncheck" : "Check"}
+            </button>
+          </li>
+          <li>
+            <button
+              className="dropdown-item custom-font"
+              onClick={handleDuplicate}
+            >
+              Duplicate
+            </button>
+          </li>
+        </ul>
+      </div>
 
-            <div className="dropdown text-end">
-              <button
-                className="btn btn-outline-light dropdown-toggle custom-font"
-                type="button"
-                id={`dropdownMenuButton-${habit.id}`}
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="bi bi-gear"></i>
-              </button>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby={`dropdownMenuButton-${habit.id}`}
-              >
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleEdit}
-                  >
-                    Edit
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleComplete}
-                  >
-                    {habit.isCompleted ? "Uncheck" : "Check"}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleDuplicate}
-                  >
-                    Duplicate
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            {showModal && (
-              <UpdateHabitModal
-                habit={habit}
-                handleClose={() => setShowModal(false)}
-              />
-            )}
-          </div>
-        </div>
+      {showModal && (
+        <UpdateHabitModal
+          habit={habit}
+          handleClose={() => setShowModal(false)}
+        />
       )}
-    </Draggable>
+    </div>
   );
 };
 
