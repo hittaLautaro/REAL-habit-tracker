@@ -43,7 +43,7 @@ const Habit = ({ habit }) => {
     <div className="border border-dark rounded bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
       <div>
         <h4 className="m-0 custom-font">{habit.name}</h4>
-        <p className="m-0 custom-font">
+        <p className="m-0 custom-font-normal">
           Frequency: {habit.frequency} Days: {habit.activeDays.toString()}
         </p>
       </div>

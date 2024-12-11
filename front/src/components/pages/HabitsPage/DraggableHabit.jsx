@@ -69,55 +69,63 @@ const DraggableHabit = ({ habit, index, categoryEmoji }) => {
               </h4>
             </div>
 
-            <div className="dropdown text-end">
+            <div className="d-flex align-items-center justify-content-between">
               <button
-                className="btn btn-outline-light dropdown-toggle custom-font"
+                className="btn btn-outline-light custom-font mx-3"
                 type="button"
-                id={`dropdownMenuButton-${habit.id}`}
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+                onClick={handleComplete}
               >
-                <i className="bi bi-gear"></i>
+                <i className="bi bi-check-lg"></i>
               </button>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby={`dropdownMenuButton-${habit.id}`}
-              >
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleEdit}
-                  >
-                    Edit
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleComplete}
-                  >
-                    {habit.isCompleted ? "Uncheck" : "Check"}
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item custom-font"
-                    onClick={handleDuplicate}
-                  >
-                    Duplicate
-                  </button>
-                </li>
-              </ul>
+              <div className="dropdown text-end">
+                <button
+                  className="btn btn-outline-light dropdown-toggle custom-font"
+                  type="button"
+                  id={`dropdownMenuButton-${habit.id}`}
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i className="bi bi-gear"></i>
+                </button>
+                <ul
+                  className="dropdown-menu"
+                  aria-labelledby={`dropdownMenuButton-${habit.id}`}
+                >
+                  <li>
+                    <button
+                      className="dropdown-item custom-font"
+                      onClick={handleEdit}
+                    >
+                      Edit
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item custom-font"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item custom-font"
+                      onClick={handleComplete}
+                    >
+                      {habit.isCompleted ? "Uncheck" : "Check"}
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item custom-font"
+                      onClick={handleDuplicate}
+                    >
+                      Duplicate
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
-
             {showModal && (
               <UpdateHabitModal
                 habit={habit}

@@ -7,14 +7,7 @@ const HabitList = ({ habits }) => {
   return (
     <div>
       {habits.length > 0 ? (
-        habits.map((habit, index) => (
-          <Habit
-            key={habit.id}
-            habit={habit}
-            index={index}
-            categoryEmoji={"✔️"}
-          />
-        ))
+        habits.map((habit) => <Habit key={habit.id} habit={habit} />)
       ) : (
         <p className="m-4 custom-font">"You've no habits here."</p>
       )}
