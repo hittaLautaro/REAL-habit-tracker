@@ -62,11 +62,9 @@ const DraggableHabit = ({ habit, index, categoryEmoji }) => {
           {...provided.dragHandleProps}
           className="habit-item"
         >
-          <div className="border border-dark rounded custom-min-height bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
+          <div className="border border-dark rounded custom-min-height mx-3 my-1 p-4 bg-black text-light d-flex justify-content-between align-items-center">
             <div>
-              <h4 className="m-0 custom-font">
-                {categoryEmoji} {habit.name}
-              </h4>
+              <h4 className="m-0 custom-font">{habit.name}</h4>
             </div>
 
             <div className="d-flex align-items-center justify-content-between">

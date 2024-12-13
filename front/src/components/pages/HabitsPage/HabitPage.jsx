@@ -9,6 +9,8 @@ import _ from "lodash";
 
 import "../../global/styles.css";
 import DroppableHabitList from "./DroppableHabitList.jsx";
+import Todo from "./Todo.jsx";
+import Completed from "./Completed.jsx";
 
 const HabitPage = () => {
   const [localHabits, setLocalHabits] = useState({
@@ -32,7 +34,11 @@ const HabitPage = () => {
   const getToday = () =>
     days[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1].toUpperCase();
 
-  // Filter habits for today when habits change
+  const handleChangeSelectedList = () => {
+    setSelectedList((prev) => (prev === "todo" ? "completed" : "todo"));
+  };
+
+  // Filter habits for today when habits changes
   useEffect(() => {
     const filteredTodo = habits.todo.filter((habit) =>
       habit.activeDays.includes(getToday())
@@ -47,62 +53,27 @@ const HabitPage = () => {
     });
   }, [habits]);
 
-  const handleRemoveAllHabits = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      preConfirm: async () => {
-        await deleteAllHabits();
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your habits have been deleted.", "success");
-      }
-    });
-  };
-
-  const handleSelectList = () => {};
+  useEffect(() => {
+    setSelectedList("todo");
+  }, []);
 
   return (
     <div>
       <Header />
-      <div className="container-fluid">
-        <div className="mx-5 row ">
-          <div className="col-sm border border-dark m-3">
-            <div className="d-flex align-items-center justify-content-between ">
-              <div className="d-flex align-items-center">
-                <h3 className="m-4 custom-font">to-do</h3>
-                <AddHabitModal />
-                <button
-                  type="button"
-                  className="m-2 btn btn-outline-light"
-                  onClick={handleRemoveAllHabits}
-                >
-                  <i className="bi bi-trash"></i>
-                </button>
-                <button
-                  className="btn btn-outline-light custom-font"
-                  onClick={handleSelectList}
-                >
-                  <i className="bi bi-arrow-clockwise"></i>
-                </button>
-              </div>
-            </div>
-            <div className="habit-list">
-              {loading ? (
-                <p className="m-5 custom-font">loading...</p>
-              ) : (
-                <DroppableHabitList
-                  droppableId="todo"
-                  habits={localHabits.todo}
-                />
-              )}
-            </div>
+      <div className="d-flex justify-content-center align-items-center">
+        <div className="row w-75 justify-content-around">
+          <div className="col-sm border border-dark mx-5 mt-4 mb-2">
+            {selectedList === "todo" ? (
+              <Todo
+                habits={localHabits.todo}
+                changeList={handleChangeSelectedList}
+              />
+            ) : (
+              <Completed
+                habits={localHabits.finished}
+                changeList={handleChangeSelectedList}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -111,22 +82,3 @@ const HabitPage = () => {
 };
 
 export default HabitPage;
-
-{
-  /* <div className="col-sm m-3">
-  <div className="d-flex align-items-center">
-    <h3 className="m-4 custom-font">finished</h3>
-  </div>
-  <div className="border border-dark habit-list">
-    {loading ? (
-      <p className="m-5 custom-font">loading...</p>
-    ) : (
-      <HabitList
-        habits={localHabits.finished}
-        title="Finished"
-        droppableId="finished"
-      />
-    )}
-  </div>
-</div>; */
-}

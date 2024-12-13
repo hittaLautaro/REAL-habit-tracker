@@ -49,7 +49,11 @@ const DroppableHabitList = ({ droppableId, habits }) => {
     debounceSave(newLocalHabits);
   };
 
-  return (
+  return localHabits.length <= 0 ? (
+    <div className="d-flex allign-align-content-center justify-content-around">
+      <p className="m-4 custom-font-normal">You've no habits left.</p>
+    </div>
+  ) : (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={droppableId}>
         {(provided) => (
@@ -62,18 +66,14 @@ const DroppableHabitList = ({ droppableId, habits }) => {
               flexDirection: "column",
             }}
           >
-            {localHabits.length > 0 ? (
-              localHabits.map((habit, index) => (
-                <DraggableHabit
-                  key={habit.id}
-                  habit={habit}
-                  index={index}
-                  categoryEmoji={"✔️"}
-                />
-              ))
-            ) : (
-              <p className="m-4 custom-font">You've no habits.</p>
-            )}
+            {localHabits.map((habit, index) => (
+              <DraggableHabit
+                key={habit.id}
+                habit={habit}
+                index={index}
+                categoryEmoji={"✔️"}
+              />
+            ))}
             {provided.placeholder}
           </div>
         )}

@@ -4,13 +4,15 @@ import { Droppable } from "@hello-pangea/dnd";
 import "../../global/styles.css";
 
 const HabitList = ({ habits }) => {
-  return (
+  return habits.length <= 0 ? (
+    <div className="d-flex allign-align-content-center justify-content-around">
+      <p className="m-4 custom-font-normal">You've no completed habits.</p>
+    </div>
+  ) : (
     <div>
-      {habits.length > 0 ? (
-        habits.map((habit) => <Habit key={habit.id} habit={habit} />)
-      ) : (
-        <p className="m-4 custom-font">"You've no habits here."</p>
-      )}
+      {habits.map((habit) => (
+        <Habit key={habit.id} habit={habit} />
+      ))}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
 .custom-font {
   font-family: "IBM Plex Mono", monospace;
@@ -14,8 +14,12 @@
   font-size: 5rem;
 }
 
-.custom-min-height {
-  min-height: 110px;
+.habit-min-height-all-habits {
+  min-height: 80px;
+}
+
+.habit-min-height-todo {
+  min-height: 80px;
 }
 
 .habit-list {

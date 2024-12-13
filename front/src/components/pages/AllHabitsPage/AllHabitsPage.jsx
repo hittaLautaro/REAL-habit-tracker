@@ -55,12 +55,13 @@ const AllHabitsPage = () => {
             <div className="d-flex align-items-center">
               <h3 className="m-4 custom-font">my habits</h3>
               <AddHabitModal />
+
               <button
-                type="button"
-                className="m-2 btn btn-outline-light"
+                className=" btn btn-outline-light "
                 onClick={handleRemoveAllHabits}
               >
-                <i className="bi bi-trash"></i>
+                <i className="me-2 bi bi-trash"></i>
+                <span className="custom-font">Delete</span>
               </button>
             </div>
             <div className="habit-list">

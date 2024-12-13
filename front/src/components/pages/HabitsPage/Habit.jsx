@@ -54,14 +54,14 @@ const Habit = ({ habit }) => {
   };
 
   return (
-    <div className="border border-dark rounded custom-min-height bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
+    <div className="border border-dark rounded habit-min-height-todo bg-black text-light m-3 p-3 d-flex justify-content-between align-items-center">
       <div>
         <h4 className="m-0 custom-font">{habit.name}</h4>
       </div>
       <div className="d-flex align-items-center justify-content-between">
-        <button className="btn btn-outline-light custom-font" type="button">
+        {/* <button className="btn btn-outline-light custom-font" type="button">
           Nashe
-        </button>
+        </button> */}
         <div className="dropdown text-end">
           <button
             className="btn btn-outline-light dropdown-toggle custom-font"
