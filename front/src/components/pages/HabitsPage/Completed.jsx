@@ -12,7 +12,7 @@ const Todo = ({ habits, changeList }) => {
         <h3 className="m-4 custom-font">completed</h3>
         <div>
           <AddHabitModal />
-          <button className="mx-3 btn btn-outline-light " onClick={changeList}>
+          <button className="me-3 btn btn-outline-light " onClick={changeList}>
             <i className="bi bi-arrow-right me-2"></i>
             <span className="custom-font">to-do</span>
           </button>
