@@ -7,11 +7,15 @@ import com.hitta.SpringSecurityExample.mappers.HabitMapper;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
+import com.hitta.SpringSecurityExample.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 @Service
 public class HabitService {
@@ -20,11 +24,42 @@ public class HabitService {
     private HabitRepo habitRepo;
 
     @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
     private HabitMapper habitMapper;
+
+    public void checkIfResetIsNeeded(Integer userId){
+        Users user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        ZoneId userZone = ZoneId.of(user.getTime_zone());
+        LocalDate todayInUserTimezone = LocalDate.now(userZone);
+
+        LocalDate lastResetDate = getLastResetDateForUser(userId);
+
+        // If we're on a new day in user's timezone, reset their habits
+        if (lastResetDate == null || todayInUserTimezone.isAfter(lastResetDate)) {
+            resetUserHabits(userId);
+            updateLastResetDate(userId, todayInUserTimezone);
+        }
+
+    }
+
+    private void updateLastResetDate(Integer userId, LocalDate date) {
+        Users user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setLastHabitResetDate(date);
+        userRepo.save(user);
+    }
+
+    private LocalDate getLastResetDateForUser(Integer userId){
+        Users user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getLastHabitResetDate();
+    }
 
     public List<HabitResponse> getAllHabitsByUserId(Integer userId){
         List<Habit> habits = habitRepo.findAllByUserIdOrderByLastModifiedDate(userId);
-
         return habitMapper.habitsToResponses(habits);
     }
 
@@ -85,5 +120,30 @@ public class HabitService {
             return false; // Different sizes, not equal
         }
         return set1.containsAll(set2) && set2.containsAll(set1); // Ensure both sets contain each other's elements
+    }
+
+    private void resetUserHabits(Integer userId) {
+        var user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Habit> userHabits = habitRepo.findAllByUserIdOrderByLastModifiedDate(user.getId());
+
+        boolean allCompleted = true;
+
+        for (Habit habit : userHabits) {
+            boolean wasCompletedToday = checkHabitCompletion(habit);
+
+            if(wasCompletedToday){
+                habit.setStreak(habit.getStreak() + 1);
+                habit.setTimesDone(habit.getTimesDone() + 1);
+                habit.setTotalTimesDone(habit.getTotalTimesDone() + 1);
+            }else{
+                habit.setStreak(0);
+                allCompleted = false;
+            }
+
+            habit.setCompleted(false);
+            habitRepo.save(habit);
+        }
+
+        if(!allCompleted) user.setStreak(0);
     }
 }

@@ -28,6 +28,7 @@ public class JwtService {
 
     public String generateAccessToken(String username) {
         Map<String, Object> claims = new HashMap<>();
+        System.out.println("Generating new access token");
         return Jwts.builder()
                 .claims()
                 .add(claims)
@@ -43,6 +44,7 @@ public class JwtService {
         var secureRandom = new SecureRandom();
         byte[] randomBytes = new byte[64];
         secureRandom.nextBytes(randomBytes);
+        System.out.println("Generating new refresh token");
         return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
     }
 

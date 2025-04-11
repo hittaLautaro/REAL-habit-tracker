@@ -39,6 +39,7 @@ public class Users implements UserDetails, Principal {
     private LocalDate dateOfBirth;
     private boolean accountLocked;
     private boolean enabled;
+    private LocalDate lastHabitResetDate;
     @NotNull
     private Integer streak;
     @NotNull

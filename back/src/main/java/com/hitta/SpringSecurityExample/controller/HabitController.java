@@ -26,8 +26,6 @@ public class HabitController {
     @Autowired
     private UserService userService;
 
-    // all with the user id ->
-
     // get all habits
     @GetMapping("/")
     public List<HabitResponse> getAll(@AuthenticationPrincipal UserDetails userDetails) {
@@ -68,7 +66,7 @@ public class HabitController {
 
     @Transactional
     @DeleteMapping("/")
-    public void delete(@AuthenticationPrincipal UserDetails userDetails) {
+    public void deleteAll(@AuthenticationPrincipal UserDetails userDetails) {
         Users user = userService.findByUsername(userDetails.getUsername());
         habitService.deleteAll(user.getId());
     }

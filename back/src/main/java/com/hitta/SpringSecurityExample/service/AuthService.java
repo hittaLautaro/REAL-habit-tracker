@@ -68,8 +68,6 @@ public class AuthService {
                                 (request.getEmail(), request.getPassword()));
 
         var user = (Users) authentication.getPrincipal();
-        user.setTime_zone(request.getTime_zone());
-        userRepo.save(user);
 
         String accessToken = jwtService.generateAccessToken(request.getEmail());
         String refreshToken = createOrUpdateRefreshToken(user);

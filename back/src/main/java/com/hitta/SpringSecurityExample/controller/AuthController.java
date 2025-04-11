@@ -26,6 +26,7 @@ public class AuthController {
         try{
             AuthResponse authResponse = service.register(request);
             addRefreshTokenCookie(response, authResponse.getRefreshToken());
+            System.out.println("God");
             return ResponseEntity.ok()
                     .body(authResponse);
         } catch (RuntimeException e) {
