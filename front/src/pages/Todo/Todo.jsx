@@ -1,12 +1,11 @@
 import { useEffect, useContext } from "react";
-import { HabitContext } from "../../contexts/HabitContext";
-import Swal from "sweetalert2";
-import AddHabitModal from "../../global/AddHabitModal";
+import { HabitContext } from "../../components/contexts/HabitContext";
+import AddHabitModal from "../../components/global/AddHabitModal";
 import DroppableHabitList from "./DroppableHabitList";
 
 const Todo = ({ habits, changeList }) => {
-  const { deleteAllHabits, updateHabitsOrdersAndCompletions } =
-    useContext(HabitContext);
+  // const { deleteAllHabits, updateHabitsOrdersAndCompletions } =
+  //   useContext(HabitContext);
 
   return (
     <div>

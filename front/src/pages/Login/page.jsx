@@ -1,47 +1,37 @@
 import React, { useState } from "react";
-import AuthService from "../../utils/authService";
-import { useNavigate, useNavigation } from "react-router-dom";
-
-import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AuthService from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
-import "../../global/styles.css";
+import "../../components/global/styles.css";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
+    const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     if (password.length < 8) {
       setError("Password must be at least 8 characters long");
       return;
     }
 
-    AuthService.register({
+    AuthService.login({
       email: email,
       password: password,
-      dateOfBirth: dateOfBirth,
-      time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      time_zone: currentTimeZone,
     })
-      .then((response) => {
-        if (response.status === 200) {
-          navigate("/auth/login");
-        }
-        setEmail("");
-        setPassword("");
-        setDateOfBirth("");
+      .then(() => {
+        navigate("/");
       })
       .catch((err) => {
         if (err.response) {
           setError("Login failed. Please try again.");
-        } else {
-          setError("Connection error. Please try again.");
         }
       });
   };
@@ -61,7 +51,7 @@ const RegisterPage = () => {
           style={{ backgroundColor: "#f8f9fa" }}
         >
           <h2 className="text-center mb-4" style={{ color: "#121212" }}>
-            Sign up
+            Login
           </h2>
 
           {error && (
@@ -77,9 +67,9 @@ const RegisterPage = () => {
                 className="form-control"
                 id="email"
                 placeholder="Enter email"
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                type="email"
                 required
               />
             </div>
@@ -89,25 +79,12 @@ const RegisterPage = () => {
                 className="form-control"
                 id="password"
                 placeholder="Enter password"
-                value={password}
                 type="password"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
-            <div className="mb-3" style={{ color: "#121212" }}>
-              <label htmlFor="date">Date of Birth</label>
-              <input
-                className="form-control"
-                id="date"
-                placeholder="Enter date"
-                value={dateOfBirth}
-                type="date"
-                onChange={(e) => setDateOfBirth(e.target.value)}
-                required
-              />
-            </div>
-
             <div className="d-grid gap-2">
               <button
                 type="submit"
@@ -119,19 +96,19 @@ const RegisterPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                Sign up
+                Login
               </button>
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/auth/login")}
+                onClick={() => navigate("/auth/register")}
                 style={{
                   padding: 0,
                   border: "none",
                   background: "none",
                 }}
               >
-                Login
+                Signup
               </button>
             </div>
           </form>
@@ -141,4 +118,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

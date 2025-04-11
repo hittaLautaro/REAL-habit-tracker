@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import Habit from "./Habit";
 import { Droppable } from "@hello-pangea/dnd";
-import "../../global/styles.css";
+import "../../components/global/styles.css";
 import { DragDropContext } from "@hello-pangea/dnd";
 import { useContext, useState, useRef } from "react";
 import _ from "lodash";
-import { HabitContext } from "../../contexts/HabitContext";
+import { HabitContext } from "../../components/contexts/HabitContext";
 import DraggableHabit from "./DraggableHabit";
 
 const DroppableHabitList = ({ droppableId, habits }) => {
   const [localHabits, setLocalHabits] = useState([]);
   const { updateHabitsOrdersAndCompletions } = useContext(HabitContext);
-  console.log("Prop habits");
-  console.log(habits);
+  // console.log("Prop habits");
+  // console.log(habits);
 
   useEffect(() => {
     setLocalHabits(habits);
@@ -20,8 +20,8 @@ const DroppableHabitList = ({ droppableId, habits }) => {
 
   const debounceSave = useRef(
     _.debounce(async (updatedHabits) => {
-      console.log("Updated Habits"); // This should now print the correct array
-      console.log(updatedHabits); // This should now print the correct array
+      // console.log("Updated Habits"); // This should now print the correct array
+      // console.log(updatedHabits); // This should now print the correct array
       updateHabitsOrdersAndCompletions(updatedHabits);
     }, 1000)
   ).current;
@@ -43,7 +43,7 @@ const DroppableHabitList = ({ droppableId, habits }) => {
     setLocalHabits(newLocalHabits);
 
     // Debugging logs
-    console.log("Updated local habits:", newLocalHabits);
+    // console.log("Updated local habits:", newLocalHabits);
 
     // Debounced backend save
     debounceSave(newLocalHabits);

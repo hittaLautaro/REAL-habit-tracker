@@ -1,7 +1,6 @@
 import React from "react";
 import Habit from "./Habit";
-import { Droppable } from "@hello-pangea/dnd";
-import "../../global/styles.css";
+import "../../components/global/styles.css";
 
 const HabitList = ({ habits }) => {
   return habits.length <= 0 ? (

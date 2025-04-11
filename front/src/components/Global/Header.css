@@ -16,12 +16,11 @@ nav {
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 0.1rem;
   font-family: "IBM Plex Mono", monospace;
   text-decoration: none;
   color: white;
-  margin-top: 1.1rem;
-  margin-bottom: 0.8rem;
+  margin-top: 0.4rem;
   padding-left: 20px;
   border: none;
   outline: none;
@@ -53,7 +52,7 @@ nav {
   background-color: transparent; /* Remove background */
   border: none; /* Remove border */
   padding: 0; /* Remove extra padding */
-  margin: 1.5rem; /* Remove extra margins */
+  margin-right: 1.5rem; /* Remove extra margins */
   cursor: pointer; /* Add pointer cursor */
   font-size: 1.5rem; /* Adjust icon size */
   color: white; /* Set the desired color */

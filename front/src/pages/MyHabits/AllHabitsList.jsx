@@ -1,7 +1,7 @@
 import React from "react";
-import Habit from "../../pages/AllHabitsPage/Habit";
+import Habit from "./Habit";
 
-import "../../global/styles.css";
+import "../../components/global/styles.css";
 
 const AllHabitsList = ({ habits }) => {
   const allHabits = [...habits.todo, ...habits.finished]; // merge

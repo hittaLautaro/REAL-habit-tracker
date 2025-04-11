@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
-import UserService from "../utils/authService";
+import AuthService from "../../services/authService.js";
 import Swal from "sweetalert2";
 
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -20,7 +20,7 @@ const Header = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, logout!",
       preConfirm: async () => {
-        UserService.logout().then(() => {
+        AuthService.logout().then(() => {
           localStorage.clear();
           navigate("/auth/login");
         });

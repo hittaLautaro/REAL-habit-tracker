@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react";
-import { HabitContext } from "../../contexts/HabitContext";
+import { HabitContext } from "../../components/contexts/HabitContext";
 import Swal from "sweetalert2";
-import AddHabitModal from "../../global/AddHabitModal";
+import AddHabitModal from "../../components/global/AddHabitModal";
 import DroppableHabitList from "./DroppableHabitList";
 import HabitList from "./HabitList";
 

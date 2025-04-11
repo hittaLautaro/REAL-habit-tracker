@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import "../../global/styles.css";
+import "../../components/global/styles.css";
 
-import Header from "../../global/Header.jsx";
+import Header from "../../components/global/Header.jsx";
 
-import UserService from "../../utils/userService.js";
+import UserService from "../../services/userService.js";
 
 const HomePage = () => {
   const [user, setUser] = useState(null);

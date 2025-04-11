@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "../services/axiosInstance.js";
 
 const UserService = {
   getUserSimpleData: async () => {

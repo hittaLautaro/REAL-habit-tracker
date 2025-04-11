@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import HabitService from "../../utils/habitService.js";
+import HabitService from "../../services/habitService.js";
 import Swal from "sweetalert2";
-import UpdateHabitModal from "../../global/UpdateHabitModal.jsx";
-import { HabitContext } from "../../contexts/HabitContext.jsx";
+import UpdateHabitModal from "../../components/global/UpdateHabitModal.jsx";
+import { HabitContext } from "../../components/contexts/HabitContext.jsx";
 import { Draggable } from "@hello-pangea/dnd";
 
-import "../../global/styles.css";
+import "../../components/global/styles.css";
 
 const DraggableHabit = ({ habit, index, categoryEmoji }) => {
   const { deleteHabit, updateHabit, addHabit } = useContext(HabitContext);

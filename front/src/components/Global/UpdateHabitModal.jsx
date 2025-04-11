@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import HabitService from "../utils/habitService";
+import HabitService from "../../services/habitService";
 
 import { HabitContext } from "../contexts/HabitContext";
 

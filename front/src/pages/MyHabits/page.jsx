@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import HabitService from "../../utils/habitService.js";
-import Header from "../../global/Header.jsx";
+import Header from "../../components/global/Header.jsx";
 import Swal from "sweetalert2";
-import AddHabitModal from "../../global/AddHabitModal.jsx";
+import AddHabitModal from "../../components/global/AddHabitModal.jsx";
 import AllHabitsList from "./AllHabitsList.jsx";
 
-import { HabitContext } from "../../contexts/HabitContext";
+import { HabitContext } from "../../components/contexts/HabitContext.jsx";
 
-import "../../global/styles.css";
-
+import "../../components/global/styles.css";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -49,9 +47,9 @@ const AllHabitsPage = () => {
   return (
     <div>
       <Header />
-      <div className="container-fluid">
-        <div className="mx-5 row ">
-          <div className="col-sm border border-dark m-3">
+      <div className="d-flex justify-content-center align-items-center">
+        <div className="row w-75 justify-content-around">
+          <div className="col-sm border border-dark mx-5 mt-5">
             <div className="d-flex align-items-center">
               <h3 className="m-4 custom-font">my habits</h3>
               <AddHabitModal />

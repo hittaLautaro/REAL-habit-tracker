@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import HabitService from "../utils/habitService";
+import HabitService from "../../services/habitService";
 
 export const HabitContext = createContext();
 

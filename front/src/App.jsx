@@ -2,21 +2,46 @@
 import { Route, Routes } from "react-router-dom";
 import "./index.css";
 
-import HomePage from "./components/pages/HomePage/HomePage.jsx";
-import LoginPage from "./components/pages/LoginPage/LoginPage.jsx";
-import RegisterPage from "./components/pages/RegisterPage/RegisterPage.jsx";
-import AllHabitsPage from "./components/pages/AllHabitsPage/AllHabitsPage.jsx";
-import HabitPage from "./components/pages/HabitsPage/HabitPage.jsx";
+import HomePage from "./pages/Home/page.jsx";
+import LoginPage from "./pages/Login/page.jsx";
+import RegisterPage from "./pages/Signup/page.jsx";
+import AllHabitsPage from "./pages/MyHabits/page.jsx";
+import HabitPage from "./pages/Todo/page.jsx";
+import { HabitProvider } from "./components/contexts/HabitContext.jsx";
 
 const App = () => {
   return (
     <div className="main-app">
       <Routes>
-        <Route path="/" element={<HomePage />} />
         <Route path="/auth/login" element={<LoginPage />} />
-        <Route path="/habits" element={<HabitPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
-        <Route path="/all-habits" element={<AllHabitsPage />} />
+
+        <Route
+          path="/"
+          element={
+            <HabitProvider>
+              <HomePage />
+            </HabitProvider>
+          }
+        />
+
+        <Route
+          path="/habits"
+          element={
+            <HabitProvider>
+              <HabitPage />
+            </HabitProvider>
+          }
+        />
+
+        <Route
+          path="/all-habits"
+          element={
+            <HabitProvider>
+              <AllHabitsPage />
+            </HabitProvider>
+          }
+        />
       </Routes>
     </div>
   );

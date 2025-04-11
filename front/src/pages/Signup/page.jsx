@@ -1,37 +1,46 @@
 import React, { useState } from "react";
+import AuthService from "../../services/authService.js";
+import { useNavigate, useNavigation } from "react-router-dom";
+
+import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AuthService from "../../utils/authService";
-import { useNavigate } from "react-router-dom";
+import "../../components/global/styles.css";
 
-import "../../global/styles.css";
-
-const LoginPage = () => {
+const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     if (password.length < 8) {
       setError("Password must be at least 8 characters long");
       return;
     }
 
-    AuthService.login({
+    AuthService.register({
       email: email,
       password: password,
-      time_zone: currentTimeZone,
+      dateOfBirth: dateOfBirth,
+      time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     })
-      .then(() => {
-        navigate("/");
+      .then((response) => {
+        if (response.status === 200) {
+          navigate("/auth/login");
+        }
+        setEmail("");
+        setPassword("");
+        setDateOfBirth("");
       })
       .catch((err) => {
         if (err.response) {
           setError("Login failed. Please try again.");
+        } else {
+          setError("Connection error. Please try again.");
         }
       });
   };
@@ -51,7 +60,7 @@ const LoginPage = () => {
           style={{ backgroundColor: "#f8f9fa" }}
         >
           <h2 className="text-center mb-4" style={{ color: "#121212" }}>
-            Login
+            Sign up
           </h2>
 
           {error && (
@@ -67,9 +76,9 @@ const LoginPage = () => {
                 className="form-control"
                 id="email"
                 placeholder="Enter email"
-                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                type="email"
                 required
               />
             </div>
@@ -79,12 +88,25 @@ const LoginPage = () => {
                 className="form-control"
                 id="password"
                 placeholder="Enter password"
-                type="password"
                 value={password}
+                type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
+            <div className="mb-3" style={{ color: "#121212" }}>
+              <label htmlFor="date">Date of Birth</label>
+              <input
+                className="form-control"
+                id="date"
+                placeholder="Enter date"
+                value={dateOfBirth}
+                type="date"
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                required
+              />
+            </div>
+
             <div className="d-grid gap-2">
               <button
                 type="submit"
@@ -96,19 +118,19 @@ const LoginPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                Login
+                Sign up
               </button>
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/auth/register")}
+                onClick={() => navigate("/auth/login")}
                 style={{
                   padding: 0,
                   border: "none",
                   background: "none",
                 }}
               >
-                Signup
+                Login
               </button>
             </div>
           </form>
@@ -118,4 +140,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
