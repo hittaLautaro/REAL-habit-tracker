@@ -26,7 +26,7 @@ const RegisterPage = () => {
       email: email,
       password: password,
       dateOfBirth: dateOfBirth,
-      time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     })
       .then((response) => {
         if (response.status === 200) {
