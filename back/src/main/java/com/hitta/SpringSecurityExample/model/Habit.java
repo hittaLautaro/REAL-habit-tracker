@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Table(name = "habits")
@@ -32,6 +33,9 @@ public class Habit {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
+
+    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Completion> completions;
 
     @NotBlank
     @NotNull

@@ -4,14 +4,17 @@ import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
 import com.hitta.SpringSecurityExample.mappers.HabitMapper;
+import com.hitta.SpringSecurityExample.model.Completion;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
+import com.hitta.SpringSecurityExample.repo.CompletionRepo;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
@@ -29,10 +32,13 @@ public class HabitService {
     @Autowired
     private HabitMapper habitMapper;
 
+    @Autowired
+    private CompletionRepo completionRepo;
+
     public void checkIfResetIsNeeded(Integer userId){
         Users user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        ZoneId userZone = ZoneId.of(user.getTime_zone());
+        ZoneId userZone = ZoneId.of(user.getTimeZone());
         LocalDate todayInUserTimezone = LocalDate.now(userZone);
 
         LocalDate lastResetDate = getLastResetDateForUser(userId);
@@ -59,6 +65,7 @@ public class HabitService {
     }
 
     public List<HabitResponse> getAllHabitsByUserId(Integer userId){
+        checkIfResetIsNeeded(userId);
         List<Habit> habits = habitRepo.findAllByUserIdOrderByLastModifiedDate(userId);
         return habitMapper.habitsToResponses(habits);
     }
@@ -129,6 +136,7 @@ public class HabitService {
         boolean allCompleted = true;
 
         for (Habit habit : userHabits) {
+
             boolean wasCompletedToday = checkHabitCompletion(habit);
 
             if(wasCompletedToday){
@@ -142,6 +150,14 @@ public class HabitService {
 
             habit.setCompleted(false);
             habitRepo.save(habit);
+
+            var completion = Completion.builder()
+                    .habit(habit)
+                    .isCompleted(wasCompletedToday)
+                    .date(LocalDateTime.now())
+                    .build();
+
+            completionRepo.save(completion);
         }
 
         if(!allCompleted) user.setStreak(0);

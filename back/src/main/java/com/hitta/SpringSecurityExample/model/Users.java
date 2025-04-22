@@ -43,7 +43,7 @@ public class Users implements UserDetails, Principal {
     @NotNull
     private Integer streak;
     @NotNull
-    private String time_zone;
+    private String timeZone;
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
@@ -55,8 +55,6 @@ public class Users implements UserDetails, Principal {
     private Token token;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Habit> habits;
-    @Column(name = "next_reset", nullable = false)
-    private LocalDateTime nextReset;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

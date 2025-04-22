@@ -3,7 +3,6 @@ package com.hitta.SpringSecurityExample.controller;
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
-import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.HabitService;
 import com.hitta.SpringSecurityExample.service.UserService;
@@ -38,7 +37,6 @@ public class HabitController {
         return habitService.findById(id);
     }
 
-    // post a habit
     @PostMapping("/")
     public HabitResponse save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody HabitCreateRequest request){
         Users user = userService.findByUsername(userDetails.getUsername());

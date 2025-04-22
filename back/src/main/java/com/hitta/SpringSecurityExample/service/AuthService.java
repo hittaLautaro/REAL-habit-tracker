@@ -13,7 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Service
@@ -37,16 +39,18 @@ public class AuthService {
     public AuthResponse register(RegisterRequest request) {
         if(userRepo.findByEmail(request.getEmail()) != null) throw new RuntimeException("User with that email already exists");
 
+        ZoneId userZone = ZoneId.of(request.getTimeZone());
+        LocalDate todayInUserTimezone = LocalDate.now(userZone);
+
         var user = Users.builder()
                 .email(request.getEmail())
                 .password(encoder.encode(request.getPassword()))
                 .dateOfBirth(request.getDateOfBirth())
-                .time_zone(request.getTime_zone())
+                .timeZone(request.getTimeZone())
                 .accountLocked(false)
                 .enabled(true)
                 .createdDate(LocalDateTime.now())
-                .time_zone(request.getTime_zone())
-                .nextReset(LocalDateTime.now())
+                .lastHabitResetDate(todayInUserTimezone)
                 .streak(0)
                 .build();
 

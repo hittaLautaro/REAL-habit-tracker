@@ -22,7 +22,7 @@ public class UserController {
                 .id(user.getId())
                 .streak(user.getStreak())
                 .dateOfBirth(user.getDateOfBirth())
-                .time_zone(user.getTime_zone())
+                .time_zone(user.getTimeZone())
                 .email(user.getEmail())
                 .build();
     }
