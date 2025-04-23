@@ -44,7 +44,20 @@ const Header = () => {
             my habits
           </NavLink>
         </div>
-
+        <button
+          className="logout-btn"
+          aria-label="Logout"
+          onClick={handleLogout}
+        >
+          <i className="bi bi-lightbulb"></i>
+        </button>
+        <button
+          className="logout-btn"
+          aria-label="Logout"
+          onClick={handleLogout}
+        >
+          <i className="bi bi-gear"></i>
+        </button>
         {/* Logout Button */}
         <button
           className="logout-btn"

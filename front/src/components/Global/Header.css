@@ -27,8 +27,21 @@ nav {
   box-shadow: none;
 }
 
+/* <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big custom-font">
+          real.
+        </h1> */
+
 .title:hover {
-  color: #b1b1b1;
+  background: linear-gradient(
+    to right,
+    #22c55e,
+    #facc15
+  ); /* from-green-500 to-yellow-400 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-decoration: underline;
 }
 
 /* Center the navbar links */

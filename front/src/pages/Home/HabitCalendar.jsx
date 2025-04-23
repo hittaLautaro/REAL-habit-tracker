@@ -4,11 +4,37 @@ const HabitCalendar = ({ startDate, endDate, dataValues }) => {
   const daysInMonth = Math.ceil(
     (endingDate - startingDate) / (1000 * 60 * 60 * 24) + 1
   );
+
+  const rows = 7; // 7 days of week
+  const columns = Math.ceil(daysInMonth / rows);
+
+  // Create grid cells with day info
+  const gridCells = [];
+
+  // Calculate how many empty cells we need based on the day of week of the first date
+  // getDay() returns 0 for Sunday, 1 for Monday, etc.
+  const firstDayOfWeek = startingDate.getDay();
+
+  // Add empty cells for proper alignment
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    gridCells.push({
+      isEmpty: true,
+      day: null,
+    });
+  }
+
+  // Add actual date cells
   const calenderGrid = Array.from({ length: daysInMonth }, (_, i) => {
     const date = new Date(startingDate);
     date.setDate(startingDate.getDate() + i);
-    return date.toISOString().slice(0, 10);
+    return {
+      isEmpty: false,
+      day: date.toISOString().slice(0, 10),
+      dayOfWeek: date.getDay(),
+    };
   });
+
+  gridCells.push(...calenderGrid);
 
   const getColor = (activity, objective) => {
     if (objective === 0) return "#757575"; // grey
@@ -17,32 +43,42 @@ const HabitCalendar = ({ startDate, endDate, dataValues }) => {
     return "#68d600"; // green / success
   };
 
-  const rows = 7;
-  const columns = Math.ceil(daysInMonth / rows);
-
   return (
     <div
       style={{
         display: "grid",
         gap: "4px",
         gridTemplateRows: `repeat(${rows}, 1fr)`,
-        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        gridTemplateColumns: `repeat(${columns + 1}, 1fr)`, // Add extra column if needed
         gridAutoFlow: "column",
         width: "fit-content",
         margin: "4rem",
       }}
     >
-      {calenderGrid.map((day, index) => {
-        const activityCount =
-          dataValues.find((i) => i.date === day)?.count || 0;
+      {gridCells.map((cell, index) => {
+        if (cell.isEmpty) {
+          // Return an empty cell
+          return (
+            <div
+              key={`empty-${index}`}
+              style={{
+                width: "16px",
+                height: "16px",
+              }}
+            ></div>
+          );
+        }
 
+        const activityCount =
+          dataValues.find((i) => i.date === cell.day)?.count || 0;
         const objective =
-          dataValues.find((i) => i.date === day)?.objective || 0;
+          dataValues.find((i) => i.date === cell.day)?.objective || 0;
+
         return (
           <div
             key={index}
             className="rounded cursor-pointer"
-            title={`${activityCount} out of ${objective} completed on ${day}`}
+            title={`${activityCount} out of ${objective} completed on ${cell.day}`}
             style={{
               backgroundColor: getColor(activityCount, objective),
               width: "16px",
