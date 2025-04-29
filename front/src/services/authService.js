@@ -15,6 +15,10 @@ const AuthService = {
     await axiosInstance.post("/auth/logout");
   },
 
+  changePassword: async (user) => {
+    return await axiosInstance.patch("/auth/change-password", user);
+  },
+
   refreshToken: async () => {
     const response = await axiosInstance.post("/auth/refresh");
     localStorage.setItem("jwtToken", response.data.accessToken);

@@ -1,6 +1,22 @@
-const HabitCalendar = ({ startDate, endDate, dataValues }) => {
-  const startingDate = new Date(startDate);
-  const endingDate = new Date(endDate);
+import React, { useEffect, useState } from "react";
+import CompletionService from "../../services/completionService";
+
+const HabitCalendar = () => {
+  const [year, setYear] = useState(2025);
+  const [dataValues, setDataValues] = useState([]);
+
+  const fetchData = async () => {
+    const res = await CompletionService.getAll(year);
+    console.log(res);
+    setDataValues(res.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [year]);
+
+  const startingDate = new Date(year, 0, 1);
+  const endingDate = new Date(year, 11, 31);
   const daysInMonth = Math.ceil(
     (endingDate - startingDate) / (1000 * 60 * 60 * 24) + 1
   );
@@ -70,7 +86,7 @@ const HabitCalendar = ({ startDate, endDate, dataValues }) => {
         }
 
         const activityCount =
-          dataValues.find((i) => i.date === cell.day)?.count || 0;
+          dataValues.find((i) => i.date === cell.day)?.completed || 0;
         const objective =
           dataValues.find((i) => i.date === cell.day)?.objective || 0;
 

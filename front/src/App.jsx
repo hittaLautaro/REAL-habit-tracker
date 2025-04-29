@@ -8,6 +8,7 @@ import RegisterPage from "./pages/Signup/page.jsx";
 import AllHabitsPage from "./pages/MyHabits/page.jsx";
 import HabitPage from "./pages/Todo/page.jsx";
 import { HabitProvider } from "./components/contexts/HabitContext.jsx";
+import ChangePasswordPage from "./pages/ChangePassword/page.jsx";
 
 const App = () => {
   return (
@@ -15,15 +16,8 @@ const App = () => {
       <Routes>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
-
-        <Route
-          path="/"
-          element={
-            <HabitProvider>
-              <HomePage />
-            </HabitProvider>
-          }
-        />
+        <Route path="/auth/change-password" element={<ChangePasswordPage />} />
+        <Route path="/" element={<HomePage />} />
 
         <Route
           path="/habits"

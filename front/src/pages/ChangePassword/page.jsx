@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import AuthService from "../../services/authService";
-import { useNavigate } from "react-router-dom";
+import AuthService from "../../services/authService.js";
+import { useNavigate, useNavigation } from "react-router-dom";
 
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../../components/global/styles.css";
 
-const LoginPage = () => {
+const ChangePasswordPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,24 +15,28 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     if (password.length < 8) {
       setError("Password must be at least 8 characters long");
       return;
     }
 
-    AuthService.login({
+    AuthService.changePassword({
       email: email,
       password: password,
-      time_zone: currentTimeZone,
     })
-      .then(() => {
-        navigate("/");
+      .then((response) => {
+        if (response.status === 200) {
+          navigate("/auth/login");
+        }
+        setPassword("");
+        setDateOfBirth("");
       })
       .catch((err) => {
         if (err.response) {
           setError("Login failed. Please try again.");
+        } else {
+          setError("Connection error. Please try again.");
         }
       });
   };
@@ -53,7 +58,7 @@ const LoginPage = () => {
           style={{ backgroundColor: "#f8f9fa" }}
         >
           <h2 className="text-center mb-4" style={{ color: "#121212" }}>
-            Login
+            Change Password
           </h2>
 
           {error && (
@@ -69,35 +74,23 @@ const LoginPage = () => {
                 className="form-control"
                 id="email"
                 placeholder="Enter email"
-                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                type="email"
                 required
               />
             </div>
             <div className="mb-3" style={{ color: "#121212" }}>
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">New password</label>
               <input
                 className="form-control"
                 id="password"
                 placeholder="Enter password"
-                type="password"
                 value={password}
+                type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <button
-                type="button"
-                className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/auth/change-password")}
-                style={{
-                  padding: 0,
-                  border: "none",
-                  background: "none",
-                }}
-              >
-                Forgot password?
-              </button>
             </div>
             <div className="d-grid gap-2">
               <button
@@ -110,19 +103,19 @@ const LoginPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                Login
+                Confirm
               </button>
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/auth/register")}
+                onClick={() => navigate("/auth/login")}
                 style={{
                   padding: 0,
                   border: "none",
                   background: "none",
                 }}
               >
-                Signup
+                Login
               </button>
             </div>
           </form>
@@ -132,4 +125,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default ChangePasswordPage;

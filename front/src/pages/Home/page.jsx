@@ -41,22 +41,9 @@ const HomePage = () => {
         )}
       </div>
       <div className="flex flex-row justify-content-center ">
-        <section className="flex flex-col justify-center items-center border-dark border-1 rounded p-5 mx-5 my-4">
+        <section className="flex flex-col justify-center items-center border-dark border-1 rounded mx-5 my-4">
           <h3 className="mb-3 custom-font">Your Habit Activity</h3>
-          <HabitCalendar
-            startDate={"2025-01-01"}
-            endDate={"2025-12-31"}
-            dataValues={[
-              { date: "2025-01-01", count: 3, objective: 0 },
-              { date: "2025-01-02", count: 0, objective: 5 },
-              { date: "2025-01-03", count: 1, objective: 1 },
-              { date: "2025-01-04", count: 1, objective: 5 },
-              { date: "2025-01-05", count: 0, objective: 3 },
-              { date: "2025-01-06", count: 4, objective: 5 },
-              { date: "2025-01-07", count: 1, objective: 4 },
-              { date: "2025-01-31", count: 4, objective: 4 },
-            ]}
-          />
+          <HabitCalendar />
           <div className="mt-3 d-flex">
             <div className="d-flex align-items-center me-3">
               <div
@@ -68,7 +55,7 @@ const HomePage = () => {
                   marginRight: "4px",
                 }}
               ></div>
-              <small>Completed</small>
+              <small className="custom-font-normal">Completed</small>
             </div>
             <div className="d-flex align-items-center me-3">
               <div
@@ -80,7 +67,7 @@ const HomePage = () => {
                   marginRight: "4px",
                 }}
               ></div>
-              <small>Partial</small>
+              <small className="custom-font-normal">Some completed</small>
             </div>
             <div className="d-flex align-items-center me-3">
               <div
@@ -92,7 +79,7 @@ const HomePage = () => {
                   marginRight: "4px",
                 }}
               ></div>
-              <small>None</small>
+              <small className="custom-font-normal">None completed</small>
             </div>
             <div className="d-flex align-items-center">
               <div
@@ -104,7 +91,7 @@ const HomePage = () => {
                   marginRight: "4px",
                 }}
               ></div>
-              <small>No Plan</small>
+              <small className="custom-font-normal">None to complete</small>
             </div>
           </div>
         </section>
