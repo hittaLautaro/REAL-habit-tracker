@@ -6,6 +6,7 @@ import com.hitta.SpringSecurityExample.dtos.RegisterRequest;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -140,4 +141,11 @@ public class AuthService {
         tokenRepo.save(token);
     }
 
+    public void changePassword(@Valid LoginRequest request) {
+        Users user = userRepo.findByEmail(request.getEmail());
+
+        user.setPassword(encoder.encode(request.getPassword()));
+
+        userRepo.save(user);
+    }
 }

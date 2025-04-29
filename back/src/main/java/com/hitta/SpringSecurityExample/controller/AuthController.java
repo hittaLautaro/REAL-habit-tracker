@@ -51,6 +51,20 @@ public class AuthController {
         }
     }
 
+    @PatchMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+            @RequestBody @Valid LoginRequest request,
+            HttpServletResponse response
+    ) {
+        try {
+            service.changePassword(request);
+            return ResponseEntity.ok("Password changed successfuly!");
+        }catch(RuntimeException e){
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshAccessToken(
             @CookieValue("refreshToken") String refreshToken,

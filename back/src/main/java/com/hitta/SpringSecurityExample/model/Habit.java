@@ -64,15 +64,11 @@ public class Habit {
     @NotNull
     private boolean isCompleted = false;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "habit_days", joinColumns = @JoinColumn(name = "habit_id"))
     @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> activeDays;
 
     @NotNull
     private Integer position;
-
-    public boolean isFullyCompleted() {
-        return this.timesDone >= this.frequency;
-    }
 }

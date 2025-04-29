@@ -1,7 +1,6 @@
 package com.hitta.SpringSecurityExample.mappers;
 
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
-import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
@@ -50,7 +49,7 @@ public class HabitMapper {
 
     public List<HabitResponse> habitsToResponses(List<Habit> habits){
         return habits.stream()
-                .map(x -> habitToResponse(x))
+                .map(this::habitToResponse)
                 .toList();
     }
 }

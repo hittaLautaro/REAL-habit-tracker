@@ -3,6 +3,7 @@ package com.hitta.SpringSecurityExample.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.apache.catalina.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -27,7 +28,10 @@ public class Completion {
     @JoinColumn(name = "habit_id", nullable = false)
     private Habit habit;
 
-    @CreatedDate
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime date;
 

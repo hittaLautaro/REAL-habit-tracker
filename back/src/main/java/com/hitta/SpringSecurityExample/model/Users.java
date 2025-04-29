@@ -61,6 +61,9 @@ public class Users implements UserDetails, Principal {
         return List.of(new SimpleGrantedAuthority("USER"));
     }
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Completion> completions;
+
     @Override
     public String getUsername() {
         return email;

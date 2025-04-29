@@ -11,6 +11,7 @@ import com.hitta.SpringSecurityExample.repo.CompletionRepo;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,10 +46,9 @@ public class HabitService {
 
         // If we're on a new day in user's timezone, reset their habits
         if (lastResetDate == null || todayInUserTimezone.isAfter(lastResetDate)) {
-            resetUserHabits(userId);
+            resetUserHabits(user.getId());
             updateLastResetDate(userId, todayInUserTimezone);
         }
-
     }
 
     private void updateLastResetDate(Integer userId, LocalDate date) {
@@ -65,6 +65,7 @@ public class HabitService {
     }
 
     public List<HabitResponse> getAllHabitsByUserId(Integer userId){
+        System.out.println("This method is being called!");
         checkIfResetIsNeeded(userId);
         List<Habit> habits = habitRepo.findAllByUserIdOrderByLastModifiedDate(userId);
         return habitMapper.habitsToResponses(habits);
@@ -155,6 +156,7 @@ public class HabitService {
                     .habit(habit)
                     .isCompleted(wasCompletedToday)
                     .date(LocalDateTime.now())
+                    .user(user)
                     .build();
 
             completionRepo.save(completion);
