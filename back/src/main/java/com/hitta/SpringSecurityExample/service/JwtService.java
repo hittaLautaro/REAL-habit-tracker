@@ -20,10 +20,10 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private String secretkey;
+    private final String secretKey;
 
     public JwtService(Dotenv dotenv) {
-        this.secretkey = dotenv.get("JWT_SECRET_KEY");
+        this.secretKey = dotenv.get("JWT_SECRET_KEY");
     }
 
     public String generateAccessToken(String username) {
@@ -49,7 +49,7 @@ public class JwtService {
     }
 
     private SecretKey getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretkey);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
