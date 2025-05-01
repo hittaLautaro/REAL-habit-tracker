@@ -4,17 +4,19 @@ A full-stack habit tracking web app built to showcase my skills in **Spring Boot
 
 ## 💻 Tech Stack
 
-- **Backend:**  
-  - Spring Boot  
-  - Spring Security (with JWT Authentication)  
-  - JPA & Hibernate  
-  - Lombok  
+- **Backend:**
 
-- **Database:**  
-  - PostgreSQL  
+  - Spring Boot
+  - Spring Security (with JWT Authentication)
+  - JPA & Hibernate
+  - Lombok
 
-- **Frontend:**  
-  - React  
-  - TailwindCSS  
-  - Vite  
-  - Axios  
+- **Database:**
+
+  - PostgreSQL
+
+- **Frontend:**
+  - React
+  - TailwindCSS
+  - Vite
+  - Axios

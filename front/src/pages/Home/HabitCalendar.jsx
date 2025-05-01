@@ -28,7 +28,7 @@ const HabitCalendar = () => {
   const gridCells = [];
 
   // Calculate how many empty cells we need based on the day of week of the first date
-  // getDay() returns 0 for Sunday, 1 for Monday, etc.
+  // getDay() returns 0 for Sunday, 1 for monday...
   const firstDayOfWeek = startingDate.getDay();
 
   // Add empty cells for proper alignment
