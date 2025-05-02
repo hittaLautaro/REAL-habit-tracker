@@ -33,9 +33,7 @@ public class CompletionMapper {
         int completed = (int) completions.stream()
                 .filter(Completion::isCompleted)
                 .count();
-
-        System.out.println(" objective : " + objective + " - completed: " + completed);
-
+        
         return CompletionSummaryOfTheDay.builder()
                 .completed(completed)
                 .objective(objective)

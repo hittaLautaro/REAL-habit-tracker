@@ -7,8 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserResponse {
-    private int id;
-    private Integer streak;
+public class UserAuthResponse {
     private String email;
+    private String password;
+    private boolean enabled;
+    private boolean accountLocked;
 }

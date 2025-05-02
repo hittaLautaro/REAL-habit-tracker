@@ -30,7 +30,7 @@ public class Habit {
     @SequenceGenerator(name = "habits_seq", sequenceName = "habits_seq", allocationSize = 1)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
@@ -64,7 +64,7 @@ public class Habit {
     @NotNull
     private boolean isCompleted = false;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "habit_days", joinColumns = @JoinColumn(name = "habit_id"))
     @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> activeDays;

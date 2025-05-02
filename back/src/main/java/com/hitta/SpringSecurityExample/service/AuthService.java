@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class AuthService {
 
 
     public AuthResponse register(RegisterRequest request) {
-        if(userRepo.findByEmail(request.getEmail()) != null) throw new RuntimeException("User with that email already exists");
+        if(userRepo.findByEmail(request.getEmail()).isPresent()) throw new RuntimeException("User with that email already exists");
 
         ZoneId userZone = ZoneId.of(request.getTimeZone());
         LocalDate todayInUserTimezone = LocalDate.now(userZone);
@@ -142,7 +143,7 @@ public class AuthService {
     }
 
     public void changePassword(@Valid LoginRequest request) {
-        Users user = userRepo.findByEmail(request.getEmail());
+        Users user = userRepo.findByEmail(request.getEmail()).orElseThrow(() -> new UsernameNotFoundException("Username not found."));
 
         user.setPassword(encoder.encode(request.getPassword()));
 

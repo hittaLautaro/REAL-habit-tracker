@@ -17,14 +17,15 @@ public class UserController {
 
     @GetMapping("/")
     public UserResponse getUserResponse(@AuthenticationPrincipal UserDetails userDetails) {
-        Users user = userService.findByUsername(userDetails.getUsername());
-        return UserResponse.builder()
-                .id(user.getId())
-                .streak(user.getStreak())
-                .dateOfBirth(user.getDateOfBirth())
-                .time_zone(user.getTimeZone())
-                .email(user.getEmail())
-                .build();
+//        Users user = userService.findByUsername(userDetails.getUsername());
+//        return UserResponse.builder()
+//                .id(user.getId())
+//                .streak(user.getStreak())
+//                .dateOfBirth(user.getDateOfBirth())
+//                .time_zone(user.getTimeZone())
+//                .email(user.getEmail())
+//                .build();
+        return userService.findUserResponseByEmail(userDetails.getUsername());
     }
 
 }

@@ -26,8 +26,8 @@ public class CompletionController {
 
     @GetMapping("/{year}")
     public ResponseEntity<List<CompletionSummaryOfTheDay>> getCompletionsByYear(@PathVariable Integer year, @AuthenticationPrincipal UserDetails userDetails){
-        Users user = userService.findByUsername(userDetails.getUsername());
-        return new ResponseEntity<>(completionService.getCompletionsByYear(year, user.getId()), HttpStatus.ACCEPTED);
+        Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
+        return new ResponseEntity<>(completionService.getCompletionsByYear(year,userId), HttpStatus.ACCEPTED);
     }
 
 //    @GetMapping("/")

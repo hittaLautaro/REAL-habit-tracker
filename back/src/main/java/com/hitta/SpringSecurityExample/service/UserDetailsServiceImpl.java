@@ -1,5 +1,7 @@
 package com.hitta.SpringSecurityExample.service;
 
+import com.hitta.SpringSecurityExample.dtos.UserAuthResponse;
+import com.hitta.SpringSecurityExample.model.CustomUserDetails;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +20,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Users user = userRepo.findByEmail(email);
-
+        UserAuthResponse user = userRepo.findUserAuthByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Username not found."));
         if(user == null){
             System.out.println("User "+ email +" not found");
             throw new UsernameNotFoundException("User not found");
         }
 
-        return user;
+        return new CustomUserDetails(
+                user.getEmail(),
+                user.getPassword(),
+                user.isEnabled(),
+                user.isAccountLocked()
+        );
     }
 
 }
