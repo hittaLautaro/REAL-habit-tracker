@@ -14,52 +14,58 @@ public class CustomUserDetails implements UserDetails {
     private final boolean enabled;
     private final boolean accountLocked;
     private final List<GrantedAuthority> authorities;
+    
+    private final Users user;
 
-    // Constructor to initialize CustomUserDetails with necessary fields from Users entity
-    public CustomUserDetails(String email, String password, boolean enabled, boolean accountLocked) {
-        this.email = email;
-        this.password = password;
-        this.enabled = enabled;
-        this.accountLocked = accountLocked;
-        this.authorities = List.of(new SimpleGrantedAuthority("USER"));  // You can add roles/authorities if needed
+    public CustomUserDetails(Users user) {
+        this.user = user;
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.enabled = user.isEnabled();
+        this.accountLocked = user.isAccountLocked();
+        this.authorities = List.of(new SimpleGrantedAuthority("USER"));
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;  // List of roles/authorities (in your case, "USER")
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return password;  // User's password
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return email;  // Email as username
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;  // You can implement expiration logic if needed
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !accountLocked;  // Account is locked if the accountLocked field is true
+        return !accountLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;  // You can implement expiration logic for credentials if needed
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;  // User is enabled if the enabled field is true
+        return enabled;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public Users getUser() {
+        return user;
     }
 }

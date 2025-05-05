@@ -3,6 +3,7 @@ package com.hitta.SpringSecurityExample.service;
 import com.hitta.SpringSecurityExample.dtos.AuthResponse;
 import com.hitta.SpringSecurityExample.dtos.LoginRequest;
 import com.hitta.SpringSecurityExample.dtos.RegisterRequest;
+import com.hitta.SpringSecurityExample.dtos.UserAuthResponse;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
@@ -73,7 +74,8 @@ public class AuthService {
                         new UsernamePasswordAuthenticationToken
                                 (request.getEmail(), request.getPassword()));
 
-        var user = (Users) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Users user = userDetails.getUser();
 
         String accessToken = jwtService.generateAccessToken(request.getEmail());
         String refreshToken = createOrUpdateRefreshToken(user);
