@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HabitRepo extends JpaRepository<Habit, Integer> {
@@ -25,4 +26,11 @@ public interface HabitRepo extends JpaRepository<Habit, Integer> {
     @Modifying
     @Query("DELETE FROM Habit h WHERE h.id = :habitId AND h.user.id = :userId")
     void deleteByHabitIdAndUserId(@Param("habitId") Integer habitId, @Param("userId") Integer userId);
+
+    @Modifying
+    @Query("UPDATE Habit h SET h.isCompleted = :isCompleted WHERE h.id = :habitId AND h.user.id = :userId")
+    int updateIsCompleted(@Param("habitId") int habitId,
+                          @Param("userId") int userId,
+                          @Param("isCompleted") boolean isCompleted);
+
 }

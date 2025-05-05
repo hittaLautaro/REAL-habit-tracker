@@ -13,7 +13,9 @@ import com.hitta.SpringSecurityExample.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -177,4 +179,13 @@ public class HabitService {
 
         if(!allCompleted) user.setStreak(0);
     }
+
+    public void updateIsCompleted(String username, int habitId, boolean isCompleted) {
+        int userId = userRepo.findIdByEmail(username).orElseThrow(() -> new RuntimeException("User not found"));
+        int updatedRows = habitRepo.updateIsCompleted(habitId, userId, isCompleted);
+        if (updatedRows == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Habit not found or does not belong to user");
+        }
+    }
+
 }

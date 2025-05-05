@@ -54,6 +54,19 @@ public class HabitController {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<Void> updateIsCompleted(@PathVariable Integer id,
+                                                  @RequestBody CompletionRequest request,
+                                                  @AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println(request);
+        habitService.updateIsCompleted(userDetails.getUsername(), id, request.isCompleted());
+        return ResponseEntity.ok().build();
+    }
+
+    public record CompletionRequest(boolean isCompleted) {}
+
+
     // TODO - Need to check for authorization
     @PatchMapping("/{id}")
     public HabitResponse update(@PathVariable Integer id, @RequestBody HabitUpdateRequest request) {
