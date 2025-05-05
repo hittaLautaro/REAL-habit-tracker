@@ -8,7 +8,8 @@ import { Draggable } from "@hello-pangea/dnd";
 import "../../components/global/styles.css";
 
 const Habit = ({ habit }) => {
-  const { deleteHabit, updateHabit, addHabit } = useContext(HabitContext);
+  const { deleteHabit, updateHabit, updateIsCompleted, addHabit } =
+    useContext(HabitContext);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -36,7 +37,7 @@ const Habit = ({ habit }) => {
   };
 
   const handleComplete = async () => {
-    updateHabit(habit.id, {
+    updateIsCompleted(habit.id, {
       isCompleted: habit.isCompleted == null ? true : !habit.isCompleted,
     });
   };

@@ -48,6 +48,11 @@ const HabitProvider = ({ children }) => {
     await HabitService.updateAll(localHabits);
   };
 
+  const updateIsCompleted = async (id, updatedData) => {
+    await HabitService.updateIsCompleted(id, updatedData);
+    fetchHabits();
+  };
+
   useEffect(() => {
     fetchHabits();
   }, []);
@@ -63,6 +68,7 @@ const HabitProvider = ({ children }) => {
         deleteAllHabits,
         fetchHabits,
         updateHabitsOrdersAndCompletions,
+        updateIsCompleted,
       }}
     >
       {children}

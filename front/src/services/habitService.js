@@ -17,6 +17,10 @@ const habitService = {
     return await axiosInstance.patch(`/habits/${id}`, request);
   },
 
+  updateIsCompleted: async (id, request) => {
+    return await axiosInstance.patch(`/habits/${id}/complete`, request);
+  },
+
   updateAll: async (request) => {
     return await axiosInstance.patch(`/habits/`, request);
   },
