@@ -10,10 +10,12 @@ import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.CompletionRepo;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -67,7 +69,7 @@ public class HabitService {
     public List<HabitResponse> getAllHabitsByUserId(Integer userId){
         System.out.println("This method is being called!");
         checkIfResetIsNeeded(userId);
-        List<Habit> habits = habitRepo.findAllByUserIdOrderByLastModifiedDate(userId);
+        List<Habit> habits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(userId);
         return habitMapper.habitsToResponses(habits);
     }
 
@@ -78,7 +80,7 @@ public class HabitService {
     }
 
     public HabitResponse update(Integer id, HabitUpdateRequest request){
-        Habit habit = habitRepo.findById(id).orElse(null);
+        Habit habit = habitRepo.findById(id).orElseThrow(() -> new RuntimeException("Habit not found."));
 
         if(habit == null) throw new IllegalArgumentException("Habit not found");
 
@@ -86,7 +88,14 @@ public class HabitService {
         if(request.getFrequency() != null)      habit.setFrequency(request.getFrequency());
         if(request.getPosition() != null)       habit.setPosition(request.getPosition());
         if(request.getIsCompleted() != null)    habit.setCompleted(request.getIsCompleted());
-        if(request.getActiveDays() != null && !areSetsEqual(request.getActiveDays(), habit.getActiveDays()))     habit.setActiveDays(request.getActiveDays());
+        Set<DayOfWeek> currentDays = habit.getActiveDays();
+        Set<DayOfWeek> updatedDays = request.getActiveDays();
+
+        currentDays.removeIf(day -> !updatedDays.contains(day));
+        updatedDays.stream()
+                .filter(day -> !currentDays.contains(day))
+                .forEach(currentDays::add);
+
 
         habit = habitRepo.save(habit);
 
@@ -101,11 +110,15 @@ public class HabitService {
         return habitMapper.habitToResponse(habit);
     }
 
-    public void deleteById(Integer id) {
-        habitRepo.deleteById(id);
+    @Transactional
+    public void deleteById(Integer habitId, Integer userId) {
+        habitRepo.deleteAllCompletionsByHabitIdAndUserId(habitId, userId);
+        habitRepo.deleteByHabitIdAndUserId(habitId, userId);
     }
 
+    @Transactional
     public void deleteAll(Integer userId) {
+        completionRepo.deleteAllByUserId(userId);
         habitRepo.deleteAllByUserId(userId);
     }
 
@@ -132,7 +145,7 @@ public class HabitService {
 
     private void resetUserHabits(Integer userId) {
         var user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        List<Habit> userHabits = habitRepo.findAllByUserIdOrderByLastModifiedDate(user.getId());
+        List<Habit> userHabits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(user.getId());
 
         boolean allCompleted = true;
 

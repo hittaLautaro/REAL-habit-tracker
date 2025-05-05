@@ -34,7 +34,7 @@ public class Habit {
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "habit")
     private List<Completion> completions;
 
     @NotBlank

@@ -25,13 +25,13 @@ public class HabitController {
     @Autowired
     private UserService userService;
 
-    // get all habits
     @GetMapping("/")
     public List<HabitResponse> getAll(@AuthenticationPrincipal UserDetails userDetails) {
         Users user = userService.findByUsername(userDetails.getUsername());
         return habitService.getAllHabitsByUserId(user.getId());
     }
 
+    // TODO - Need to check for authorization
     @GetMapping("/{id}")
     public HabitResponse findById(@PathVariable Integer id){
         return habitService.findById(id);
@@ -39,10 +39,14 @@ public class HabitController {
 
     @PostMapping("/")
     public HabitResponse save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody HabitCreateRequest request){
-        Users user = userService.findByUsername(userDetails.getUsername());
+        Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
+        Users user = Users.builder().
+                id(userId).
+                build();
         return habitService.save(user, request);
     }
 
+    // TODO - Need to check for authorization
     @Transactional
     @PatchMapping("/")
     public ResponseEntity<Void> updateHabits(@RequestBody List<HabitUpdateRequest> habitRequests) {
@@ -50,6 +54,7 @@ public class HabitController {
         return ResponseEntity.ok().build();
     }
 
+    // TODO - Need to check for authorization
     @PatchMapping("/{id}")
     public HabitResponse update(@PathVariable Integer id, @RequestBody HabitUpdateRequest request) {
         System.out.println(request.toString());
@@ -57,16 +62,18 @@ public class HabitController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
-        habitService.deleteById(id);
+    // TODO - Need to check for authorization
+    @DeleteMapping("/{habitId}")
+    public void delete(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer habitId) {
+        Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
+        habitService.deleteById(habitId, userId);
     }
 
     @Transactional
     @DeleteMapping("/")
     public void deleteAll(@AuthenticationPrincipal UserDetails userDetails) {
-        Users user = userService.findByUsername(userDetails.getUsername());
-        habitService.deleteAll(user.getId());
+        Integer id = userService.findUserIdByEmail(userDetails.getUsername());
+        habitService.deleteAll(id);
     }
 
 }
