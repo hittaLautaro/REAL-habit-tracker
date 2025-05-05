@@ -1,5 +1,6 @@
 package com.hitta.SpringSecurityExample.controller;
 
+import com.hitta.SpringSecurityExample.dtos.HabitCompletedRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
@@ -57,14 +58,14 @@ public class HabitController {
     @Transactional
     @PatchMapping("/{id}/complete")
     public ResponseEntity<Void> updateIsCompleted(@PathVariable Integer id,
-                                                  @RequestBody CompletionRequest request,
+                                                  @RequestBody HabitCompletedRequest request,
                                                   @AuthenticationPrincipal UserDetails userDetails) {
         System.out.println(request);
         habitService.updateIsCompleted(userDetails.getUsername(), id, request.isCompleted());
         return ResponseEntity.ok().build();
     }
 
-    public record CompletionRequest(boolean isCompleted) {}
+
 
 
     // TODO - Need to check for authorization
