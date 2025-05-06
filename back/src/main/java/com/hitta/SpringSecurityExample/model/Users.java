@@ -66,6 +66,9 @@ public class Users implements UserDetails, Principal {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Completion> completions;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompletionSummary> completionSummaries;
+
     @Override
     public String getUsername() {
         return email;

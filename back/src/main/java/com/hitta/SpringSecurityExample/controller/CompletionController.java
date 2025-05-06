@@ -1,9 +1,12 @@
 package com.hitta.SpringSecurityExample.controller;
 
 import com.hitta.SpringSecurityExample.dtos.CompletionSummaryOfTheDay;
+import com.hitta.SpringSecurityExample.dtos.CompletionSummaryResponse;
 import com.hitta.SpringSecurityExample.model.Completion;
+import com.hitta.SpringSecurityExample.model.CompletionSummary;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.CompletionService;
+import com.hitta.SpringSecurityExample.service.CompletionSummaryService;
 import com.hitta.SpringSecurityExample.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +22,13 @@ import java.util.List;
 public class CompletionController {
 
     @Autowired
-    private CompletionService completionService;
+    private CompletionSummaryService completionService;
 
     @Autowired
     private UserService userService;
 
     @GetMapping("/{year}")
-    public ResponseEntity<List<CompletionSummaryOfTheDay>> getCompletionsByYear(@PathVariable Integer year, @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<List<CompletionSummaryResponse>> getCompletionsByYear(@PathVariable Integer year, @AuthenticationPrincipal UserDetails userDetails){
         Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
         return new ResponseEntity<>(completionService.getCompletionsByYear(year,userId), HttpStatus.ACCEPTED);
     }

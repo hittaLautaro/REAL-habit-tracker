@@ -3,11 +3,14 @@ package com.hitta.SpringSecurityExample.service;
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
+import com.hitta.SpringSecurityExample.mappers.CompletionMapper;
 import com.hitta.SpringSecurityExample.mappers.HabitMapper;
 import com.hitta.SpringSecurityExample.model.Completion;
+import com.hitta.SpringSecurityExample.model.CompletionSummary;
 import com.hitta.SpringSecurityExample.model.Habit;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.CompletionRepo;
+import com.hitta.SpringSecurityExample.repo.CompletionSummaryRepo;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import jakarta.transaction.Transactional;
@@ -39,6 +42,12 @@ public class HabitService {
 
     @Autowired
     private CompletionRepo completionRepo;
+
+    @Autowired
+    private CompletionMapper completionMapper;
+
+    @Autowired
+    private CompletionSummaryRepo completionSummaryRepo;
 
     public void checkIfResetIsNeeded(Integer userId){
         Users user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
@@ -150,6 +159,8 @@ public class HabitService {
         List<Habit> userHabits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(user.getId());
 
         boolean allCompleted = true;
+        int habitsCompleted = 0;
+        int habitsObjective = userHabits.size();
 
         for (Habit habit : userHabits) {
 
@@ -159,6 +170,7 @@ public class HabitService {
                 habit.setStreak(habit.getStreak() + 1);
                 habit.setTimesDone(habit.getTimesDone() + 1);
                 habit.setTotalTimesDone(habit.getTotalTimesDone() + 1);
+                habitsCompleted++;
             }else{
                 habit.setStreak(0);
                 allCompleted = false;
@@ -173,9 +185,17 @@ public class HabitService {
                     .date(LocalDateTime.now())
                     .user(user)
                     .build();
-
             completionRepo.save(completion);
         }
+
+        var completionSummary = CompletionSummary.builder()
+                .habitsCompleted(habitsCompleted)
+                .habitsObjective(habitsObjective)
+                .date(LocalDate.now())
+                .user(user)
+                .build();
+
+        completionSummaryRepo.save(completionSummary);
 
         if(!allCompleted) user.setStreak(0);
     }
