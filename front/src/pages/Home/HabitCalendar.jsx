@@ -7,7 +7,7 @@ const HabitCalendar = () => {
 
   const fetchData = async () => {
     const res = await CompletionService.getAll(year);
-    console.log(res);
+    console.log(res.data);
     setDataValues(res.data);
   };
 
@@ -28,7 +28,6 @@ const HabitCalendar = () => {
   const gridCells = [];
 
   // Calculate how many empty cells we need based on the day of week of the first date
-  // getDay() returns 0 for Sunday, 1 for monday...
   const firstDayOfWeek = startingDate.getDay();
 
   // Add empty cells for proper alignment
@@ -86,19 +85,19 @@ const HabitCalendar = () => {
         }
 
         const activityCount =
-          dataValues.find((i) => i.date === cell.day)?.completed || 0;
+          dataValues.find((i) => i.date === cell.day)?.habitsCompleted || 0;
         const objective =
-          dataValues.find((i) => i.date === cell.day)?.objective || 0;
+          dataValues.find((i) => i.date === cell.day)?.habitsObjective || 0;
 
         return (
           <div
             key={index}
-            className="rounded cursor-pointer"
+            className="rounded-sm cursor-pointer"
             title={`${activityCount} out of ${objective} completed on ${cell.day}`}
             style={{
               backgroundColor: getColor(activityCount, objective),
-              width: "16px",
-              height: "16px",
+              width: "10px",
+              height: "10px",
             }}
           ></div>
         );
