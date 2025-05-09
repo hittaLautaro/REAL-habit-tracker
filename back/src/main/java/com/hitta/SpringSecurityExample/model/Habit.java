@@ -66,7 +66,4 @@ public class Habit {
     @ElementCollection
     @CollectionTable(name = "habit_days", joinColumns = @JoinColumn(name = "habit_id"))
     private Set<HabitDayOrder> activeDayOrders;
-
-    @NotNull
-    private Integer position;
 }
