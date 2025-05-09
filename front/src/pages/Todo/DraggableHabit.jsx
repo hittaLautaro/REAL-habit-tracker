@@ -7,7 +7,7 @@ import { Draggable } from "@hello-pangea/dnd";
 
 import "../../components/global/styles.css";
 
-const DraggableHabit = ({ habit, index, categoryEmoji }) => {
+const DraggableHabit = ({ habit, index }) => {
   const { deleteHabit, updateHabit, updateIsCompleted, addHabit } =
     useContext(HabitContext);
 
@@ -104,14 +104,6 @@ const DraggableHabit = ({ habit, index, categoryEmoji }) => {
                       onClick={handleDelete}
                     >
                       Delete
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item custom-font"
-                      onClick={handleComplete}
-                    >
-                      {habit.isCompleted ? "Uncheck" : "Check"}
                     </button>
                   </li>
                   <li>

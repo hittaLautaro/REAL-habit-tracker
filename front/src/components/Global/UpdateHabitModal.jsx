@@ -2,7 +2,6 @@ import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-import HabitService from "../../services/habitService";
 
 import { HabitContext } from "../contexts/HabitContext";
 
@@ -10,7 +9,7 @@ function UpdateHabitModal({ habit, handleClose }) {
   const { updateHabit } = useContext(HabitContext);
   const [habitName, setHabitName] = useState(habit.name);
   const [habitFrequency, setHabitFrequency] = useState(habit.frequency);
-  const [selectedDays, setSelectedDays] = useState(habit.activeDays);
+  const [selectedDays, setSelectedDays] = useState(habit.activeDayOrders);
   const [err, setError] = useState("");
 
   const handleSubmit = (e) => {
@@ -26,11 +25,16 @@ function UpdateHabitModal({ habit, handleClose }) {
       return;
     }
 
-    updateHabit(habit.id, {
+    const payload = {
       name: habitName,
       frequency: habitFrequency,
-      activeDays: selectedDays,
-    });
+      activeDayOrders: selectedDays.map((day, index) => ({
+        dayOfWeek: day.dayOfWeek,
+        position: index,
+      })),
+    };
+
+    updateHabit(habit.id, payload);
 
     handleClose();
   };
@@ -87,12 +91,17 @@ function UpdateHabitModal({ habit, handleClose }) {
                   type="checkbox"
                   id={`day-${day}`}
                   label={day}
-                  checked={selectedDays.includes(day)}
+                  checked={selectedDays.some((d) => d.dayOfWeek === day)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedDays([...selectedDays, day]);
+                      setSelectedDays([
+                        ...selectedDays,
+                        { dayOfWeek: day, position: 0 },
+                      ]);
                     } else {
-                      setSelectedDays(selectedDays.filter((d) => d !== day));
+                      setSelectedDays(
+                        selectedDays.filter((d) => d.dayOfWeek !== day)
+                      );
                     }
                   }}
                 />

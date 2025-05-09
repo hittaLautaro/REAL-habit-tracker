@@ -18,6 +18,8 @@ function AddHabitModal() {
   const handleShow = () => setShow(true);
 
   const handleSubmit = (e) => {
+    console.log(selectedDays);
+
     e.preventDefault();
 
     if (!habitName.trim()) {
@@ -30,11 +32,16 @@ function AddHabitModal() {
       return;
     }
 
-    addHabit({
+    const habitData = {
       name: habitName,
       frequency: habitFrequency,
-      activeDays: selectedDays,
-    });
+      activeDayOrders: selectedDays.map((day) => ({
+        dayOfWeek: day,
+        position: 0,
+      })),
+    };
+
+    addHabit(habitData);
 
     setHabitName("");
     setHabitFrequency("");

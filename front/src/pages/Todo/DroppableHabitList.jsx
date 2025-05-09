@@ -1,18 +1,16 @@
-import React, { useEffect } from "react";
 import Habit from "./Habit";
 import { Droppable } from "@hello-pangea/dnd";
 import "../../components/global/styles.css";
 import { DragDropContext } from "@hello-pangea/dnd";
-import { useContext, useState, useRef } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import _ from "lodash";
 import { HabitContext } from "../../components/contexts/HabitContext";
 import DraggableHabit from "./DraggableHabit";
 
-const DroppableHabitList = ({ droppableId, habits }) => {
+const DroppableHabitList = ({ droppableId }) => {
+  const { habits } = useContext(HabitContext);
   const [localHabits, setLocalHabits] = useState([]);
   const { updateHabitsOrdersAndCompletions } = useContext(HabitContext);
-  // console.log("Prop habits");
-  // console.log(habits);
 
   useEffect(() => {
     setLocalHabits(habits);
@@ -20,8 +18,6 @@ const DroppableHabitList = ({ droppableId, habits }) => {
 
   const debounceSave = useRef(
     _.debounce(async (updatedHabits) => {
-      // console.log("Updated Habits"); // This should now print the correct array
-      // console.log(updatedHabits); // This should now print the correct array
       updateHabitsOrdersAndCompletions(updatedHabits);
     }, 1000)
   ).current;
@@ -29,31 +25,22 @@ const DroppableHabitList = ({ droppableId, habits }) => {
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
-    if (!destination) return;
-
-    if (source.index === destination.index) return;
+    if (!destination || source.index === destination.index) return;
 
     const newLocalHabits = [...localHabits];
-
-    // Remove item from source and insert at destination
     const [reorderedItem] = newLocalHabits.splice(source.index, 1);
     newLocalHabits.splice(destination.index, 0, reorderedItem);
 
-    // Update state immediately
-    setLocalHabits(newLocalHabits);
+    const updatedHabitsWithOrder = newLocalHabits.map((habit, index) => ({
+      ...habit,
+      position: index,
+    }));
 
-    // Debugging logs
-    // console.log("Updated local habits:", newLocalHabits);
-
-    // Debounced backend save
-    debounceSave(newLocalHabits);
+    setLocalHabits(updatedHabitsWithOrder);
+    debounceSave(updatedHabitsWithOrder);
   };
 
-  return localHabits.length <= 0 ? (
-    <div className="d-flex allign-align-content-center justify-content-around">
-      <p className="m-4 custom-font-normal">You've no habits left.</p>
-    </div>
-  ) : (
+  return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={droppableId}>
         {(provided) => (
@@ -67,12 +54,7 @@ const DroppableHabitList = ({ droppableId, habits }) => {
             }}
           >
             {localHabits.map((habit, index) => (
-              <DraggableHabit
-                key={habit.id}
-                habit={habit}
-                index={index}
-                categoryEmoji={"✔️"}
-              />
+              <DraggableHabit key={habit.id} habit={habit} index={index} />
             ))}
             {provided.placeholder}
           </div>

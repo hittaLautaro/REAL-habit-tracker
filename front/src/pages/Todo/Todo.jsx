@@ -9,15 +9,9 @@ const Todo = ({ habits, changeList }) => {
 
   return (
     <div>
-      <div className="d-flex align-items-center justify-content-between">
-        <h3 className="m-4 custom-font">to-do</h3>
-        <div>
-          <AddHabitModal />
-          <button className="me-3 btn btn-outline-light " onClick={changeList}>
-            <i className="bi bi-arrow-right me-2"></i>
-            <span className="custom-font">completed</span>
-          </button>
-        </div>
+      <div className="flex align-items-center">
+        <h3 className="m-4 custom-font">Your todo</h3>
+        <AddHabitModal />
       </div>
 
       <div className="habit-list">

@@ -12,6 +12,8 @@ const Habit = ({ habit }) => {
 
   const [showModal, setShowModal] = useState(false);
 
+  console.log("Habit component rendered with habit:", habit);
+
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -44,7 +46,8 @@ const Habit = ({ habit }) => {
       <div>
         <h4 className="m-0 custom-font">{habit.name}</h4>
         <p className="m-0 custom-font">
-          Frequency: {habit.frequency} Days: {habit.activeDays.toString()}
+          Frequency: {habit.frequency} | Days:{" "}
+          {habit.activeDayOrders.map((day) => day.dayOfWeek).join(", ")}
         </p>
       </div>
 

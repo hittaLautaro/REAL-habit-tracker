@@ -4,23 +4,13 @@ import HabitService from "../../services/habitService";
 export const HabitContext = createContext();
 
 const HabitProvider = ({ children }) => {
-  const [habits, setHabits] = useState({
-    todo: [],
-    finished: [],
-  });
+  const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchHabits = async () => {
     setLoading(true);
-    const response = await HabitService.getAll();
-    const fetchedHabits = response.data;
-
-    const categorizedHabits = {
-      todo: fetchedHabits.filter((habit) => !habit.isCompleted),
-      finished: fetchedHabits.filter((habit) => habit.isCompleted),
-    };
-
-    setHabits(categorizedHabits);
+    const res = await HabitService.getAll();
+    setHabits(res.data);
     setLoading(false);
   };
 
@@ -57,20 +47,20 @@ const HabitProvider = ({ children }) => {
     fetchHabits();
   }, []);
 
+  const contextValue = {
+    habits,
+    loading,
+    addHabit,
+    updateHabit,
+    deleteHabit,
+    deleteAllHabits,
+    fetchHabits,
+    updateHabitsOrdersAndCompletions,
+    updateIsCompleted,
+  };
+
   return (
-    <HabitContext.Provider
-      value={{
-        habits,
-        loading,
-        addHabit,
-        updateHabit,
-        deleteHabit,
-        deleteAllHabits,
-        fetchHabits,
-        updateHabitsOrdersAndCompletions,
-        updateIsCompleted,
-      }}
-    >
+    <HabitContext.Provider value={contextValue}>
       {children}
     </HabitContext.Provider>
   );
