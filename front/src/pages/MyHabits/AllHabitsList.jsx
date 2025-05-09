@@ -9,7 +9,7 @@ const AllHabitsList = ({ habits }) => {
   }
 
   return (
-    <div>
+    <div className="ml-4 mr-3">
       {habits.map((habit) => (
         <div key={habit.id}>
           <Habit habit={habit} />

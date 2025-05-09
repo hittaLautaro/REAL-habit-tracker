@@ -13,7 +13,7 @@ const HabitPage = () => {
         <div className="row w-75 ">
           <div
             className="col-sm border border-dark mt-4 rounded"
-            style={{ backgroundColor: "#020202" }}
+            style={{ backgroundColor: "#151515" }}
           >
             <Todo />
           </div>

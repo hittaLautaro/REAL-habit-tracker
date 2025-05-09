@@ -49,9 +49,12 @@ const AllHabitsPage = () => {
       <Header />
       <div className="d-flex justify-content-center align-items-center">
         <div className="row w-75 justify-content-around">
-          <div className="col-sm border border-dark mx-5 mt-5">
+          <div
+            className="col-sm border border-dark mt-4 rounded"
+            style={{ backgroundColor: "#151515" }}
+          >
             <div className="d-flex align-items-center">
-              <h3 className="m-4 custom-font">my habits</h3>
+              <h1 className="m-4 custom-font">Manage habits</h1>
               <AddHabitModal />
 
               <button

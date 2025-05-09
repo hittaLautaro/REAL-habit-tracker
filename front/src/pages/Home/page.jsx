@@ -40,11 +40,14 @@ const HomePage = () => {
           </div>
         )}
       </div>
-      <div className="flex flex-row justify-content-center ">
-        <section className="flex flex-col justify-center items-center border-dark border-1 rounded mx-5 my-4">
-          <h3 className="mb-3 custom-font">Your Habit Activity</h3>
+      <div className="flex flex-row justify-content-center">
+        <section
+          className="flex flex-col justify-center border-dark border-1 rounded mx-5 my-4 "
+          style={{ backgroundColor: "#151515" }}
+        >
+          <h3 className="custom-font-light ml-12">Your Habit Activity</h3>
           <HabitCalendar />
-          <div className="mt-3 d-flex">
+          <div className="d-flex ml-12">
             <div className="d-flex align-items-center me-3">
               <div
                 style={{
@@ -96,7 +99,10 @@ const HomePage = () => {
           </div>
         </section>
 
-        <section className="flex flex-col justify-center border-dark border-1 rounded w-25 p-5 mx-5 my-4">
+        <section
+          className="flex flex-col justify-center border-dark border-1 rounded w-25 p-5 mx-5 my-4"
+          style={{ backgroundColor: "#151515" }}
+        >
           <h3 className="mb-5 custom-font"> Your Stats </h3>
           <h4 className="mt-3 mb-0 custom-font">Biggest streak</h4>
           <h4 className="text-transparent bg-clip-text bg-gradient-to-r bg-green-500 custom-font">

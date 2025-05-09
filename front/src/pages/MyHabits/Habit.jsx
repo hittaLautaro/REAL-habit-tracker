@@ -42,12 +42,23 @@ const Habit = ({ habit }) => {
   };
 
   return (
-    <div className="border border-dark rounded bg-black text-light m-3 p-3 habit-min-height-all-habits d-flex justify-content-between align-items-center">
+    <div
+      className="ml-2 rounded custom-min-height mb-1 my-1 py-3 px-2 text-light d-flex justify-content-between align-items-center transition-all duration-200"
+      style={{
+        backgroundColor: "#121212",
+        borderColor: "#222",
+        borderStyle: "solid",
+        borderWidth: "1px",
+      }}
+    >
       <div>
         <h4 className="m-0 custom-font">{habit.name}</h4>
+        <p className="m-0 custom-font">Frequency: {habit.frequency}</p>
         <p className="m-0 custom-font">
-          Frequency: {habit.frequency} | Days:{" "}
-          {habit.activeDayOrders.map((day) => day.dayOfWeek).join(", ")}
+          Days:{" "}
+          {habit.activeDayOrders.length > 0
+            ? habit.activeDayOrders.map((day) => day.dayOfWeek).join(", ")
+            : "None"}
         </p>
       </div>
 

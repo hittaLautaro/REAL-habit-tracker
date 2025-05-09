@@ -38,35 +38,37 @@ const Header = () => {
 
         {/* Centered Links */}
         <div className="navbar-links justify-space-between">
-          <NavLink to="/todo" className="nav-link mx-5">
-            <span className="mt-1 custom-font-normal">Todo</span>
+          <NavLink to="/todo" className="nav-link mx-3">
+            <span className="mt-1 custom-font-normal">Daily Habits</span>
           </NavLink>
-          <NavLink to="/my-habits" className="nav-link mx-5">
+          <NavLink to="/my-habits" className="nav-link mx-3">
             <span className="mt-1 custom-font-normal">Manage Habits</span>
           </NavLink>
         </div>
-        <button
-          className="logout-btn"
-          aria-label="Logout"
-          onClick={handleLogout}
-        >
-          <i className="bi bi-lightbulb"></i>
-        </button>
-        <button
-          className="logout-btn"
-          aria-label="Logout"
-          onClick={handleLogout}
-        >
-          <i className="bi bi-gear"></i>
-        </button>
-        {/* Logout Button */}
-        <button
-          className="logout-btn"
-          aria-label="Logout"
-          onClick={handleLogout}
-        >
-          <i className="bi bi-box-arrow-right"></i>
-        </button>
+        <div className="mr-0">
+          <button
+            className="logout-btn"
+            aria-label="Logout"
+            onClick={handleLogout}
+          >
+            <i className="bi bi-lightbulb"></i>
+          </button>
+          <button
+            className="logout-btn"
+            aria-label="Logout"
+            onClick={handleLogout}
+          >
+            <i className="bi bi-gear"></i>
+          </button>
+          {/* Logout Button */}
+          <button
+            className="logout-btn"
+            aria-label="Logout"
+            onClick={handleLogout}
+          >
+            <i className="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
       </div>
     </nav>
   );
