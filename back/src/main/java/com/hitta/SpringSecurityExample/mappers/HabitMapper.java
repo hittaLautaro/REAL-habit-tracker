@@ -28,11 +28,12 @@ public class HabitMapper {
                 .streak(habit.getStreak())
                 .totalTimesDone(habit.getTotalTimesDone())
                 .userId(habit.getUser().getId())
-                .activeDays(habit.getActiveDays())
+                .activeDayOrders(habit.getActiveDayOrders())
                 .build();
     }
 
     public Habit createReqToHabit(Users user, HabitCreateRequest request){
+        System.out.println(request.toString());
         return Habit.builder()
                 .name(request.getName())
                 .isCompleted(false)
@@ -41,7 +42,7 @@ public class HabitMapper {
                 .position(0)
                 .user(user)
                 .totalTimesDone(0)
-                .activeDays(request.getActiveDays())
+                .activeDayOrders(request.getActiveDayOrders())
                 .streak(0)
                 .build();
 

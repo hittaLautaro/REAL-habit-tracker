@@ -1,8 +1,8 @@
 package com.hitta.SpringSecurityExample.dtos;
 
+import com.hitta.SpringSecurityExample.model.HabitDayOrder;
 import lombok.*;
 
-import java.time.DayOfWeek;
 import java.util.Set;
 
 @Getter
@@ -14,9 +14,7 @@ import java.util.Set;
 public class HabitUpdateRequest {
     private Integer id;
     private String name;
-    private Boolean isCompleted;
     private Integer frequency;
-    private Set<DayOfWeek> activeDays;
-    private Integer position;
+    private Set<HabitDayOrder> activeDayOrders;
 }
 

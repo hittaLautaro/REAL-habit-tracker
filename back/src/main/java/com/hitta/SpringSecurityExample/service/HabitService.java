@@ -5,28 +5,23 @@ import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
 import com.hitta.SpringSecurityExample.mappers.CompletionMapper;
 import com.hitta.SpringSecurityExample.mappers.HabitMapper;
-import com.hitta.SpringSecurityExample.model.Completion;
-import com.hitta.SpringSecurityExample.model.CompletionSummary;
-import com.hitta.SpringSecurityExample.model.Habit;
-import com.hitta.SpringSecurityExample.model.Users;
+import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.CompletionRepo;
 import com.hitta.SpringSecurityExample.repo.CompletionSummaryRepo;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 @Service
 public class HabitService {
@@ -93,19 +88,9 @@ public class HabitService {
     public HabitResponse update(Integer id, HabitUpdateRequest request){
         Habit habit = habitRepo.findById(id).orElseThrow(() -> new RuntimeException("Habit not found."));
 
-        if(habit == null) throw new IllegalArgumentException("Habit not found");
-
         if(request.getName() != null)           habit.setName(request.getName());
         if(request.getFrequency() != null)      habit.setFrequency(request.getFrequency());
-        if(request.getPosition() != null)       habit.setPosition(request.getPosition());
-        if(request.getIsCompleted() != null)    habit.setCompleted(request.getIsCompleted());
-        Set<DayOfWeek> currentDays = habit.getActiveDays();
-        Set<DayOfWeek> updatedDays = request.getActiveDays();
-
-        currentDays.removeIf(day -> !updatedDays.contains(day));
-        updatedDays.stream()
-                .filter(day -> !currentDays.contains(day))
-                .forEach(currentDays::add);
+        if (request.getActiveDayOrders() != null) habit.setActiveDayOrders(request.getActiveDayOrders());
 
 
         habit = habitRepo.save(habit);

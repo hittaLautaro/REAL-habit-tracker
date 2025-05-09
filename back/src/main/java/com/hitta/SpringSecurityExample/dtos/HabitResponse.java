@@ -1,8 +1,8 @@
 package com.hitta.SpringSecurityExample.dtos;
 
+import com.hitta.SpringSecurityExample.model.HabitDayOrder;
 import lombok.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -22,5 +22,5 @@ public class HabitResponse{
     private Integer frequency;
     private Integer streak;
     private Integer totalTimesDone;
-    private Set<DayOfWeek> activeDays;
+    private Set<HabitDayOrder> activeDayOrders;
 }

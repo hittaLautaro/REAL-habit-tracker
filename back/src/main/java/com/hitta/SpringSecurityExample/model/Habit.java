@@ -8,7 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -64,10 +63,9 @@ public class Habit {
     @NotNull
     private boolean isCompleted = false;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection
     @CollectionTable(name = "habit_days", joinColumns = @JoinColumn(name = "habit_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<DayOfWeek> activeDays;
+    private Set<HabitDayOrder> activeDayOrders;
 
     @NotNull
     private Integer position;

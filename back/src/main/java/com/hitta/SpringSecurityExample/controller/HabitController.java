@@ -40,6 +40,7 @@ public class HabitController {
 
     @PostMapping("/")
     public HabitResponse save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody HabitCreateRequest request){
+        System.out.println(request.toString());
         Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
         Users user = Users.builder().
                 id(userId).

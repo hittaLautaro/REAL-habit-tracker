@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface HabitRepo extends JpaRepository<Habit, Integer> {
-    @Query("SELECT DISTINCT h FROM Habit h LEFT JOIN FETCH h.activeDays WHERE h.user.id = :userId ORDER BY h.lastModifiedDate")
+    @Query("SELECT DISTINCT h FROM Habit h LEFT JOIN FETCH h.activeDayOrders WHERE h.user.id = :userId ORDER BY h.position")
     List<Habit> findAllByUserIdWithActiveDaysOrderByLastModifiedDate(@Param("userId") Integer userId);
 
     @Modifying
