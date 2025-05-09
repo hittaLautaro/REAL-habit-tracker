@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -193,4 +194,11 @@ public class HabitService {
         }
     }
 
+    public List<HabitResponse> getHabitsByUserIdAndDay(Integer userId, String d) {
+        var dayOfWeek = DayOfWeek.valueOf(d.toUpperCase());
+
+        List<Habit> habits = habitRepo.findByUserIdAndDayOfWeek(userId,dayOfWeek).orElseThrow(() -> new RuntimeException("No habits for that day!"));
+
+        return habitMapper.habitsToResponses(habits);
+    }
 }

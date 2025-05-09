@@ -32,6 +32,14 @@ public class HabitController {
         return habitService.getAllHabitsByUserId(user.getId());
     }
 
+    @GetMapping("/by-day")
+    public List<HabitResponse> getHabitsByDay(
+            @RequestParam("day") String dayOfWeek,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        var userId = userService.findUserIdByEmail(userDetails.getUsername());
+        return habitService.getHabitsByUserIdAndDay(userId, dayOfWeek);
+    }
+
     // TODO - Need to check for authorization
     @GetMapping("/{id}")
     public HabitResponse findById(@PathVariable Integer id){
@@ -65,9 +73,6 @@ public class HabitController {
         habitService.updateIsCompleted(userDetails.getUsername(), id, request.isCompleted());
         return ResponseEntity.ok().build();
     }
-
-
-
 
     // TODO - Need to check for authorization
     @PatchMapping("/{id}")

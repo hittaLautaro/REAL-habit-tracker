@@ -8,12 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface HabitRepo extends JpaRepository<Habit, Integer> {
-    @Query("SELECT DISTINCT h FROM Habit h LEFT JOIN FETCH h.activeDayOrders WHERE h.user.id = :userId ORDER BY h.position")
+    @Query("SELECT DISTINCT h FROM Habit h LEFT JOIN FETCH h.activeDayOrders WHERE h.user.id = :userId ORDER BY h.lastModifiedDate ASC, h.createdDate ASC")
     List<Habit> findAllByUserIdWithActiveDaysOrderByLastModifiedDate(@Param("userId") Integer userId);
 
     @Modifying
@@ -33,4 +34,6 @@ public interface HabitRepo extends JpaRepository<Habit, Integer> {
                           @Param("userId") int userId,
                           @Param("isCompleted") boolean isCompleted);
 
+    @Query("SELECT h FROM Habit h JOIN h.activeDayOrders ado WHERE h.user.id = :userId AND ado.dayOfWeek = :dayOfWeek ORDER BY ado.position")
+    Optional<List<Habit>> findByUserIdAndDayOfWeek(@Param("userId") int userId, @Param("dayOfWeek") DayOfWeek dayOfWeek);
 }
