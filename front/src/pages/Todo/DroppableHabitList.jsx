@@ -1,4 +1,3 @@
-import Habit from "./Habit";
 import { Droppable } from "@hello-pangea/dnd";
 import "../../components/global/styles.css";
 import { DragDropContext } from "@hello-pangea/dnd";
@@ -47,7 +46,9 @@ const DroppableHabitList = ({ droppableId }) => {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className={`droppable-area ${habits.length === 0 ? "empty" : ""}`}
+            className={`droppable-area ${
+              habits.length === 0 ? "empty" : ""
+            } ml-4 mr-3`}
             style={{
               display: "flex",
               flexDirection: "column",

@@ -2,12 +2,18 @@
 
 .custom-font {
   font-family: "IBM Plex Mono", monospace;
-  font-weight: 600; /* Semi-bold */
+  font-weight: 600;
 }
 
 .custom-font-normal {
   font-family: "IBM Plex Mono", monospace;
-  font-weight: 400; /* Normal */
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.custom-font-light {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 200;
 }
 
 .fs-big {

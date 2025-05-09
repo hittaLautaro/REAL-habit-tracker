@@ -10,11 +10,11 @@ const Todo = ({ habits, changeList }) => {
   return (
     <div>
       <div className="flex align-items-center">
-        <h3 className="m-4 custom-font">Your todo</h3>
+        <h1 className="m-4 custom-font">Todo.</h1>
         <AddHabitModal />
       </div>
 
-      <div className="habit-list">
+      <div className="habit-list mx-3">
         <DroppableHabitList droppableId="todo" habits={habits} />
       </div>
     </div>

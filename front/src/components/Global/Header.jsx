@@ -1,5 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
+import "../global/styles.css";
 import AuthService from "../../services/authService.js";
 import Swal from "sweetalert2";
 
@@ -36,12 +37,12 @@ const Header = () => {
         </NavLink>
 
         {/* Centered Links */}
-        <div className="navbar-links">
-          <NavLink to="/habits" className="nav-link mx-3 custom-font">
-            to-do
+        <div className="navbar-links justify-space-between">
+          <NavLink to="/todo" className="nav-link mx-5">
+            <span className="mt-1 custom-font-normal">Todo</span>
           </NavLink>
-          <NavLink to="/all-habits" className="nav-link mx-3 custom-font">
-            my habits
+          <NavLink to="/my-habits" className="nav-link mx-5">
+            <span className="mt-1 custom-font-normal">Manage Habits</span>
           </NavLink>
         </div>
         <button

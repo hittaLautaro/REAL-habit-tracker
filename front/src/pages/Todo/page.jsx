@@ -10,8 +10,11 @@ const HabitPage = () => {
     <div>
       <Header />
       <div className="d-flex justify-content-center align-items-center">
-        <div className="row w-75 justify-content-around">
-          <div className="col-sm border border-dark mx-5 mt-5">
+        <div className="row w-75 ">
+          <div
+            className="col-sm border border-dark mt-4 rounded"
+            style={{ backgroundColor: "#020202" }}
+          >
             <Todo />
           </div>
         </div>

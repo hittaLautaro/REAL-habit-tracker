@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
-import HabitService from "../../services/habitService.js";
+"use client";
+
+import { useState, useContext } from "react";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "../../components/global/UpdateHabitModal.jsx";
 import { HabitContext } from "../../components/contexts/HabitContext.jsx";
@@ -63,28 +64,44 @@ const DraggableHabit = ({ habit, index }) => {
           {...provided.dragHandleProps}
           className="habit-item"
         >
-          <div className="border border-dark rounded custom-min-height mx-3 my-1 p-4 bg-black text-light d-flex justify-content-between align-items-center">
-            <div>
-              <h4 className="m-0 custom-font">{habit.name}</h4>
+          <div
+            className={`ml-2 border border-dark rounded custom-min-height mb-1 my-1 py-3 px-2 text-light d-flex justify-content-between align-items-center transition-all duration-200 ${
+              habit.isCompleted ? "bg-zinc-900" : "bg-[#080808]"
+            }`}
+          >
+            <div className="d-flex align-items-center">
+              <h4
+                className={`my-0 ml-3 custom-font select-none ${
+                  habit.isCompleted
+                    ? "line-through text-white/70"
+                    : "text-white"
+                }`}
+              >
+                {habit.name}
+              </h4>
             </div>
 
             <div className="d-flex align-items-center justify-content-between">
               <button
-                className="btn btn-outline-light custom-font mx-3"
+                className={`btn mx-2 w-8 h-8 d-flex align-items-center justify-content-center ${
+                  habit.isCompleted
+                    ? "bg-white text-black border-white"
+                    : "btn-outline-light"
+                }`}
                 type="button"
                 onClick={handleComplete}
               >
-                <i className="bi bi-check-lg"></i>
+                <i className="bi bi-check-lg text-s"></i>
               </button>
               <div className="dropdown text-end">
                 <button
-                  className="btn btn-outline-light dropdown-toggle custom-font"
+                  className="btn btn-outline-light dropdown-toggle w-12 h-8 d-flex align-items-center justify-content-center"
                   type="button"
                   id={`dropdownMenuButton-${habit.id}`}
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <i className="bi bi-gear"></i>
+                  <i className="bi bi-gear text-s"></i>
                 </button>
                 <ul
                   className="dropdown-menu"

@@ -20,7 +20,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
 
         <Route
-          path="/habits"
+          path="/todo"
           element={
             <HabitProvider>
               <HabitPage />
@@ -29,7 +29,7 @@ const App = () => {
         />
 
         <Route
-          path="/all-habits"
+          path="/my-habits"
           element={
             <HabitProvider>
               <AllHabitsPage />
