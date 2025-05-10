@@ -50,9 +50,7 @@ const Header = () => {
               }
               aria-current={location.pathname === "/todo" ? "page" : undefined}
             >
-              <span className="mx-3 sans-600 text-lg text-center">
-                Daily Habits
-              </span>
+              <span className="mx-3  text-lg text-center">Daily Habits</span>
             </NavLink>
             <NavLink
               to="/my-habits"
@@ -63,9 +61,7 @@ const Header = () => {
                 location.pathname === "/my-habits" ? "page" : undefined
               }
             >
-              <span className="mx-3 sans-600 text-lg text-center">
-                Manage Habits
-              </span>
+              <span className="mx-3  text-lg text-center">Manage Habits</span>
             </NavLink>
           </div>
 
