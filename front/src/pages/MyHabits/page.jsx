@@ -54,7 +54,7 @@ const AllHabitsPage = () => {
             style={{ backgroundColor: "#151515" }}
           >
             <div className="d-flex align-items-center">
-              <h1 className="m-4 custom-font">Manage habits</h1>
+              <h1 className="m-4 sans-600">Manage habits</h1>
               <AddHabitModal />
 
               <button
@@ -62,12 +62,12 @@ const AllHabitsPage = () => {
                 onClick={handleRemoveAllHabits}
               >
                 <i className="me-2 bi bi-trash"></i>
-                <span className="custom-font">Delete</span>
+                <span className="sans-600">Delete</span>
               </button>
             </div>
             <div className="habit-list">
               {loading ? (
-                <p className="m-5 custom-font"> loading...</p>
+                <p className="m-5 sans-600"> loading...</p>
               ) : (
                 <AllHabitsList habits={habits} />
               )}

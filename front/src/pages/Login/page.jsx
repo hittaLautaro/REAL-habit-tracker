@@ -39,10 +39,10 @@ const LoginPage = () => {
   return (
     <div className="d-flex flex-column align-items-center justify-content-center my-5">
       <div className="text-center mb-4 my-5">
-        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big custom-font">
+        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big sans-600">
           real.
         </h1>
-        <h3 className="custom-font">Simple & customizable habit tracker!</h3>
+        <h3 className="sans-600">Simple & customizable habit tracker!</h3>
       </div>
       <div
         className="container d-flex justify-content-center align-items-center"

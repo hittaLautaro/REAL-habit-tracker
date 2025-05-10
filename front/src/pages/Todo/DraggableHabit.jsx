@@ -75,7 +75,7 @@ const DraggableHabit = ({ habit, index }) => {
           >
             <div className="d-flex align-items-center">
               <h4
-                className={`my-0 ml-3 custom-font select-none ${
+                className={`my-0 ml-3 sans-600 select-none ${
                   habit.isCompleted
                     ? "line-through text-white/70"
                     : "text-white"
@@ -113,7 +113,7 @@ const DraggableHabit = ({ habit, index }) => {
                 >
                   <li>
                     <button
-                      className="dropdown-item custom-font"
+                      className="dropdown-item sans-600"
                       onClick={handleEdit}
                     >
                       Edit
@@ -121,7 +121,7 @@ const DraggableHabit = ({ habit, index }) => {
                   </li>
                   <li>
                     <button
-                      className="dropdown-item custom-font"
+                      className="dropdown-item sans-600"
                       onClick={handleDelete}
                     >
                       Delete
@@ -129,7 +129,7 @@ const DraggableHabit = ({ habit, index }) => {
                   </li>
                   <li>
                     <button
-                      className="dropdown-item custom-font"
+                      className="dropdown-item sans-600"
                       onClick={handleDuplicate}
                     >
                       Duplicate

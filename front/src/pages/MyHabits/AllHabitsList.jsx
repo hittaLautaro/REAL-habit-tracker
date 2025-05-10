@@ -5,7 +5,7 @@ import "../../components/global/styles.css";
 
 const AllHabitsList = ({ habits }) => {
   if (!habits || habits.length <= 0) {
-    return <p className="m-4 custom-font">You've got no habits.</p>;
+    return <p className="m-4 sans-600">You've got no habits.</p>;
   }
 
   return (

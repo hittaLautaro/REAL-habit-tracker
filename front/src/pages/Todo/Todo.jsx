@@ -10,7 +10,7 @@ const Todo = ({ habits, changeList }) => {
   return (
     <div>
       <div className="flex align-items-center">
-        <h1 className="m-4 custom-font">Daily Habits</h1>
+        <h1 className="m-4 sans-600">Daily Habits</h1>
         <AddHabitModal />
       </div>
 

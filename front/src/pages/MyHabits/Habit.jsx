@@ -52,9 +52,9 @@ const Habit = ({ habit }) => {
       }}
     >
       <div>
-        <h4 className="m-0 custom-font">{habit.name}</h4>
-        <p className="m-0 custom-font">Frequency: {habit.frequency}</p>
-        <p className="m-0 custom-font">
+        <h4 className="m-0 sans-600">{habit.name}</h4>
+        <p className="m-0 sans-600">Frequency: {habit.frequency}</p>
+        <p className="m-0 sans-600">
           Days:{" "}
           {habit.activeDayOrders.length > 0
             ? habit.activeDayOrders.map((day) => day.dayOfWeek).join(", ")
@@ -65,7 +65,7 @@ const Habit = ({ habit }) => {
       {/* Dropdown menu in the top-right */}
       <div className="dropdown text-end">
         <button
-          className="btn btn-outline-light dropdown-toggle custom-font"
+          className="btn btn-outline-light dropdown-toggle sans-600"
           type="button"
           id={`dropdownMenuButton-${habit.id}`}
           data-bs-toggle="dropdown"
@@ -78,15 +78,12 @@ const Habit = ({ habit }) => {
           aria-labelledby={`dropdownMenuButton-${habit.id}`}
         >
           <li>
-            <button className="dropdown-item custom-font" onClick={handleEdit}>
+            <button className="dropdown-item sans-600" onClick={handleEdit}>
               Edit
             </button>
           </li>
           <li>
-            <button
-              className="dropdown-item custom-font"
-              onClick={handleDelete}
-            >
+            <button className="dropdown-item sans-600" onClick={handleDelete}>
               Delete
             </button>
           </li>

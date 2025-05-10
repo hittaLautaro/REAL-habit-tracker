@@ -1,18 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap");
 
-.custom-font {
-  font-family: "IBM Plex Mono", monospace;
+.sans-800 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 800;
+}
+
+.sans-600 {
+  font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
 
-.custom-font-normal {
-  font-family: "IBM Plex Mono", monospace;
+.sans-400 {
+  font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 1rem;
 }
 
-.custom-font-light {
-  font-family: "IBM Plex Mono", monospace;
+.sans-200 {
+  font-family: "Open Sans", sans-serif;
   font-weight: 200;
 }
 

@@ -39,10 +39,10 @@ const Header = () => {
         {/* Centered Links */}
         <div className="navbar-links justify-space-between">
           <NavLink to="/todo" className="nav-link mx-3">
-            <span className="mt-1 custom-font-normal">Daily Habits</span>
+            <span className="mt-1 sans-400">Daily Habits</span>
           </NavLink>
           <NavLink to="/my-habits" className="nav-link mx-3">
-            <span className="mt-1 custom-font-normal">Manage Habits</span>
+            <span className="mt-1 sans-400">Manage Habits</span>
           </NavLink>
         </div>
         <div className="mr-0">
