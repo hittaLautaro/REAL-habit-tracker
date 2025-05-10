@@ -1,4 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+.playfair-900 {
+  font-family: "Playfair Display", serif;
+  font-weight: 900;
+}
+
+.playfair-600 {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+}
+
+.playfair-400 {
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
+}
 
 .sans-800 {
   font-family: "Open Sans", sans-serif;
@@ -10,15 +26,24 @@
   font-weight: 600;
 }
 
+.sans-500 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+}
+
+.sans-700 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+
 .sans-400 {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
-  font-size: 1rem;
 }
 
-.sans-200 {
+.sans-300 {
   font-family: "Open Sans", sans-serif;
-  font-weight: 200;
+  font-weight: 300;
 }
 
 .fs-big {

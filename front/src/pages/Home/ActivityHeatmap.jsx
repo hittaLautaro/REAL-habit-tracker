@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../../components/global/styles.css";
 import HabitCalendar from "./HabitCalendar.jsx";
 
 const ActivityHeatmap = () => {

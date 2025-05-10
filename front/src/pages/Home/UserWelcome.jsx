@@ -1,18 +1,15 @@
 import React from "react";
+import "../../components/global/styles.css";
 
 const UserWelcome = ({ user }) => {
   if (!user) {
-    return (
-      <div className="flex flex-col h-24 w-74 justify-center align-items-center m-5">
-        <h1 className="sans-600">Loading...</h1>
-      </div>
-    );
+    return <h1 className="sans-600">Loading...</h1>;
   }
 
   return (
-    <div className="flex flex-col  h-24 w-74 justify-center align-items-center m-5">
+    <div className="flex flex-col justify-center items-center my-12">
       <div>
-        <h1 className="sans-600">
+        <h1 className="sans-700 text-center text-6xl">
           Hello{" "}
           <span className="relative inline-block">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400">

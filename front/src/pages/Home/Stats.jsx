@@ -1,4 +1,5 @@
 import React from "react";
+import "../../components/global/styles.css";
 
 const Stats = ({ user }) => {
   return (

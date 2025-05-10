@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CompletionService from "../../services/completionService";
+import "../../components/global/styles.css";
 
 const HabitCalendar = () => {
   const [year, setYear] = useState(2025);
