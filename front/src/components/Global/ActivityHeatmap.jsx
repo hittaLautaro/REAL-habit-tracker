@@ -7,7 +7,7 @@ const ActivityHeatmap = () => {
       className="border-dark border-1 rounded m-3 p-4"
       style={{ backgroundColor: "#151515" }}
     >
-      <h3 className="sans-200">Your Habit Activity</h3>
+      <h3 className="text-neutral-300 mono-600">Your Habit Activity</h3>
       <HabitCalendar />
       <div className="d-flex">
         <div className="d-flex align-items-center me-3">
@@ -20,7 +20,7 @@ const ActivityHeatmap = () => {
               marginRight: "4px",
             }}
           ></div>
-          <small className="sans-400">Completed</small>
+          <small className="text-neutral-300 mono-400">Completed</small>
         </div>
         <div className="d-flex align-items-center me-3">
           <div
@@ -32,7 +32,7 @@ const ActivityHeatmap = () => {
               marginRight: "4px",
             }}
           ></div>
-          <small className="sans-400">Some completed</small>
+          <small className="text-neutral-300 mono-400">Some completed</small>
         </div>
         <div className="d-flex align-items-center me-3">
           <div
@@ -44,7 +44,7 @@ const ActivityHeatmap = () => {
               marginRight: "4px",
             }}
           ></div>
-          <small className="sans-400">None completed</small>
+          <small className="text-neutral-300 mono-400">None completed</small>
         </div>
         <div className="d-flex align-items-center">
           <div
@@ -56,7 +56,7 @@ const ActivityHeatmap = () => {
               marginRight: "4px",
             }}
           ></div>
-          <small className="sans-400">None to complete</small>
+          <small className="text-neutral-300 mono-400">None to complete</small>
         </div>
       </div>
     </section>

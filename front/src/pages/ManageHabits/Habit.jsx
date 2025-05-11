@@ -52,9 +52,9 @@ const Habit = ({ habit }) => {
       }}
     >
       <div className="ml-3">
-        <h4 className="m-0 sans-600">{habit.name}</h4>
-        <p className="m-0 sans-600">Frequency: {habit.frequency}</p>
-        <p className="m-0 sans-600">
+        <h4 className="m-0 mono-600">{habit.name}</h4>
+        <p className="m-0 mono-400">Frequency: {habit.frequency}</p>
+        <p className="m-0 mono-400">
           Days:{" "}
           {habit.activeDayOrders.length > 0
             ? habit.activeDayOrders.map((day) => day.dayOfWeek).join(", ")
@@ -63,7 +63,7 @@ const Habit = ({ habit }) => {
       </div>
 
       {/* Dropdown menu in the top-right */}
-      <div className="dropdown text-end">
+      <div className="dropdown text-end mr-2 mb-5">
         <button
           className="btn btn-outline-light dropdown-toggle sans-600"
           type="button"
@@ -78,12 +78,18 @@ const Habit = ({ habit }) => {
           aria-labelledby={`dropdownMenuButton-${habit.id}`}
         >
           <li>
-            <button className="dropdown-item sans-600" onClick={handleEdit}>
+            <button
+              className="dropdown-item text-black mono-600"
+              onClick={handleEdit}
+            >
               Edit
             </button>
           </li>
           <li>
-            <button className="dropdown-item sans-600" onClick={handleDelete}>
+            <button
+              className="dropdown-item text-black mono-600"
+              onClick={handleDelete}
+            >
               Delete
             </button>
           </li>

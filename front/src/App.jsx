@@ -5,7 +5,7 @@ import "./index.css";
 import HomePage from "./pages/Home/page.jsx";
 import LoginPage from "./pages/Login/page.jsx";
 import RegisterPage from "./pages/Signup/page.jsx";
-import AllHabitsPage from "./pages/MyHabits/page.jsx";
+import ManageHabits from "./pages/ManageHabits/page.jsx";
 import HabitPage from "./pages/Todo/page.jsx";
 import { HabitProvider } from "./components/contexts/HabitContext.jsx";
 import ChangePasswordPage from "./pages/ChangePassword/page.jsx";
@@ -32,7 +32,7 @@ const App = () => {
           path="/my-habits"
           element={
             <HabitProvider>
-              <AllHabitsPage />
+              <ManageHabits />
             </HabitProvider>
           }
         />

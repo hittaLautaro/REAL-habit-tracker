@@ -9,7 +9,7 @@ const HabitPage = () => {
   return (
     <div>
       <Header />
-      <div className="d-flex justify-content-center align-items-center">
+      <div className="d-flex justify-content-center align-items-center mt-4">
         <div className="row w-75 ">
           <div
             className="col-sm border border-dark mt-4 rounded"

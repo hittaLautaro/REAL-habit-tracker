@@ -38,17 +38,17 @@ const ManageHabits = () => {
       className="border border-dark rounded"
       style={{ backgroundColor: "#151515" }}
     >
-      <div className="d-flex align-items-center">
-        <h1 className="m-4 sans-600 fs-2">Manage habits</h1>
-        <AddHabitModal />
-
-        <button
-          className=" btn btn-outline-light "
-          onClick={handleRemoveAllHabits}
-        >
-          <i className="me-2 bi bi-trash"></i>
-          <span className="sans-600">Delete</span>
-        </button>
+      <div className="d-flex align-items-center justify-content-between m-4">
+        <h1 className="ml-2 fs-2 text-neutral-300 mono-600">Manage habits</h1>
+        <div>
+          <AddHabitModal />
+          <button
+            className=" btn btn-outline-light "
+            onClick={handleRemoveAllHabits}
+          >
+            <i className="my-1 bi bi-trash text-center"></i>
+          </button>
+        </div>
       </div>
       <div className="h-[667px] overflow-y-scroll overflow-x-hidden m-2">
         {loading ? (

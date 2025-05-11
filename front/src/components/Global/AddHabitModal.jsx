@@ -53,8 +53,7 @@ function AddHabitModal() {
   return (
     <>
       <button className="mx-3 btn btn-outline-light " onClick={handleShow}>
-        <i className="bi bi-plus-lg me-2"></i>
-        <span className="sans-600">Add </span>
+        <i className="my-1 bi bi-plus-lg text-center"></i>
       </button>
 
       <Modal
