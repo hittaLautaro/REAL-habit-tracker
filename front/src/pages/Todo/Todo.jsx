@@ -14,7 +14,7 @@ const Todo = ({ habits, changeList }) => {
         <AddHabitModal />
       </div>
 
-      <div className="h-[calc(100vh-300px)] mx-3">
+      <div className="h-[calc(100vh-300px)] mx-3 mb-5 overflow-y-scroll">
         <DroppableHabitList droppableId="todo" habits={habits} />
       </div>
     </div>
