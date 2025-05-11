@@ -1,16 +1,15 @@
 import React from "react";
-import "../../components/global/styles.css";
 import HabitCalendar from "./HabitCalendar.jsx";
 
 const ActivityHeatmap = () => {
   return (
     <section
-      className="flex flex-col justify-center border-dark border-1 rounded mx-5 my-4 "
+      className="border-dark border-1 rounded m-3 p-4"
       style={{ backgroundColor: "#151515" }}
     >
-      <h3 className="sans-200 ml-12">Your Habit Activity</h3>
+      <h3 className="sans-200">Your Habit Activity</h3>
       <HabitCalendar />
-      <div className="d-flex ml-12">
+      <div className="d-flex">
         <div className="d-flex align-items-center me-3">
           <div
             style={{

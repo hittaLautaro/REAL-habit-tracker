@@ -77,7 +77,7 @@ const DraggableHabit = ({ habit, index }) => {
               <h4
                 className={`my-0 ml-3 sans-600 select-none ${
                   habit.isCompleted
-                    ? "line-through text-white/70"
+                    ? "line-through text-white/20"
                     : "text-white"
                 }`}
               >

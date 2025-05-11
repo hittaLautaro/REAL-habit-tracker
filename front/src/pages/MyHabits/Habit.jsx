@@ -43,7 +43,7 @@ const Habit = ({ habit }) => {
 
   return (
     <div
-      className="ml-2 rounded custom-min-height mb-1 my-1 py-3 px-2 text-light d-flex justify-content-between align-items-center transition-all duration-200"
+      className="ml-3 rounded custom-min-height mb-1 my-1 py-3 px-2 text-light d-flex justify-content-between align-items-center transition-all duration-200"
       style={{
         backgroundColor: "#121212",
         borderColor: "#222",
@@ -51,7 +51,7 @@ const Habit = ({ habit }) => {
         borderWidth: "1px",
       }}
     >
-      <div>
+      <div className="ml-3">
         <h4 className="m-0 sans-600">{habit.name}</h4>
         <p className="m-0 sans-600">Frequency: {habit.frequency}</p>
         <p className="m-0 sans-600">

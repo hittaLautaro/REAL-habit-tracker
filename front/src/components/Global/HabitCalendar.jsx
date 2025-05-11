@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CompletionService from "../../services/completionService";
-import "../../components/global/styles.css";
 
 const HabitCalendar = () => {
   const [year, setYear] = useState(2025);
@@ -65,10 +64,10 @@ const HabitCalendar = () => {
         display: "grid",
         gap: "4px",
         gridTemplateRows: `repeat(${rows}, 1fr)`,
-        gridTemplateColumns: `repeat(${columns + 1}, 1fr)`, // Add extra column if needed
+        gridTemplateColumns: `repeat(${columns + 1}, 1fr)`, // was: 1fr
         gridAutoFlow: "column",
-        width: "fit-content",
-        margin: "4rem",
+        margin: "1rem 0",
+        width: "700px",
       }}
     >
       {gridCells.map((cell, index) => {
@@ -78,8 +77,8 @@ const HabitCalendar = () => {
             <div
               key={`empty-${index}`}
               style={{
-                width: "16px",
-                height: "16px",
+                width: "10px",
+                height: "10px",
               }}
             ></div>
           );

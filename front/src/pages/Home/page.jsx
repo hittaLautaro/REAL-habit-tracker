@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Header from "../../components/global/Header.jsx";
 import UserService from "../../services/userService.js";
-import ActivityHeatmap from "./ActivityHeatmap.jsx";
-import Stats from "./Stats.jsx";
+import ActivityHeatmap from "../../components/global/ActivityHeatmap.jsx";
+import Stats from "../../components/global/Stats.jsx";
 import UserWelcome from "./UserWelcome.jsx";
 
 const HomePage = () => {
@@ -25,10 +25,6 @@ const HomePage = () => {
     <div>
       <Header />
       <UserWelcome user={user} />
-      <div className="flex flex-row justify-content-center">
-        <ActivityHeatmap />
-        <Stats user={user} />
-      </div>
     </div>
   );
 };

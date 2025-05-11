@@ -49,18 +49,3 @@
 .fs-big {
   font-size: 5rem;
 }
-
-.habit-min-height-all-habits {
-  min-height: 80px;
-}
-
-.habit-min-height-todo {
-  min-height: 80px;
-}
-
-.habit-list {
-  min-height: 75vh;
-  max-height: 75vh; /* Adjust as needed */
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
