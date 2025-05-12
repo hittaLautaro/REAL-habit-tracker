@@ -1,10 +1,8 @@
 package com.hitta.SpringSecurityExample.controller;
 
-import com.hitta.SpringSecurityExample.dtos.CompletionSummaryOfTheDay;
+import com.hitta.SpringSecurityExample.dtos.CompletionResponse;
 import com.hitta.SpringSecurityExample.dtos.CompletionSummaryResponse;
 import com.hitta.SpringSecurityExample.model.Completion;
-import com.hitta.SpringSecurityExample.model.CompletionSummary;
-import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.CompletionService;
 import com.hitta.SpringSecurityExample.service.CompletionSummaryService;
 import com.hitta.SpringSecurityExample.service.UserService;
@@ -22,15 +20,30 @@ import java.util.List;
 public class CompletionController {
 
     @Autowired
-    private CompletionSummaryService completionService;
+    private CompletionSummaryService completionSummaryService;
+
+    @Autowired
+    private CompletionService completionService;
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{year}")
-    public ResponseEntity<List<CompletionSummaryResponse>> getCompletionsByYear(@PathVariable Integer year, @AuthenticationPrincipal UserDetails userDetails){
+    @GetMapping("/summary")
+    public ResponseEntity<List<CompletionSummaryResponse>> getCompletionsSummaryByYear(
+            @RequestParam Integer year,
+            @AuthenticationPrincipal UserDetails userDetails){
         Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
-        return new ResponseEntity<>(completionService.getCompletionsByYear(year,userId), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(completionSummaryService.getCompletionsByYear(year,userId), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/habit-summary")
+    public ResponseEntity<List<CompletionResponse>> getSingularHabitCompletionsByYear(
+            @RequestParam Integer year,
+            @RequestParam Integer habitId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ){
+        Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
+        return new ResponseEntity<>(completionService.getCompletionsByYearAndHabit(year, userId, habitId), HttpStatus.ACCEPTED);
     }
 
 //    @GetMapping("/")

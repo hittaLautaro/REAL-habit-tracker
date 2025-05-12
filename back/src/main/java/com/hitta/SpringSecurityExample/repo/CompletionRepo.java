@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface CompletionRepo extends JpaRepository<Completion, Integer> {
-    List<Completion> findByDateBetweenAndUserId(LocalDateTime startOfYear, LocalDateTime endOfYear, Integer userId);
+    List<Completion> findByDateBetweenAndUserIdAndHabitId(LocalDateTime startOfYear, LocalDateTime endOfYear, Integer userId, Integer habitId);
 
     @Modifying
     void deleteAllByUserId(Integer userId);
