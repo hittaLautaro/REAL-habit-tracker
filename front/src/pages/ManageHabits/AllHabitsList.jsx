@@ -11,9 +11,9 @@ const AllHabitsList = ({ habits }) => {
   }
 
   return (
-    <div className="h-[70vh] w-[700px] overflow-y-scroll overflow-x-hidden mx-2">
+    <div className="h-[70vh] w-[700px] overflow-y-scroll overflow-x-hidden ml-5 mr-4 mb-4">
       {habits.map((habit) => (
-        <div key={habit.id} className="min-h-[80px] mb-2 rounded mr-6">
+        <div key={habit.id} className="min-h-[80px] mb-2 rounded mr-2">
           <Habit habit={habit} />
         </div>
       ))}

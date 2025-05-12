@@ -61,6 +61,7 @@
 .navbar-links {
   display: flex;
   justify-content: center;
+  color: white;
 }
 
 .nav-link {

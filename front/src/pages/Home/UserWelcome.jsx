@@ -7,14 +7,14 @@ const UserWelcome = ({ user }) => {
       <div className="flex flex-col justify-center items-center my-12">
         <div>
           <h1 className="mono-600 text-center text-6xl">
-            Hello{" "}
+            <span className="text-white"> Hello </span>
             <span className="relative inline-block">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400">
                 Loading...
               </span>
               <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-gradient-to-r from-green-500 to-yellow-400"></span>
             </span>
-            ! Welcome back.
+            <span className="text-white"> Hello </span>
           </h1>
         </div>
       </div>
@@ -25,14 +25,14 @@ const UserWelcome = ({ user }) => {
     <div className="flex flex-col justify-center items-center my-12">
       <div>
         <h1 className="mono-600 text-center text-6xl">
-          Hello{" "}
+          <span className="text-white"> Hello </span>
           <span className="relative inline-block">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400">
               {user.email.split("@")[0]}
             </span>
             <span className="absolute left-0 -bottom-1 h-0.5 w-full bg-gradient-to-r from-green-500 to-yellow-400"></span>
           </span>
-          ! Welcome back.
+          <span className="text-white">! Welcome Back. </span>
         </h1>
       </div>
     </div>

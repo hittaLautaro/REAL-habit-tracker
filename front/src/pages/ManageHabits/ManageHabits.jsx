@@ -34,7 +34,7 @@ const ManageHabits = () => {
 
   return (
     <div
-      className="border border-dark rounded"
+      className="border border-dark rounded mt-3"
       style={{ backgroundColor: "#151515" }}
     >
       <div className="d-flex align-items-center justify-content-between m-4">
@@ -49,9 +49,7 @@ const ManageHabits = () => {
           </button>
         </div>
       </div>
-      <div className="h-[667px] overflow-y-scroll overflow-x-hidden m-2">
-        <AllHabitsList habits={habits} />
-      </div>
+      <AllHabitsList habits={habits} />
     </div>
   );
 };

@@ -46,7 +46,7 @@ const Header = () => {
             <NavLink
               to="/todo"
               className={({ isActive }) =>
-                isActive ? "nav-link mx-3 active" : "nav-link mx-3"
+                isActive ? "nav-link mx-3 active " : "nav-link mx-3"
               }
               aria-current={location.pathname === "/todo" ? "page" : undefined}
             >
