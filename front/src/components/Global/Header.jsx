@@ -42,7 +42,7 @@ const Header = () => {
           </div>
 
           {/* Centered Links */}
-          <div id="navbar-links" className="navbar-links">
+          <div id="navbar-links" className="navbar-links ml-32">
             <NavLink
               to="/todo"
               className={({ isActive }) =>

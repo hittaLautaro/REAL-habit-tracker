@@ -17,7 +17,15 @@ const App = () => {
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
         <Route path="/auth/change-password" element={<ChangePasswordPage />} />
-        <Route path="/" element={<HomePage />} />
+
+        <Route
+          path="/"
+          element={
+            <HabitProvider>
+              <HomePage />
+            </HabitProvider>
+          }
+        />
 
         <Route
           path="/todo"
