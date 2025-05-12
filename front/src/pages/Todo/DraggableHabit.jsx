@@ -75,7 +75,7 @@ const DraggableHabit = ({ habit, index }) => {
           >
             <div className="d-flex align-items-center">
               <h4
-                className={`my-0 ml-3 sans-600 select-none ${
+                className={`my-0 ml-3 mono-400 select-none ${
                   habit.isCompleted
                     ? "line-through text-white/20"
                     : "text-white"

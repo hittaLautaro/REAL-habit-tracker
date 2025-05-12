@@ -19,10 +19,6 @@ const Stats = () => {
     fetchUser();
   }, []);
 
-  if (loading) {
-    return <div className="m-4 mono-600">Loading...</div>;
-  }
-
   return (
     <div
       className="border-dark border-1 rounded m-3 p-4"

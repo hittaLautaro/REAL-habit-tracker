@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200&400&600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200&400&500&600&display=swap");
 
 .mono-200 {
   font-family: "IBM Plex Mono", monospace;
@@ -10,6 +10,11 @@
 .mono-400 {
   font-family: "IBM Plex Mono", monospace;
   font-weight: 400;
+}
+
+.mono-500 {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
 }
 
 .mono-600 {

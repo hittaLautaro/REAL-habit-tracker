@@ -10,7 +10,7 @@ const AllHabitsPage = () => {
 
       <div className="grid grid-cols-2 ">
         {/* Left column */}
-        <div className="flex flex-col items-center justify-content-center mt-3">
+        <div className="flex flex-col items-center justify-content-center">
           <ManageHabits />
         </div>
 

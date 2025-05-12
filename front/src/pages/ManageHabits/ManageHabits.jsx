@@ -7,8 +7,7 @@ import Swal from "sweetalert2";
 import "../../components/global/styles.css";
 
 const ManageHabits = () => {
-  const { habits, loading, deleteAllHabits, fetchHabits } =
-    useContext(HabitContext);
+  const { habits, deleteAllHabits, fetchHabits } = useContext(HabitContext);
 
   const handleRemoveAllHabits = () => {
     Swal.fire({
@@ -51,11 +50,7 @@ const ManageHabits = () => {
         </div>
       </div>
       <div className="h-[667px] overflow-y-scroll overflow-x-hidden m-2">
-        {loading ? (
-          <p className="m-5 sans-600"> loading...</p>
-        ) : (
-          <AllHabitsList habits={habits} />
-        )}
+        <AllHabitsList habits={habits} />
       </div>
     </div>
   );
