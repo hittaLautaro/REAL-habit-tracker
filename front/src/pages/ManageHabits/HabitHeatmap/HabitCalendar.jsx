@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import CompletionService from "../../services/completionService";
+import CompletionService from "../../../services/completionService";
 
-const HabitCalendar = () => {
-  const [year, setYear] = useState(2025);
+const HabitCalendar = ({ year, habitId }) => {
   const [dataValues, setDataValues] = useState([]);
 
   const fetchData = async () => {
-    const res = await CompletionService.getAll(year);
-    console.log(res.data);
-    setDataValues(res.data);
+    if (habitId != -1) {
+      const res = await CompletionService.getAllByHabit(year, habitId);
+      console.log(res.data);
+      setDataValues(res.data);
+    }
   };
 
   useEffect(() => {
     fetchData();
-  }, [year]);
+  }, [year, habitId]);
 
   const startingDate = new Date(year, 0, 1);
   const endingDate = new Date(year, 11, 31);
@@ -51,10 +52,10 @@ const HabitCalendar = () => {
 
   gridCells.push(...calenderGrid);
 
-  const getColor = (activity, objective) => {
-    if (objective === 0) return "#757575"; // grey
-    if (activity === 0) return "#ffe890"; // yellow
-    if (activity < objective) return "#ffc900"; // yellow
+  const getColor = (completed) => {
+    console.log(completed);
+    if (!completed) return "#757575"; // grey
+    if (completed === false) return "#ffe890"; // yellow
     return "#68d600"; // green / success
   };
 
@@ -84,18 +85,16 @@ const HabitCalendar = () => {
           );
         }
 
-        const activityCount =
-          dataValues.find((i) => i.date === cell.day)?.habitsCompleted || 0;
-        const objective =
-          dataValues.find((i) => i.date === cell.day)?.habitsObjective || 0;
+        const completed =
+          dataValues.find((i) => i.localDate === cell.day)?.completed || false;
 
         return (
           <div
             key={index}
             className="rounded-sm cursor-pointer"
-            title={`${activityCount} out of ${objective} completed on ${cell.day}`}
+            title={`${cell.day}`}
             style={{
-              backgroundColor: getColor(activityCount, objective),
+              backgroundColor: getColor(completed),
               width: "10px",
               height: "10px",
             }}

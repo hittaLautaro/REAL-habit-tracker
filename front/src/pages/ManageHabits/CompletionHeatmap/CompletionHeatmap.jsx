@@ -1,14 +1,42 @@
-import React from "react";
-import HabitCalendar from "./HabitCalendar.jsx";
+import React, { useState } from "react";
+import CompletionCalendar from "./CompletionCalendar.jsx";
 
-const ActivityHeatmap = () => {
+const CompletionHeatmap = () => {
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const years = [2025, 2024, 2022];
+
   return (
     <section
       className="border-dark border-1 rounded m-3 p-4"
       style={{ backgroundColor: "#151515" }}
     >
-      <h3 className="text-neutral-300 mono-600">Your Habit Activity</h3>
-      <HabitCalendar />
+      <div className="flex justify-content-between">
+        <h3 className="text-neutral-300 mono-500">Daily Completions</h3>
+        <div className="dropdown text-end mr-1 mb-1">
+          <button
+            className="btn btn-outline-light dropdown-toggle sans-600"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            {selectedYear}
+          </button>
+          <ul className="dropdown-menu">
+            {years.map((year) => (
+              <li key={year}>
+                <button
+                  className="dropdown-item text-black mono-600"
+                  onClick={() => setSelectedYear(year)}
+                >
+                  {year}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <CompletionCalendar year={selectedYear} />
       <div className="d-flex">
         <div className="d-flex align-items-center me-3">
           <div
@@ -63,4 +91,4 @@ const ActivityHeatmap = () => {
   );
 };
 
-export default ActivityHeatmap;
+export default CompletionHeatmap;

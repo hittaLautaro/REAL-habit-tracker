@@ -34,7 +34,7 @@ const HomePage = () => {
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl">
           <div className="bg-[#151515] text-neutral-200 !border !border-neutral-600 rounded-xl p-6 text-center shadow-md">
-            <div className="text-3xl font-bold">6🔥</div>
+            <div className="text-3xl font-bold">{user ? user.streak : "?"}</div>
             <div className="text-lg mono-400 mt-2">Current daily streak</div>
           </div>
 

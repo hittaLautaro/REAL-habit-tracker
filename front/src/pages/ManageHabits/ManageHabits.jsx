@@ -34,11 +34,11 @@ const ManageHabits = () => {
 
   return (
     <div
-      className="border border-dark rounded mt-3"
+      className="border border-dark rounded"
       style={{ backgroundColor: "#151515" }}
     >
       <div className="d-flex align-items-center justify-content-between m-4">
-        <h1 className="ml-2 fs-2 text-neutral-300 mono-600">Manage habits</h1>
+        <h1 className="ml-2 fs-2 text-neutral-300 mono-500">Manage habits</h1>
         <div>
           <AddHabitModal />
           <button

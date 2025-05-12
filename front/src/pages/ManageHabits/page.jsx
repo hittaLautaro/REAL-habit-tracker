@@ -1,29 +1,27 @@
 import Header from "../../components/global/Header.jsx";
-import ActivityHeatmap from "../../components/global/ActivityHeatmap.jsx";
-import Stats from "../../components/global/Stats.jsx";
+import CompletionHeatmap from "./CompletionHeatmap/CompletionHeatmap.jsx";
+import Stats from "./Stats.jsx";
 import ManageHabits from "./ManageHabits.jsx";
+import HabitHeatmap from "./HabitHeatmap/HabitHeatmap.jsx";
 
 const AllHabitsPage = () => {
   return (
     <div>
       <Header />
 
-      <div className="grid grid-cols-2 mt-0">
-        {/* Left column */}
-        <div className="flex flex-col items-center justify-content-center">
+      <div className="grid grid-cols-2 gap-2">
+        <div className="flex flex-col mt-3 justify-content-center items-end pr-4">
           <ManageHabits />
         </div>
 
-        {/* Right column */}
-        <div className="w-[830px] flex flex-col p-2 mt-3">
-          <div>
-            <ActivityHeatmap />
+        <div className="flex flex-col items-start mt-3">
+          <div className="w-[830px]">
+            <CompletionHeatmap />
           </div>
-          <div>
-            {/* TODO - Going to be the heatmap for singular habits */}
-            <ActivityHeatmap />
+          <div className="w-[830px]">
+            <HabitHeatmap />
           </div>
-          <div>
+          <div className="w-[830px]">
             <Stats />
           </div>
         </div>
