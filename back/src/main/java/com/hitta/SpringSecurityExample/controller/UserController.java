@@ -1,7 +1,6 @@
 package com.hitta.SpringSecurityExample.controller;
 
 import com.hitta.SpringSecurityExample.dtos.UserResponse;
-import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,14 +16,6 @@ public class UserController {
 
     @GetMapping("/")
     public UserResponse getUserResponse(@AuthenticationPrincipal UserDetails userDetails) {
-//        Users user = userService.findByUsername(userDetails.getUsername());
-//        return UserResponse.builder()
-//                .id(user.getId())
-//                .streak(user.getStreak())
-//                .dateOfBirth(user.getDateOfBirth())
-//                .time_zone(user.getTimeZone())
-//                .email(user.getEmail())
-//                .build();
         return userService.findUserResponseByEmail(userDetails.getUsername());
     }
 

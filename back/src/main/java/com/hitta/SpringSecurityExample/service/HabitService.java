@@ -3,7 +3,6 @@ package com.hitta.SpringSecurityExample.service;
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
-import com.hitta.SpringSecurityExample.mappers.CompletionMapper;
 import com.hitta.SpringSecurityExample.mappers.HabitMapper;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.CompletionRepo;
@@ -21,8 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class HabitService {
@@ -38,9 +35,6 @@ public class HabitService {
 
     @Autowired
     private CompletionRepo completionRepo;
-
-    @Autowired
-    private CompletionMapper completionMapper;
 
     @Autowired
     private CompletionSummaryRepo completionSummaryRepo;
@@ -128,16 +122,6 @@ public class HabitService {
             System.out.println(request.toString());
             update(request.getId(), request);
         }
-    }
-
-    private <T> boolean areSetsEqual(Set<T> set1, Set<T> set2) {
-        if (set1 == null || set2 == null) {
-            return set1 == set2; // Both null means equal
-        }
-        if (set1.size() != set2.size()) {
-            return false; // Different sizes, not equal
-        }
-        return set1.containsAll(set2) && set2.containsAll(set1); // Ensure both sets contain each other's elements
     }
 
     private void resetUserHabits(Integer userId) {

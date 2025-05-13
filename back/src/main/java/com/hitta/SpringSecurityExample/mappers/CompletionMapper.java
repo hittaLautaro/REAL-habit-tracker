@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class CompletionMapper {
-
     public CompletionResponse completionToResponse(Completion completion){
         return CompletionResponse.builder()
                 .isCompleted(completion.isCompleted())
@@ -25,39 +24,5 @@ public class CompletionMapper {
         return completions.stream()
                 .map(this::completionToResponse)
                 .toList();
-    }
-
-    public CompletionSummaryResponse completionsToSummaryOfTheDay(List<Completion> completions, LocalDate date){
-        int objective = completions.size();
-
-        int completed = (int) completions.stream()
-                .filter(Completion::isCompleted)
-                .count();
-        
-        return CompletionSummaryResponse.builder()
-                .habitsCompleted(completed)
-                .habitsObjective(objective)
-                .date(date)
-                .build();
-    }
-
-
-    public List<CompletionSummaryResponse> completionsToSummaries(List<Completion> completions) {
-        // Group completions by day
-        Map<LocalDate, List<Completion>> completionsByDay = completions.stream()
-                .collect(Collectors.groupingBy(completion -> completion.getDate().toLocalDate()));
-
-        // Create a summary for each day
-        List<CompletionSummaryResponse> summaries = new ArrayList<>();
-
-        for (Map.Entry<LocalDate, List<Completion>> entry : completionsByDay.entrySet()) {
-            LocalDate day = entry.getKey();
-            List<Completion> dayCompletions = entry.getValue();
-
-            CompletionSummaryResponse summary = completionsToSummaryOfTheDay(dayCompletions, day);
-            summaries.add(summary);
-        }
-
-        return summaries;
     }
 }

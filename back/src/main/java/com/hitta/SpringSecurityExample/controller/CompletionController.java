@@ -46,19 +46,4 @@ public class CompletionController {
         return new ResponseEntity<>(completionService.getCompletionsByYearAndHabit(year, userId, habitId), HttpStatus.ACCEPTED);
     }
 
-//    @GetMapping("/")
-//    public ResponseEntity<List<Completion>> getCompletionsByMonth(){
-//        return null;
-//    }
-//
-//    @GetMapping("/")
-//    public ResponseEntity<List<Completion>> getCompletionsByHabitByYear(){
-//        return null;
-//    }
-//
-//    @GetMapping("/")
-//    public ResponseEntity<List<Completion>> getYearsContainingCompletions(){
-//        return null;
-//    }
-
 }

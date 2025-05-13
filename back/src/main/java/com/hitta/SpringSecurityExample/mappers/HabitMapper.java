@@ -13,9 +13,6 @@ import java.util.List;
 @Component
 public class HabitMapper {
 
-    @Autowired
-    private UserRepo userRepo;
-
     public HabitResponse habitToResponse(Habit habit){
         return HabitResponse.builder()
                 .name(habit.getName())
