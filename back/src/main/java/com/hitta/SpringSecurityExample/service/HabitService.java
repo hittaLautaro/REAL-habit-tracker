@@ -37,40 +37,7 @@ public class HabitService {
     @Autowired
     private CompletionRepo completionRepo;
 
-    @Autowired
-    private CompletionSummaryRepo completionSummaryRepo;
-
-    public void checkIfResetIsNeeded(Integer userId){
-        Users user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-
-        ZoneId userZone = ZoneId.of(user.getTimeZone());
-        LocalDate todayInUserTimezone = LocalDate.now(userZone);
-
-        LocalDate lastResetDate = getLastResetDateForUser(userId);
-
-        // If we're on a new day in user's timezone, reset their habits
-        if (lastResetDate == null || todayInUserTimezone.isAfter(lastResetDate)) {
-            resetUserHabits(user.getId());
-            updateLastResetDate(userId, todayInUserTimezone);
-        }
-    }
-
-    private void updateLastResetDate(Integer userId, LocalDate date) {
-        Users user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        user.setLastHabitResetDate(date);
-        userRepo.save(user);
-    }
-
-    private LocalDate getLastResetDateForUser(Integer userId){
-        Users user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        return user.getLastHabitResetDate();
-    }
-
     public List<HabitResponse> findAll(Integer userId){
-        System.out.println("This method is being called!");
-        checkIfResetIsNeeded(userId);
         List<Habit> habits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(userId);
         return habitMapper.habitsToResponses(habits);
     }
@@ -114,9 +81,6 @@ public class HabitService {
         habitRepo.deleteAllByUserId(userId);
     }
 
-    public boolean checkHabitCompletion(Habit habit){
-        return habit.isCompleted();
-    }
 
     public List<HabitResponse> updateHabits(List<HabitUpdateRequest> habitRequests, Integer userId) {
         var mappedHabits = new ArrayList<HabitResponse>();
@@ -129,51 +93,7 @@ public class HabitService {
         return mappedHabits;
     }
 
-    private void resetUserHabits(Integer userId) {
-        var user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        List<Habit> userHabits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(user.getId());
 
-        boolean allCompleted = true;
-        int habitsCompleted = 0;
-        int habitsObjective = userHabits.size();
-
-        for (Habit habit : userHabits) {
-
-            boolean wasCompletedToday = checkHabitCompletion(habit);
-
-            if(wasCompletedToday){
-                habit.setStreak(habit.getStreak() + 1);
-                habit.setTimesDone(habit.getTimesDone() + 1);
-                habit.setTotalTimesDone(habit.getTotalTimesDone() + 1);
-                habitsCompleted++;
-            }else{
-                habit.setStreak(0);
-                allCompleted = false;
-            }
-
-            habit.setCompleted(false);
-            habitRepo.save(habit);
-
-            var completion = Completion.builder()
-                    .habit(habit)
-                    .isCompleted(wasCompletedToday)
-                    .date(LocalDateTime.now())
-                    .user(user)
-                    .build();
-            completionRepo.save(completion);
-        }
-
-        var completionSummary = CompletionSummary.builder()
-                .habitsCompleted(habitsCompleted)
-                .habitsObjective(habitsObjective)
-                .date(LocalDate.now())
-                .user(user)
-                .build();
-
-        completionSummaryRepo.save(completionSummary);
-
-        if(!allCompleted) user.setStreak(0);
-    }
 
     public void updateIsCompleted(Integer userId, Integer habitId, boolean isCompleted) {
         int updatedRows = habitRepo.updateIsCompleted(habitId, userId, isCompleted);

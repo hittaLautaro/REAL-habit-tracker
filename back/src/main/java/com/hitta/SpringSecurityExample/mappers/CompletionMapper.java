@@ -16,7 +16,7 @@ public class CompletionMapper {
     public CompletionResponse completionToResponse(Completion completion){
         return CompletionResponse.builder()
                 .isCompleted(completion.isCompleted())
-                .localDate(completion.getDate().toLocalDate())
+                .localDate(completion.getDate())
                 .build();
     }
 

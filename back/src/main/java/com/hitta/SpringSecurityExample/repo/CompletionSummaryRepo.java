@@ -13,7 +13,4 @@ import java.util.Optional;
 @Repository
 public interface CompletionSummaryRepo extends JpaRepository<CompletionSummary, Integer> {
     Optional<List<CompletionSummary>> findByDateBetweenAndUserId(LocalDate startOfYear, LocalDate endOfYear, Integer userId);
-
-//    @Modifying
-//    void deleteAllByUserId(Integer userId);
 }

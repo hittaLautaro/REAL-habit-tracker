@@ -3,11 +3,9 @@ package com.hitta.SpringSecurityExample.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.apache.catalina.User;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Table(name = "completions")
 @Entity
@@ -33,7 +31,7 @@ public class Completion {
     private Users user;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     @NotNull
     private boolean isCompleted;
