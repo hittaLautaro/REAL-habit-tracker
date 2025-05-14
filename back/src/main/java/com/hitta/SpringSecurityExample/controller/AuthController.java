@@ -28,8 +28,7 @@ public class AuthController {
         try{
             return ResponseEntity.ok(service.register(request));
         } catch (RuntimeException e) {
-            System.out.println(e);
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 
