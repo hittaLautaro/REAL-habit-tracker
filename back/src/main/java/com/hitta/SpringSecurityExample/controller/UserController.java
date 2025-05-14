@@ -17,7 +17,7 @@ public class UserController {
 
     @GetMapping("/")
     public ResponseEntity<UserResponse> getUserResponse(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseEntity.ok(userService.findUserResponseByEmail(userDetails.getId()));
+        return ResponseEntity.ok(userService.findUserResponseById(userDetails.getId()));
     }
 
 }

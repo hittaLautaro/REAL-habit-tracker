@@ -104,7 +104,7 @@ public class HabitService {
 
     @Transactional
     public void deleteById(Integer habitId, Integer userId) {
-        habitRepo.deleteAllCompletionsByHabitIdAndUserId(habitId, userId);
+        completionRepo.deleteAllCompletionsByHabitIdAndUserId(habitId, userId);
         habitRepo.deleteByHabitIdAndUserId(habitId, userId);
     }
 

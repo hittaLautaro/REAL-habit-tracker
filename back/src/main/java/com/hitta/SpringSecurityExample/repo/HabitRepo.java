@@ -17,11 +17,6 @@ public interface HabitRepo extends JpaRepository<Habit, Integer> {
     @Query("SELECT DISTINCT h FROM Habit h LEFT JOIN FETCH h.activeDayOrders WHERE h.user.id = :userId ORDER BY h.lastModifiedDate ASC, h.createdDate ASC")
     List<Habit> findAllByUserIdWithActiveDaysOrderByLastModifiedDate(@Param("userId") Integer userId);
 
-    @Modifying
-    @Transactional
-    @Query("DELETE FROM Completion c WHERE c.habit.id = :habitId AND c.user.id = :userId")
-    void deleteAllCompletionsByHabitIdAndUserId(@Param("habitId") Integer habitId, @Param("userId") Integer userId);
-
     void deleteAllByUserId(Integer userId);
 
     @Modifying
@@ -37,6 +32,6 @@ public interface HabitRepo extends JpaRepository<Habit, Integer> {
     @Query("SELECT h FROM Habit h JOIN h.activeDayOrders ado WHERE h.user.id = :userId AND ado.dayOfWeek = :dayOfWeek ORDER BY ado.position")
     Optional<List<Habit>> findByUserIdAndDayOfWeek(@Param("userId") int userId, @Param("dayOfWeek") DayOfWeek dayOfWeek);
 
-    @Query("SELECT h FROM Habit h WHERE c.habit.id = :habitId AND c.user.id = :userId")
+    @Query("SELECT h FROM Habit h WHERE h.id = :habitId AND h.user.id = :userId")
     Optional<Habit> findByHabitIdAndUserId(@Param("userId") Integer userId, @Param("habitId") Integer habitId);
 }
