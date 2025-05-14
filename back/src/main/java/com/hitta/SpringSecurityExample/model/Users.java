@@ -35,11 +35,15 @@ public class Users implements UserDetails, Principal {
     private int id;
     @Column(unique = true)
     private String email;
+    @NotNull
+    private String name;
     private String password;
     private LocalDate dateOfBirth;
     private boolean accountLocked;
     private boolean enabled;
     private LocalDate lastHabitResetDate;
+    private String verificationCode;
+    private LocalDateTime verificationCodeExpiresAt;
     @NotNull
     private Integer streak;
     @NotNull
@@ -93,4 +97,5 @@ public class Users implements UserDetails, Principal {
     public String getName() {
         return email;
     }
+
 }

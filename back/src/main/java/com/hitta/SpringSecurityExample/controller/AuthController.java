@@ -3,6 +3,8 @@ package com.hitta.SpringSecurityExample.controller;
 import com.hitta.SpringSecurityExample.dtos.AuthResponse;
 import com.hitta.SpringSecurityExample.dtos.LoginRequest;
 import com.hitta.SpringSecurityExample.dtos.RegisterRequest;
+import com.hitta.SpringSecurityExample.dtos.VerifyUserDto;
+import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,14 +26,20 @@ public class AuthController {
             HttpServletResponse response
     ) {
         try{
-            AuthResponse authResponse = service.register(request);
-            addRefreshTokenCookie(response, authResponse.getRefreshToken());
-            System.out.println("God");
-            return ResponseEntity.ok()
-                    .body(authResponse);
+            return ResponseEntity.ok(service.register(request));
         } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            System.out.println(e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyUser(@RequestBody VerifyUserDto verifyUserDto) {
+        try {
+            service.verifyUser(verifyUserDto);
+            return ResponseEntity.ok("Account verified successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

@@ -5,9 +5,9 @@ spring:
     application:
         name: SpringSecurityExample
     datasource:
-        url: jdbc:postgresql://localhost:5432/realtrackerdb
-        username: postgres
-        password: 2471
+        url: ${DB_URL}
+        username: ${DB_USER}
+        password: ${DB_PASS}
     jpa:
         hibernate:
             ddl-auto: update
@@ -16,3 +16,14 @@ spring:
         properties:
             hibernate:
                 format_sql: true
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: ${MAIL_USER}
+        password: ${MAIL_PASS}
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enabled: true

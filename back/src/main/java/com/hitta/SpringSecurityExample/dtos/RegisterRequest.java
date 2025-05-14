@@ -15,16 +15,21 @@ import java.time.LocalDate;
 @Setter
 @Builder
 public class RegisterRequest {
-    @NotNull(message = "date is mandatory")
+    @NotNull(message = "Date is mandatory")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
-    @NotNull(message = "email is mandatory")
-    @NotBlank(message = "email is mandatory")
-    @Email(message = "email is not formatted")
+    @NotNull(message = "Email is mandatory")
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email is not formatted")
     private String email;
-    @NotNull(message = "password is mandatory")
-    @NotBlank(message = "password is mandatory")
-    @Size(min = 8, message = "password should be 8 characters long minimum")
+    @NotNull
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 2, message = "Name length must be more or equal to 2 characters")
+    private String name;
+    @NotNull(message = "Password is mandatory")
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 8, message = "Password length must be more or equal to 8 characters")
+    @Size(max = 28, message = "Password length must be less or equal to 28 characters")
     private String password;
     @NotNull
     private String timeZone;
