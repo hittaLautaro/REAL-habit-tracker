@@ -22,8 +22,8 @@ public class UserService {
         return userRepo.findByEmail(username).orElse(null);
     }
 
-    public UserResponse findUserResponseByEmail(String username){
-        return userRepo.findUserInfoByEmail(username).orElse(null);
+    public UserResponse findUserResponseByEmail(Integer id){
+        return userRepo.findUserInfoByEmail(id).orElse(null);
     }
 
     public Integer findUserIdByEmail(String username) {

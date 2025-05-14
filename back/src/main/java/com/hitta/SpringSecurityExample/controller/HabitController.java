@@ -1,18 +1,13 @@
 package com.hitta.SpringSecurityExample.controller;
-
 import com.hitta.SpringSecurityExample.dtos.HabitCompletedRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
 import com.hitta.SpringSecurityExample.model.CustomUserDetails;
-import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.HabitService;
-import com.hitta.SpringSecurityExample.service.UserService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 

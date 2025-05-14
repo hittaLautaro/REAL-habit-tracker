@@ -15,8 +15,8 @@ public interface UserRepo extends JpaRepository<Users, Integer> {
     @Query("SELECT u.id FROM Users u WHERE u.email = :email")
     Optional<Integer> findIdByEmail(@Param("email") String email);
 
-    @Query("SELECT new com.hitta.SpringSecurityExample.dtos.UserResponse(u.id, u.streak, u.email) FROM Users u WHERE u.email = :email")
-    Optional<UserResponse> findUserInfoByEmail(@Param("email") String email);
+    @Query("SELECT new com.hitta.SpringSecurityExample.dtos.UserResponse(u.id, u.streak, u.email) FROM Users u WHERE u.id = :id")
+    Optional<UserResponse> findUserInfoById(@Param("id") Integer id);
 
     @Query("SELECT new com.hitta.SpringSecurityExample.dtos.UserAuthResponse(u.email, u.password, u.enabled, u.accountLocked) FROM Users u WHERE u.email = :email")
     Optional<UserAuthResponse> findUserAuthByEmail(@Param("email")String email);
