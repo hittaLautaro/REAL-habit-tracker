@@ -41,6 +41,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if(userRepo.findByEmail(request.getEmail()).isPresent()) throw new RuntimeException("User with that email already exists");
+        if(request.getPassword().length() > 28) throw new RuntimeException("User password length must be shorter or equal to 28 characters");
 
         ZoneId userZone = ZoneId.of(request.getTimeZone());
         LocalDate todayInUserTimezone = LocalDate.now(userZone);
