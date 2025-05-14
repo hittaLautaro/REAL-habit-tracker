@@ -1,5 +1,6 @@
 package com.hitta.SpringSecurityExample.model;
 
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,14 +9,15 @@ import java.util.Collection;
 import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
-
+    @Getter
     private final String email;
+    @Getter
+    private final Users user;
     private final String password;
     private final boolean enabled;
     private final boolean accountLocked;
     private final List<GrantedAuthority> authorities;
-    
-    private final Users user;
+
 
     public CustomUserDetails(Users user) {
         this.user = user;
@@ -24,6 +26,10 @@ public class CustomUserDetails implements UserDetails {
         this.enabled = user.isEnabled();
         this.accountLocked = user.isAccountLocked();
         this.authorities = List.of(new SimpleGrantedAuthority("USER"));
+    }
+
+    public Integer getId() {
+        return user.getId();
     }
 
     @Override
@@ -61,11 +67,4 @@ public class CustomUserDetails implements UserDetails {
         return enabled;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public Users getUser() {
-        return user;
-    }
 }

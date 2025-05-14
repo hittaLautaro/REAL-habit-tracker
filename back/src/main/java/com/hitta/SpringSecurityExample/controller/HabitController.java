@@ -4,9 +4,11 @@ import com.hitta.SpringSecurityExample.dtos.HabitCompletedRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
+import com.hitta.SpringSecurityExample.model.CustomUserDetails;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.HabitService;
 import com.hitta.SpringSecurityExample.service.UserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,77 +25,69 @@ public class HabitController {
     @Autowired
     private HabitService habitService;
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping("/")
-    public List<HabitResponse> getAll(@AuthenticationPrincipal UserDetails userDetails) {
-        Users user = userService.findByUsername(userDetails.getUsername());
-        return habitService.getAllHabitsByUserId(user.getId());
+    public ResponseEntity<List<HabitResponse>> findAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<HabitResponse> habitsRes = habitService.findAll(userDetails.getId());
+        return ResponseEntity.ok(habitsRes);
     }
 
     @GetMapping("/by-day")
-    public List<HabitResponse> getHabitsByDay(
+    public ResponseEntity<List<HabitResponse>> findAllByDayOfWeek(
             @RequestParam("day") String dayOfWeek,
-            @AuthenticationPrincipal UserDetails userDetails) {
-        var userId = userService.findUserIdByEmail(userDetails.getUsername());
-        return habitService.getHabitsByUserIdAndDay(userId, dayOfWeek);
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        List<HabitResponse> habitsRes = habitService.findAllByDayOfWeek(userDetails.getId(), dayOfWeek);
+        return ResponseEntity.ok(habitsRes);
     }
 
-    // TODO - Need to check for authorization
     @GetMapping("/{id}")
-    public HabitResponse findById(@PathVariable Integer id){
-        return habitService.findById(id);
+    public ResponseEntity<HabitResponse> findById(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Integer habitId){
+        HabitResponse habitRes = habitService.findById(userDetails.getId(), habitId);
+        return ResponseEntity.ok(habitRes);
     }
 
     @PostMapping("/")
-    public HabitResponse save(@AuthenticationPrincipal UserDetails userDetails, @RequestBody HabitCreateRequest request){
-        System.out.println(request.toString());
-        Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
-        Users user = Users.builder().
-                id(userId).
-                build();
-        return habitService.save(user, request);
-    }
-
-    // TODO - Need to check for authorization
-    @Transactional
-    @PatchMapping("/")
-    public ResponseEntity<Void> updateHabits(@RequestBody List<HabitUpdateRequest> habitRequests) {
-        habitService.updateHabits(habitRequests);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HabitResponse> save(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody HabitCreateRequest request){
+        HabitResponse habitRes = habitService.save(userDetails.getUser(), request);
+        return ResponseEntity.ok(habitRes);
     }
 
     @Transactional
     @PatchMapping("/{id}/complete")
-    public ResponseEntity<Void> updateIsCompleted(@PathVariable Integer id,
+    public ResponseEntity<Void> updateIsCompleted(@PathVariable("id") Integer habitId,
                                                   @RequestBody HabitCompletedRequest request,
-                                                  @AuthenticationPrincipal UserDetails userDetails) {
-        System.out.println(request);
-        habitService.updateIsCompleted(userDetails.getUsername(), id, request.isCompleted());
+                                                  @AuthenticationPrincipal CustomUserDetails userDetails) {
+        habitService.updateIsCompleted(userDetails.getId(), habitId, request.isCompleted());
         return ResponseEntity.ok().build();
     }
 
-    // TODO - Need to check for authorization
     @PatchMapping("/{id}")
-    public HabitResponse update(@PathVariable Integer id, @RequestBody HabitUpdateRequest request) {
-        System.out.println(request.toString());
-        return habitService.update(id, request);
+    public ResponseEntity<HabitResponse> update(@PathVariable("id") Integer habitId,
+                                                @RequestBody HabitUpdateRequest request,
+                                                @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        HabitResponse habitRes = habitService.update(habitId, userDetails.getId(), request);
+        return ResponseEntity.ok(habitRes);
     }
 
+    @Transactional
+    @PatchMapping("/")
+    public ResponseEntity<List<HabitResponse>> updateHabits(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                             @RequestBody List<HabitUpdateRequest> habitRequests) {
+        List<HabitResponse> habitsRes = habitService.updateHabits(habitRequests, userDetails.getId());
+        return ResponseEntity.ok(habitsRes);
+    }
 
-    // TODO - Need to check for authorization
     @DeleteMapping("/{habitId}")
-    public void delete(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer habitId) {
-        Integer userId = userService.findUserIdByEmail(userDetails.getUsername());
-        habitService.deleteById(habitId, userId);
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Integer habitId) {
+        habitService.deleteById(habitId, userDetails.getId());
+        return ResponseEntity.ok().build();
     }
 
     @Transactional
     @DeleteMapping("/")
-    public void deleteAll(@AuthenticationPrincipal UserDetails userDetails) {
-        Integer id = userService.findUserIdByEmail(userDetails.getUsername());
-        habitService.deleteAll(id);
+    public ResponseEntity<Void> deleteAll(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        habitService.deleteAll(userDetails.getId());
+        return ResponseEntity.ok().build();
     }
 
 }

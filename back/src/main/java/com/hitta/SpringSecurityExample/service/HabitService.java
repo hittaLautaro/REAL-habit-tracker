@@ -19,6 +19,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -67,7 +68,7 @@ public class HabitService {
         return user.getLastHabitResetDate();
     }
 
-    public List<HabitResponse> getAllHabitsByUserId(Integer userId){
+    public List<HabitResponse> findAll(Integer userId){
         System.out.println("This method is being called!");
         checkIfResetIsNeeded(userId);
         List<Habit> habits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(userId);
@@ -80,8 +81,8 @@ public class HabitService {
         return habitMapper.habitToResponse(habit);
     }
 
-    public HabitResponse update(Integer id, HabitUpdateRequest request){
-        Habit habit = habitRepo.findById(id).orElseThrow(() -> new RuntimeException("Habit not found."));
+    public HabitResponse update(Integer id, Integer userId, HabitUpdateRequest request){
+        Habit habit = habitRepo.findByHabitIdAndUserId(id, userId).orElseThrow(() -> new RuntimeException("Habit not found."));
 
         if(request.getName() != null)           habit.setName(request.getName());
         if(request.getFrequency() != null)      habit.setFrequency(request.getFrequency());
@@ -93,8 +94,8 @@ public class HabitService {
         return habitMapper.habitToResponse(habit);
     }
 
-    public HabitResponse findById(Integer id) {
-        Habit habit = habitRepo.findById(id).orElse(null);
+    public HabitResponse findById(Integer userId, Integer habitId) {
+        Habit habit = habitRepo.findByHabitIdAndUserId(habitId, userId).orElse(null);
 
         if(habit == null) throw new IllegalArgumentException("Habit not found");
 
@@ -117,11 +118,15 @@ public class HabitService {
         return habit.isCompleted();
     }
 
-    public void updateHabits(List<HabitUpdateRequest> habitRequests) {
+    public List<HabitResponse> updateHabits(List<HabitUpdateRequest> habitRequests, Integer userId) {
+        var mappedHabits = new ArrayList<HabitResponse>();
+
         for(HabitUpdateRequest request : habitRequests){
-            System.out.println(request.toString());
-            update(request.getId(), request);
+            var mappedHabit = update(request.getId(), userId, request);
+            mappedHabits.add(mappedHabit);
         }
+
+        return mappedHabits;
     }
 
     private void resetUserHabits(Integer userId) {
@@ -170,15 +175,14 @@ public class HabitService {
         if(!allCompleted) user.setStreak(0);
     }
 
-    public void updateIsCompleted(String username, int habitId, boolean isCompleted) {
-        int userId = userRepo.findIdByEmail(username).orElseThrow(() -> new RuntimeException("User not found"));
+    public void updateIsCompleted(Integer userId, Integer habitId, boolean isCompleted) {
         int updatedRows = habitRepo.updateIsCompleted(habitId, userId, isCompleted);
         if (updatedRows == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Habit not found or does not belong to user");
         }
     }
 
-    public List<HabitResponse> getHabitsByUserIdAndDay(Integer userId, String d) {
+    public List<HabitResponse> findAllByDayOfWeek(Integer userId, String d) {
         var dayOfWeek = DayOfWeek.valueOf(d.toUpperCase());
 
         List<Habit> habits = habitRepo.findByUserIdAndDayOfWeek(userId,dayOfWeek).orElseThrow(() -> new RuntimeException("No habits for that day!"));
