@@ -1,10 +1,10 @@
 import React from "react";
-import AddHabitModal from "../../components/global/AddHabitModal.jsx";
+import AddHabitModal from "../../../components/global/AddHabitModal.jsx";
 import AllHabitsList from "./AllHabitsList.jsx";
 import { useContext } from "react";
-import { HabitContext } from "../../components/contexts/HabitContext.jsx";
+import { HabitContext } from "../../../components/contexts/HabitContext.jsx";
 import Swal from "sweetalert2";
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 
 const ManageHabits = () => {
   const { habits, deleteAllHabits, fetchHabits } = useContext(HabitContext);

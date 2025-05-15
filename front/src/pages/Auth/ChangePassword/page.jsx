@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import AuthService from "../../services/authService.js";
+import AuthService from "../../../services/authService.js";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 
-const RegisterPage = () => {
+const ChangePasswordPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -22,17 +21,14 @@ const RegisterPage = () => {
       return;
     }
 
-    AuthService.register({
+    AuthService.changePassword({
       email: email,
       password: password,
-      dateOfBirth: dateOfBirth,
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     })
       .then((response) => {
         if (response.status === 200) {
           navigate("/auth/login");
         }
-        setEmail("");
         setPassword("");
         setDateOfBirth("");
       })
@@ -46,14 +42,12 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
+    <div className="d-flex flex-column align-items-center justify-content-center my-5">
       <div className="text-center mb-4 my-5">
-        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big mono-600">
+        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big sans-600">
           real.
         </h1>
-        <h3 className="mono-300 text-white">
-          Simple & customizable habit tracker!
-        </h3>
+        <h3 className="sans-600">Simple & customizable habit tracker!</h3>
       </div>
       <div
         className="container d-flex justify-content-center align-items-center"
@@ -64,7 +58,7 @@ const RegisterPage = () => {
           style={{ backgroundColor: "#f8f9fa" }}
         >
           <h2 className="text-center mb-4" style={{ color: "#121212" }}>
-            Sign up
+            Change Password
           </h2>
 
           {error && (
@@ -87,7 +81,7 @@ const RegisterPage = () => {
               />
             </div>
             <div className="mb-3" style={{ color: "#121212" }}>
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">New password</label>
               <input
                 className="form-control"
                 id="password"
@@ -98,19 +92,6 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            <div className="mb-3" style={{ color: "#121212" }}>
-              <label htmlFor="date">Date of Birth</label>
-              <input
-                className="form-control"
-                id="date"
-                placeholder="Enter date"
-                value={dateOfBirth}
-                type="date"
-                onChange={(e) => setDateOfBirth(e.target.value)}
-                required
-              />
-            </div>
-
             <div className="d-grid gap-2">
               <button
                 type="submit"
@@ -122,7 +103,7 @@ const RegisterPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                Sign up
+                Confirm
               </button>
               <button
                 type="button"
@@ -144,4 +125,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default ChangePasswordPage;

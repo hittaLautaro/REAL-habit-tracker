@@ -2,13 +2,13 @@
 import { Route, Routes } from "react-router-dom";
 import "./index.css";
 
-import HomePage from "./pages/Home/page.jsx";
-import LoginPage from "./pages/Login/page.jsx";
-import RegisterPage from "./pages/Signup/page.jsx";
-import ManageHabits from "./pages/ManageHabits/page.jsx";
-import HabitPage from "./pages/Todo/page.jsx";
+import HomePage from "./pages/App/Home/page.jsx";
+import LoginPage from "./pages/Auth/Login/page.jsx";
+import RegisterPage from "./pages/Auth/Signup/page.jsx";
+import ManageHabits from "./pages/App/ManageHabits/page.jsx";
+import HabitPage from "./pages/App/Todo/page.jsx";
 import { HabitProvider } from "./components/contexts/HabitContext.jsx";
-import ChangePasswordPage from "./pages/ChangePassword/page.jsx";
+import ChangePasswordPage from "./pages/Auth/ChangePassword/page.jsx";
 
 const App = () => {
   return (

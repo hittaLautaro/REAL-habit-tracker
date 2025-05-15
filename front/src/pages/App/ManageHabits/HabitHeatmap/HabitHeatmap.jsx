@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import HabitCalendar from "./HabitCalendar.jsx";
-import { HabitContext } from "../../../components/contexts/HabitContext.jsx";
+import { HabitContext } from "../../../../components/contexts/HabitContext.jsx";
 
 const HabitHeatmap = () => {
   const { habits } = useContext(HabitContext);

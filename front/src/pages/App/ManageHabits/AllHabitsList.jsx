@@ -1,7 +1,7 @@
 import React from "react";
 import Habit from "./Habit";
 
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 
 const AllHabitsList = ({ habits }) => {
   return (

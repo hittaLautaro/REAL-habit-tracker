@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CompletionService from "../../../services/completionService";
+import CompletionService from "../../../../services/completionService.js";
 
 const HabitCalendar = ({ year, habitId }) => {
   const [dataValues, setDataValues] = useState([]);

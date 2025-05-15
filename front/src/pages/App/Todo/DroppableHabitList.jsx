@@ -1,9 +1,9 @@
 import { Droppable } from "@hello-pangea/dnd";
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 import { DragDropContext } from "@hello-pangea/dnd";
 import React, { useEffect, useContext, useState, useRef } from "react";
 import _ from "lodash";
-import { HabitContext } from "../../components/contexts/HabitContext";
+import { HabitContext } from "../../../components/contexts/HabitContext";
 import DraggableHabit from "./DraggableHabit";
 
 const DroppableHabitList = ({ droppableId }) => {

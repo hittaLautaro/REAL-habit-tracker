@@ -2,11 +2,11 @@
 
 import { useState, useContext } from "react";
 import Swal from "sweetalert2";
-import UpdateHabitModal from "../../components/global/UpdateHabitModal.jsx";
-import { HabitContext } from "../../components/contexts/HabitContext.jsx";
+import UpdateHabitModal from "../../../components/global/UpdateHabitModal.jsx";
+import { HabitContext } from "../../../components/contexts/HabitContext.jsx";
 import { Draggable } from "@hello-pangea/dnd";
 
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 
 const DraggableHabit = ({ habit, index }) => {
   const { deleteHabit, updateHabit, updateIsCompleted, addHabit } =

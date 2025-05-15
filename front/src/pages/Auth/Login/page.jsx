@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AuthService from "../../services/authService";
+import AuthService from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");

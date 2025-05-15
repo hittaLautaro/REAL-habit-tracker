@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import AuthService from "../../services/authService.js";
+import AuthService from "../../../services/authService.js";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 
-const ChangePasswordPage = () => {
+const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -21,14 +22,17 @@ const ChangePasswordPage = () => {
       return;
     }
 
-    AuthService.changePassword({
+    AuthService.register({
       email: email,
       password: password,
+      dateOfBirth: dateOfBirth,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     })
       .then((response) => {
         if (response.status === 200) {
           navigate("/auth/login");
         }
+        setEmail("");
         setPassword("");
         setDateOfBirth("");
       })
@@ -42,12 +46,14 @@ const ChangePasswordPage = () => {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center my-5">
+    <div className="d-flex flex-column align-items-center justify-content-center">
       <div className="text-center mb-4 my-5">
-        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big sans-600">
+        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big mono-600">
           real.
         </h1>
-        <h3 className="sans-600">Simple & customizable habit tracker!</h3>
+        <h3 className="mono-300 text-white">
+          Simple & customizable habit tracker!
+        </h3>
       </div>
       <div
         className="container d-flex justify-content-center align-items-center"
@@ -58,7 +64,7 @@ const ChangePasswordPage = () => {
           style={{ backgroundColor: "#f8f9fa" }}
         >
           <h2 className="text-center mb-4" style={{ color: "#121212" }}>
-            Change Password
+            Sign up
           </h2>
 
           {error && (
@@ -81,7 +87,7 @@ const ChangePasswordPage = () => {
               />
             </div>
             <div className="mb-3" style={{ color: "#121212" }}>
-              <label htmlFor="password">New password</label>
+              <label htmlFor="password">Password</label>
               <input
                 className="form-control"
                 id="password"
@@ -92,6 +98,19 @@ const ChangePasswordPage = () => {
                 required
               />
             </div>
+            <div className="mb-3" style={{ color: "#121212" }}>
+              <label htmlFor="date">Date of Birth</label>
+              <input
+                className="form-control"
+                id="date"
+                placeholder="Enter date"
+                value={dateOfBirth}
+                type="date"
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                required
+              />
+            </div>
+
             <div className="d-grid gap-2">
               <button
                 type="submit"
@@ -103,7 +122,7 @@ const ChangePasswordPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                Confirm
+                Sign up
               </button>
               <button
                 type="button"
@@ -125,4 +144,4 @@ const ChangePasswordPage = () => {
   );
 };
 
-export default ChangePasswordPage;
+export default RegisterPage;

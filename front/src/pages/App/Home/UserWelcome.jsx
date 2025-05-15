@@ -1,5 +1,5 @@
 import React from "react";
-import "../../components/global/styles.css";
+import "../../../components/global/styles.css";
 
 const UserWelcome = ({ user }) => {
   return (
