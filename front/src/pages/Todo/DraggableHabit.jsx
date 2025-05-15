@@ -65,7 +65,7 @@ const DraggableHabit = ({ habit, index }) => {
           className="habit-item"
         >
           <div
-            className="ml-2 rounded custom-min-height mb-1 my-1 py-3 px-2 text-light d-flex justify-content-between align-items-center transition-all duration-200"
+            className="rounded custom-min-height mb-1 my-1 py-3 px-2 text-light d-flex justify-content-between align-items-center transition-all duration-200"
             style={{
               backgroundColor: habit.isCompleted ? "#151515" : "#121212",
               borderColor: habit.isCompleted ? "#333" : "#222",

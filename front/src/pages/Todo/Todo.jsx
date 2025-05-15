@@ -13,7 +13,7 @@ const Todo = () => {
         <AddHabitModal />
       </div>
 
-      <div className="h-[calc(100vh-300px)] mx-3 mt-2 mb-4 overflow-y-auto">
+      <div className="h-[calc(100vh-300px)] mx-3 mt-1 mb-4 overflow-y-auto !border !border-neutral-800 rounded-sm">
         <DroppableHabitList droppableId="todo" />
       </div>
     </div>

@@ -48,7 +48,7 @@ const DroppableHabitList = ({ droppableId }) => {
             ref={provided.innerRef}
             className={`droppable-area ${
               habits.length === 0 ? "empty" : ""
-            } ml-4 mr-3 `}
+            }mx-2 mt-1`}
             style={{
               display: "flex",
               flexDirection: "column",

@@ -42,15 +42,7 @@ const Habit = ({ habit }) => {
   };
 
   return (
-    <div
-      className="ml-3 rounded custom-min-height mb-1 my-1 py-3 px-2 text-light d-flex justify-content-between align-items-center transition-all duration-200"
-      style={{
-        backgroundColor: "#121212",
-        borderColor: "#222",
-        borderStyle: "solid",
-        borderWidth: "1px",
-      }}
-    >
+    <div className="!border !border-neutral-800 mt-2 rounded custom-min-height ml-2 mb-1 my-1 py-3 text-light d-flex justify-content-between align-items-center transition-all duration-200">
       <div className="ml-3">
         <h4 className="m-0 mono-600">{habit.name}</h4>
         <p className="m-0 mono-400">Frequency: {habit.frequency}</p>
