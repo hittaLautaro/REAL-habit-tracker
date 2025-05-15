@@ -32,5 +32,5 @@ public interface HabitRepo extends JpaRepository<Habit, Integer> {
     Optional<List<Habit>> findByUserIdAndDayOfWeek(@Param("userId") int userId, @Param("dayOfWeek") DayOfWeek dayOfWeek);
 
     @Query("SELECT h FROM Habit h WHERE h.id = :habitId AND h.user.id = :userId")
-    Optional<Habit> findByHabitIdAndUserId(@Param("userId") Integer userId, @Param("habitId") Integer habitId);
+    Optional<Habit> findByHabitIdAndUserId(@Param("habitId") Integer habitId, @Param("userId") Integer userId);
 }
