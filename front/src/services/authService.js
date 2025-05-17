@@ -15,6 +15,14 @@ const AuthService = {
     await axiosInstance.post("/auth/logout");
   },
 
+  verify: async (req) => {
+    await axiosInstance.post("/auth/verify", req);
+  },
+
+  resend: async (req) => {
+    await axiosInstance.post("/auth/resend", req);
+  },
+
   changePassword: async (user) => {
     return await axiosInstance.patch("/auth/change-password", user);
   },

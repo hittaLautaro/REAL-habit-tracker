@@ -10,6 +10,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -26,15 +27,23 @@ const RegisterPage = () => {
       email: email,
       password: password,
       dateOfBirth: dateOfBirth,
+      name: name,
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     })
       .then((response) => {
+        console.log(response);
         if (response.status === 200) {
           navigate("/auth/login");
         }
+
+        if (response.status === 403) {
+          navigate("/auth/verify");
+        }
+
         setEmail("");
         setPassword("");
         setDateOfBirth("");
+        setName("");
       })
       .catch((err) => {
         if (err.response) {
@@ -83,6 +92,17 @@ const RegisterPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
+                required
+              />
+            </div>
+            <div className="mb-3" style={{ color: "#121212" }}>
+              <label htmlFor="name">Name</label>
+              <input
+                className="form-control"
+                id="name"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>

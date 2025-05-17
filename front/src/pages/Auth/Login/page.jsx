@@ -31,6 +31,20 @@ const LoginPage = () => {
       })
       .catch((err) => {
         if (err.response) {
+          const status = err.response.status;
+
+          if (status === 403) {
+            navigate("/auth/verify", {
+              state: { email, from: "login" },
+            });
+            return;
+          }
+
+          if (status === 401) {
+            setError("Invalid credentials.");
+            return;
+          }
+
           setError("Login failed. Please try again.");
         }
       });

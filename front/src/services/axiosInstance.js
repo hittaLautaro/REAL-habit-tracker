@@ -23,9 +23,13 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    console.log(error);
+
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/authenticate") &&
+      !originalRequest.url.includes("/auth/verify")
     ) {
       originalRequest._retry = true;
 

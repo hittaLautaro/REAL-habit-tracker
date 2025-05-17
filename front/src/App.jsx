@@ -9,6 +9,7 @@ import ManageHabits from "./pages/App/ManageHabits/page.jsx";
 import HabitPage from "./pages/App/Todo/page.jsx";
 import { HabitProvider } from "./components/contexts/HabitContext.jsx";
 import ChangePasswordPage from "./pages/Auth/ChangePassword/page.jsx";
+import VerifyPage from "./pages/Auth/Verify/page.jsx";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
       <Routes>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
+        <Route path="/auth/verify" element={<VerifyPage />} />
         <Route path="/auth/change-password" element={<ChangePasswordPage />} />
 
         <Route
