@@ -1,16 +1,26 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "http://localhost:8080/api",
   withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("jwtToken");
+    const publicPaths = [
+      "/auth/register",
+      "/auth/login",
+      "/auth/verify",
+      "/auth/resend",
+      "/auth/logout",
+    ];
+    const isPublic = publicPaths.some((path) => config.url.includes(path));
 
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+    if (!isPublic) {
+      const token = localStorage.getItem("jwtToken");
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
     }
 
     return config;
@@ -29,13 +39,15 @@ axiosInstance.interceptors.response.use(
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/auth/authenticate") &&
-      !originalRequest.url.includes("/auth/verify")
+      !originalRequest.url.includes("/auth/register")
     ) {
       originalRequest._retry = true;
 
+      console.log(originalRequest.url);
+
       try {
         const response = await axios.post(
-          "http://localhost:8080/auth/refresh",
+          "http://localhost:8080/api/auth/refresh",
           {},
           {
             withCredentials: true,
@@ -46,7 +58,7 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        window.location.href = "/auth/login"; // Refresh token expirado
+        window.location.href = "/api/auth/login"; // Refresh token expirado
         return Promise.reject(refreshError);
       }
     }

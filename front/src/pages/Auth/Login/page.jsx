@@ -33,13 +33,6 @@ const LoginPage = () => {
         if (err.response) {
           const status = err.response.status;
 
-          if (status === 403) {
-            navigate("/auth/verify", {
-              state: { email, from: "login" },
-            });
-            return;
-          }
-
           if (status === 401) {
             setError("Invalid credentials.");
             return;
@@ -105,7 +98,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/auth/change-password")}
+                onClick={() => navigate("/api/auth/change-password")}
                 style={{
                   padding: 0,
                   border: "none",
@@ -131,7 +124,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/auth/register")}
+                onClick={() => navigate("/api/auth/register")}
                 style={{
                   padding: 0,
                   border: "none",

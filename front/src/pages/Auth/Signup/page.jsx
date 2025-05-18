@@ -33,11 +33,7 @@ const RegisterPage = () => {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          navigate("/auth/login");
-        }
-
-        if (response.status === 403) {
-          navigate("/auth/verify");
+          navigate("/api/auth/login");
         }
 
         setEmail("");
@@ -47,7 +43,7 @@ const RegisterPage = () => {
       })
       .catch((err) => {
         if (err.response) {
-          setError("Login failed. Please try again.");
+          setError("Signup failed. Please try again.");
         } else {
           setError("Connection error. Please try again.");
         }
@@ -147,7 +143,7 @@ const RegisterPage = () => {
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/auth/login")}
+                onClick={() => navigate("/api/auth/login")}
                 style={{
                   padding: 0,
                   border: "none",

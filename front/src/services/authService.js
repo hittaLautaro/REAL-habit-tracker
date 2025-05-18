@@ -15,12 +15,16 @@ const AuthService = {
     await axiosInstance.post("/auth/logout");
   },
 
-  verify: async (req) => {
-    await axiosInstance.post("/auth/verify", req);
+  verify: async (token) => {
+    await axiosInstance.post(`/account/verify?token=${token}`);
+  },
+
+  delete: async (token) => {
+    await axiosInstance.post("/account/delete", token);
   },
 
   resend: async (req) => {
-    await axiosInstance.post("/auth/resend", req);
+    await axiosInstance.post("/account/resend", req);
   },
 
   changePassword: async (user) => {

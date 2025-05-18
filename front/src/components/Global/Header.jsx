@@ -22,7 +22,7 @@ const Header = () => {
         try {
           await AuthService.logout();
           localStorage.clear();
-          navigate("/auth/login");
+          navigate("/api/auth/login");
         } catch (error) {
           Swal.showValidationMessage(`Logout failed: ${error.message}`);
         }
