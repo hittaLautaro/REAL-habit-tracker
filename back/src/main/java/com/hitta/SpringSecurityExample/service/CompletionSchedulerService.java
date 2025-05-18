@@ -40,7 +40,7 @@ public class CompletionSchedulerService {
     @Autowired
     private CompletionSummaryRepo completionSummaryRepo;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 * * * *") // runs every hour
     @Transactional
     public void scheduleHabitResets() {
         logger.info("Running scheduled habit reset check");
@@ -55,23 +55,29 @@ public class CompletionSchedulerService {
             List<Users> users = entry.getValue();
 
             ZoneId zoneId = ZoneId.of(timezone);
-            ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+            ZonedDateTime nowInZone = ZonedDateTime.now(zoneId);
 
-            if (zonedDateTime.getHour() == 23) {
+            // Reset at 00:00 in user's timezone
+            if (nowInZone.getHour() == 0) {
+                LocalDate today = nowInZone.toLocalDate();
+
                 logger.info("Processing end-of-day resets for timezone: {}", timezone);
 
-                // Process all users in this timezone
                 for (Users user : users) {
-                    try{
-                        resetHabitsForUser(user);
-                    }catch(RuntimeException rex){
-                        logger.info("{} - Failed reseting user habits on {}", rex.getMessage(), user.getEmail());
-                    }
+                    try {
+                        if (today.equals(user.getLastHabitResetDate())) {
+                            continue;
+                        }
 
+                        resetHabitsForUser(user);
+                    } catch (RuntimeException rex) {
+                        logger.warn("{} - Failed resetting user habits on {}", rex.getMessage(), user.getEmail());
+                    }
                 }
             }
         }
     }
+
 
     @Transactional
     protected void resetHabitsForUser(Users user) {

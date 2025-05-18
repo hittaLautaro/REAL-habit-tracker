@@ -5,6 +5,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,17 +14,27 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
-    public void sendVerificationEmail(String to, String subject, String text) throws MessagingException{
-        System.out.println(to);
-        System.out.println(subject);
-        System.out.println(text);
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+    @Async("taskExecutor")
+    public void sendEmail(String to, String subject, String text){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
 
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(text, true);
 
-        emailSender.send(message);
+        try{
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(text, true);
+
+            emailSender.send(message);
+        } catch (MessagingException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 }

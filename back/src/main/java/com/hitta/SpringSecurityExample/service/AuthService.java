@@ -1,6 +1,8 @@
 package com.hitta.SpringSecurityExample.service;
 
 import com.hitta.SpringSecurityExample.dtos.*;
+import com.hitta.SpringSecurityExample.exceptions.InvalidCredentialsException;
+import com.hitta.SpringSecurityExample.exceptions.UserNotVerifiedException;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
@@ -8,8 +10,11 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +39,7 @@ public class AuthService {
     private AuthenticationManager authManager;
 
     @Autowired
-    private EmailService emailService;
+    private VerificationService verificationService;
 
     @Autowired
     private TokenRepo tokenRepo;
@@ -46,6 +51,7 @@ public class AuthService {
     public Users register(RegisterRequest request) {
         if(userRepo.findIdByEmail(request.getEmail()).isPresent()) throw new RuntimeException("User with that email already exists");
         if(request.getPassword().length() > 28) throw new RuntimeException("User password length must be shorter or equal to 28 characters");
+        System.out.println(request);
 
         ZoneId userZone = ZoneId.of(request.getTimeZone());
         LocalDate todayInUserTimezone = LocalDate.now(userZone);
@@ -54,105 +60,46 @@ public class AuthService {
                 .email(request.getEmail())
                 .name(request.getName())
                 .password(encoder.encode(request.getPassword()))
-                .verificationCode(generateVerificationCode())
-                .verificationCodeExpiresAt(LocalDateTime.now().plusMinutes(5))
+                .verificationCode(null)
+                .verificationCodeExpiresAt(null)
+                .lastVerificationCodeSentAt(null)
                 .dateOfBirth(request.getDateOfBirth())
                 .timeZone(request.getTimeZone())
+                .emailVerified(false)
                 .accountLocked(false)
-                .enabled(false)
+                .enabled(true)
                 .createdDate(LocalDateTime.now())
                 .lastHabitResetDate(todayInUserTimezone)
                 .streak(0)
                 .build();
 
-        sendVerificationEmail(user);
-
         return userRepo.save(user);
-
     }
 
     public AuthResponse authenticate(LoginRequest request){
-        Authentication authentication = authManager
-                .authenticate(
-                        new UsernamePasswordAuthenticationToken
-                                (request.getEmail(), request.getPassword()));
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Users user = userDetails.getUser();
-
-        String accessToken = jwtService.generateAccessToken(request.getEmail());
-        String refreshToken = createOrUpdateRefreshToken(user);
-
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
-
-    public void verifyUser(VerifyUserDto input) {
-        Optional<Users> optionalUser = userRepo.findByEmail(input.getEmail());
-        if (optionalUser.isPresent()) {
-            Users user = optionalUser.get();
-            if (user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
-                throw new RuntimeException("Verification code has expired");
-            }
-            if (user.getVerificationCode().equals(input.getVerificationCode())) {
-                user.setEnabled(true);
-                user.setVerificationCode(null);
-                user.setVerificationCodeExpiresAt(null);
-                userRepo.save(user);
-            } else {
-                throw new RuntimeException("Invalid verification code");
-            }
-        } else {
-            throw new RuntimeException("User not found");
-        }
-    }
-
-    public void resendVerificationCode(String email) {
-        Optional<Users> optionalUser = userRepo.findByEmail(email);
-        if (optionalUser.isPresent()) {
-            Users user = optionalUser.get();
-            if (user.isEnabled()) {
-                throw new RuntimeException("Account is already verified");
-            }
-            user.setVerificationCode(generateVerificationCode());
-            user.setVerificationCodeExpiresAt(LocalDateTime.now().plusHours(1));
-            sendVerificationEmail(user);
-            userRepo.save(user);
-        } else {
-            throw new RuntimeException("User not found");
-        }
-    }
-
-    private void sendVerificationEmail(Users user) { //TODO: Update with company logo
-        String subject = "Account Verification";
-        String verificationCode = "VERIFICATION CODE " + user.getVerificationCode();
-        String htmlMessage = "<html>"
-                + "<body style=\"font-family: Arial, sans-serif;\">"
-                + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
-                + "<h2 style=\"color: #333;\">Welcome to our app!</h2>"
-                + "<p style=\"font-size: 16px;\">Please enter the verification code below to continue:</p>"
-                + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
-                + "<h3 style=\"color: #333;\">Verification Code:</h3>"
-                + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + verificationCode + "</p>"
-                + "</div>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
-
         try {
-            emailService.sendVerificationEmail(user.getEmail(), subject, htmlMessage);
-        } catch (MessagingException e) {
-            System.out.println(e.getMessage());
-            System.out.println(user);
+            Authentication authentication = authManager
+                    .authenticate(
+                            new UsernamePasswordAuthenticationToken
+                                    (request.getEmail(), request.getPassword()));
+
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            Users user = userDetails.getUser();
+
+            verificationService.sendVerificationEmail(user);
+
+            String accessToken = jwtService.generateAccessToken(request.getEmail());
+            String refreshToken = createOrUpdateRefreshToken(user);
+
+            return AuthResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException("Invalid email or password.");
         }
     }
-    private String generateVerificationCode() {
-        Random random = new Random();
-        int code = random.nextInt(900000) + 100000;
-        return String.valueOf(code);
-    }
+
 
     private String generateAndSaveRefreshToken(Users user){
         var tokenValue = jwtService.generateRefreshToken();

@@ -44,6 +44,7 @@ public class Users implements UserDetails, Principal {
     private LocalDate lastHabitResetDate;
     private String verificationCode;
     private LocalDateTime verificationCodeExpiresAt;
+    private LocalDateTime lastVerificationCodeSentAt;
     @NotNull
     private Integer streak;
     @NotNull
@@ -61,6 +62,9 @@ public class Users implements UserDetails, Principal {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Habit> habits;
+
+    @Column(nullable = false)
+    private boolean emailVerified = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

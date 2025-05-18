@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/completions")
+@RequestMapping("/api/completions")
 public class CompletionController {
 
     @Autowired
