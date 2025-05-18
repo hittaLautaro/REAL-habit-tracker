@@ -86,10 +86,10 @@ public class AuthService {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             Users user = userDetails.getUser();
 
-            verificationService.sendVerificationEmail(user);
-
             String accessToken = jwtService.generateAccessToken(request.getEmail());
             String refreshToken = createOrUpdateRefreshToken(user);
+
+            verificationService.sendVerificationEmail(user);
 
             return AuthResponse.builder()
                     .accessToken(accessToken)

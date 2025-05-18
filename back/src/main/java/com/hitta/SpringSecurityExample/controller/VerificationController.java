@@ -16,6 +16,7 @@ public class VerificationController {
 
     @PostMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String token) {
+        System.out.println(token);
         verificationService.verifyAccountWithToken(token);
         return ResponseEntity.ok("Your account has been verified.");
     }

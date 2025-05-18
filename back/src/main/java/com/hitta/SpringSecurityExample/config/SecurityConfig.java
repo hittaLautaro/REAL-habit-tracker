@@ -40,7 +40,6 @@ public class SecurityConfig {
                         )
                         .permitAll()
                         .anyRequest().authenticated())
-                //.httpBasic()
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
