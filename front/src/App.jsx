@@ -9,7 +9,7 @@ import ManageHabits from "./pages/App/ManageHabits/page.jsx";
 import HabitPage from "./pages/App/Todo/page.jsx";
 import { HabitProvider } from "./components/contexts/HabitContext.jsx";
 import ChangePasswordPage from "./pages/Auth/ChangePassword/page.jsx";
-import VerifyPage from "./pages/Auth/Verification/page.jsx";
+import VerifyPage from "./pages/Auth/Verification/VerifyPage.jsx";
 import DeletePage from "./pages/Auth/DeleteAccount/page.jsx";
 
 const App = () => {

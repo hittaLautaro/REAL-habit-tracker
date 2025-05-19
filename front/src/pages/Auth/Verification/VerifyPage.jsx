@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthService from "../../../services/authService";
+import "../../../components/global/styles.css";
+import ErrorPage from "./ErrorPage";
+import SuccessPage from "./successPage";
 
 const VerifyPage = () => {
   const location = useLocation();
@@ -9,36 +12,24 @@ const VerifyPage = () => {
 
   const [status, setStatus] = useState("loading"); // 'loading' | 'success' | 'error'
 
-  console.log(token);
-
   useEffect(() => {
+    if (!token) {
+      setStatus("error");
+      return;
+    }
+
     AuthService.verify(token)
-      .then((res) => {
-        setStatus("success");
-      })
+      .then(() => setStatus("success"))
       .catch((err) => {
-        console.error(err);
         setStatus("error");
       });
   }, [token]);
 
   return (
     <div style={{ padding: "2rem", textAlign: "center" }}>
-      {status === "loading" && <p>🔄 Verifying your email...</p>}
-
-      {status === "success" && (
-        <>
-          <h2>✅ Email Verified Successfully!</h2>
-          <p>You can now use your account normally.</p>
-        </>
-      )}
-
-      {status === "error" && (
-        <>
-          <h2>❌ Verification Failed</h2>
-          <p>The verification link may be invalid or expired.</p>
-        </>
-      )}
+      {status === "loading" && <p className="text-white">Loading...</p>}
+      {status === "success" && <SuccessPage />}
+      {status === "error" && <ErrorPage token={token} />}
     </div>
   );
 };

@@ -20,11 +20,11 @@ const AuthService = {
   },
 
   delete: async (token) => {
-    await axiosInstance.post("/account/delete", token);
+    await axiosInstance.post(`/account/delete?token=${token}`);
   },
 
-  resend: async (req) => {
-    await axiosInstance.post("/account/resend", req);
+  resendVerificationEmail: async (token) => {
+    await axiosInstance.post(`/account/resend?token=${token}`);
   },
 
   changePassword: async (user) => {

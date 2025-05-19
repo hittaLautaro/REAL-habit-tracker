@@ -10,8 +10,9 @@ axiosInstance.interceptors.request.use(
     const publicPaths = [
       "/auth/register",
       "/auth/login",
-      "/auth/verify",
-      "/auth/resend",
+      "/account/delete",
+      "/account/verify",
+      "/account/resend",
       "/auth/logout",
     ];
     const isPublic = publicPaths.some((path) => config.url.includes(path));
@@ -39,7 +40,10 @@ axiosInstance.interceptors.response.use(
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry &&
       !originalRequest.url.includes("/auth/authenticate") &&
-      !originalRequest.url.includes("/auth/register")
+      !originalRequest.url.includes("/auth/register") &&
+      !originalRequest.url.includes("/account/verify") &&
+      !originalRequest.url.includes("/account/delete") &&
+      !originalRequest.url.includes("/account/resend")
     ) {
       originalRequest._retry = true;
 
