@@ -33,7 +33,7 @@ const RegisterPage = () => {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          navigate("/api/auth/login");
+          navigate("/");
         }
 
         setEmail("");
