@@ -4,6 +4,8 @@ import com.hitta.SpringSecurityExample.dtos.AuthResponse;
 import com.hitta.SpringSecurityExample.model.Token;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +55,24 @@ public class TokenService {
 
         tokenRepo.save(token);
         return tokenValue;
+    }
+
+    public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/api/auth");
+        cookie.setMaxAge(14 * 24 * 60 * 60);
+        response.addCookie(cookie);
+    }
+
+    public void deleteRefreshTokenCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/api/auth");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 
 

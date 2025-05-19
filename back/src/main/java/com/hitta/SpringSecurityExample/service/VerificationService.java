@@ -1,12 +1,9 @@
 package com.hitta.SpringSecurityExample.service;
 
-import com.hitta.SpringSecurityExample.dtos.AuthResponse;
-import com.hitta.SpringSecurityExample.dtos.VerifyUserDto;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.model.VerificationToken;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import com.hitta.SpringSecurityExample.repo.VerificationTokenRepo;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +94,7 @@ public class VerificationService {
 
 
     @Transactional
-    public AuthResponse verifyAccountWithToken(String token) {
+    public void verifyAccountWithToken(HttpServletResponse response, String token) {
         System.out.println("Verifying token: " + token);
         VerificationToken vt = verificationTokenRepo.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
@@ -114,11 +111,11 @@ public class VerificationService {
         var authResponse = tokenService.createAccessAndRefreshTokens(user);
 
         verificationTokenRepo.deleteByToken(vt.getToken());
+        tokenService.addRefreshTokenCookie(response, authResponse.getRefreshToken());
 
-        return authResponse;
     }
 
-    public void deleteAccountWithToken(String token) {
+    public void deleteAccountWithToken(HttpServletResponse response, String token) {
         VerificationToken vt = verificationTokenRepo.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
 
@@ -130,5 +127,6 @@ public class VerificationService {
         Users user = vt.getUser();
         verificationTokenRepo.delete(vt);
         userRepo.delete(user);
+        tokenService.deleteRefreshTokenCookie(response);
     }
 }

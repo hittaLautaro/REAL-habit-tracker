@@ -20,8 +20,7 @@ public class VerificationController {
     @PostMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String token, HttpServletResponse response) {
         try {
-            var authResponse = verificationService.verifyAccountWithToken(token);
-            addRefreshTokenCookie(response, authResponse.getRefreshToken());
+            verificationService.verifyAccountWithToken(response, token);
             return ResponseEntity.ok("Your account has been verified.");
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
@@ -33,8 +32,7 @@ public class VerificationController {
     @PostMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam String token, HttpServletResponse response) {
         try {
-            verificationService.deleteAccountWithToken(token);
-            deleteRefreshTokenCookie(response);
+            verificationService.deleteAccountWithToken(response, token);
             return ResponseEntity.ok("Your account has been deleted.");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -51,23 +49,5 @@ public class VerificationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
-    }
-
-    private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/api/auth");
-        cookie.setMaxAge(14 * 24 * 60 * 60);
-        response.addCookie(cookie);
-    }
-
-    private void deleteRefreshTokenCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("refreshToken", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/api/auth");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
     }
 }

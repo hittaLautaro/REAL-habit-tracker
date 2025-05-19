@@ -7,6 +7,7 @@ import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,7 +52,7 @@ public class AuthService {
 
 
     @Transactional
-    public Users register(RegisterRequest request) {
+    public Users register(RegisterRequest request, HttpServletResponse response) {
         if(userRepo.findIdByEmail(request.getEmail()).isPresent()) throw new RuntimeException("User with that email already exists");
         if(request.getPassword().length() > 28) throw new RuntimeException("User password length must be shorter or equal to 28 characters");
         System.out.println(request);
@@ -78,12 +79,14 @@ public class AuthService {
 
         var savedUser =  userRepo.save(user);
 
+        AuthResponse authResponse = tokenService.createAccessAndRefreshTokens(savedUser);
+        tokenService.addRefreshTokenCookie(response, authResponse.getRefreshToken());
         verificationService.sendVerificationEmail(savedUser);
 
         return savedUser;
     }
 
-    public AuthResponse authenticate(LoginRequest request){
+    public AuthResponse authenticate(LoginRequest request, HttpServletResponse response){
         try {
             Authentication authentication = authManager
                     .authenticate(
@@ -93,7 +96,9 @@ public class AuthService {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             Users user = userDetails.getUser();
 
-            return tokenService.createAccessAndRefreshTokens(user);
+            AuthResponse authResponse = tokenService.createAccessAndRefreshTokens(user);
+            tokenService.addRefreshTokenCookie(response, authResponse.getRefreshToken());
+            return authResponse;
 
         } catch (BadCredentialsException e) {
             throw new InvalidCredentialsException("Invalid email or password.");
@@ -116,12 +121,12 @@ public class AuthService {
                 .build();
     }
 
-    public void revokeRefreshToken(String refreshToken) {
+    public void revokeRefreshToken(HttpServletResponse response, String refreshToken) {
         Token token = tokenRepo.findByToken(refreshToken)
                 .orElseThrow(() -> new RuntimeException("Refresh token not found"));
-
         token.setRevoked(true);
         tokenRepo.save(token);
+        tokenService.deleteRefreshTokenCookie(response);
     }
 
     public void changePassword(@Valid LoginRequest request) {

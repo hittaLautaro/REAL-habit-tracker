@@ -5,6 +5,7 @@ import com.hitta.SpringSecurityExample.dtos.LoginRequest;
 import com.hitta.SpringSecurityExample.dtos.RegisterRequest;
 import com.hitta.SpringSecurityExample.exceptions.InvalidCredentialsException;
 import com.hitta.SpringSecurityExample.exceptions.UserNotVerifiedException;
+import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +30,8 @@ public class AuthController {
             HttpServletResponse response
     ) {
         try{
-            return ResponseEntity.ok(authService.register(request));
+            Users user = authService.register(request, response);
+            return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }
@@ -43,8 +45,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
         try {
-            AuthResponse authResponse = authService.authenticate(request);
-            addRefreshTokenCookie(response, authResponse.getRefreshToken());
+            AuthResponse authResponse = authService.authenticate(request, response);
             return ResponseEntity.ok()
                     .body(authResponse);
         } catch (InvalidCredentialsException e) {
@@ -74,7 +75,6 @@ public class AuthController {
     ) {
         try {
             AuthResponse authResponse = authService.generateAccessToken(refreshToken);
-            addRefreshTokenCookie(response, authResponse.getRefreshToken());
             return ResponseEntity.ok(authResponse);
         }catch(RuntimeException e){
             System.out.println(e.getMessage());
@@ -87,33 +87,12 @@ public class AuthController {
             @CookieValue(name = "refreshToken", required = false) String refreshToken,
             HttpServletResponse response
     ) {
-        try{
-            authService.revokeRefreshToken(refreshToken);
-            deleteRefreshTokenCookie(response);
+        try {
+            authService.revokeRefreshToken(response, refreshToken);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
-
-    private void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/api/auth");
-        cookie.setMaxAge(14 * 24 * 60 * 60);
-        response.addCookie(cookie);
-    }
-
-    private void deleteRefreshTokenCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("refreshToken", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/api/auth");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-    }
-
-
 }
