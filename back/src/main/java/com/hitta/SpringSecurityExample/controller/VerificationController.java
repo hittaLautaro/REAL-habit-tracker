@@ -17,13 +17,14 @@ public class VerificationController {
     @Autowired
     private VerificationService verificationService;
 
-    @GetMapping("/verify")
+    @PostMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String token, HttpServletResponse response) {
         try {
             var authResponse = verificationService.verifyAccountWithToken(token);
             addRefreshTokenCookie(response, authResponse.getRefreshToken());
             return ResponseEntity.ok("Your account has been verified.");
         } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }

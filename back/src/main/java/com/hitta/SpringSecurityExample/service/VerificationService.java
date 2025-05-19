@@ -96,12 +96,14 @@ public class VerificationService {
     }
 
 
+    @Transactional
     public AuthResponse verifyAccountWithToken(String token) {
+        System.out.println("Verifying token: " + token);
         VerificationToken vt = verificationTokenRepo.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
 
         if (vt.isExpired()) {
-            verificationTokenRepo.delete(vt);
+            verificationTokenRepo.deleteByToken(vt.getToken());
             throw new RuntimeException("Token expired");
         }
 
@@ -111,8 +113,7 @@ public class VerificationService {
 
         var authResponse = tokenService.createAccessAndRefreshTokens(user);
 
-
-        verificationTokenRepo.delete(vt);
+        verificationTokenRepo.deleteByToken(vt.getToken());
 
         return authResponse;
     }
