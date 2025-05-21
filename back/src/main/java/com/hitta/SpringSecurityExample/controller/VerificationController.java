@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,9 +41,16 @@ public class VerificationController {
         try {
             verificationService.deleteAccountWithToken(response, token);
             return ResponseEntity.ok("Your account has been deleted.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+        } catch (InvalidTokenException ite) {
+            System.out.println("InvalidTokenException: " + ite.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid_token");
+        } catch (ExpiredTokenException ete) {
+            System.out.println("ExpiredTokenException: " + ete.getMessage());
+            return ResponseEntity.status(HttpStatus.GONE).body("token_expired");
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unexpected_error");
         }
     }
 

@@ -128,7 +128,7 @@ public class VerificationService {
     }
 
 
-
+    @Transactional
     public void deleteAccountWithToken(HttpServletResponse response, String token) {
         VerificationToken vt = verificationTokenRepo.findByToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
@@ -138,8 +138,7 @@ public class VerificationService {
             throw new RuntimeException("Token expired");
         }
 
-        Users user = vt.getUser();
-        verificationTokenRepo.delete(vt);
+        Users user = userRepo.findById(vt.getUser().getId()).orElseThrow(() -> new RuntimeException("Verficiation Token has no user"));
         userRepo.delete(user);
         tokenService.deleteRefreshTokenCookie(response);
     }
