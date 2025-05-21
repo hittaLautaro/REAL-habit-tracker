@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ public class VerificationToken {
 
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
+    private LocalDateTime lastSentAt;
 
     public VerificationToken(Users user, int expirationMinutes) {
         this.token = UUID.randomUUID().toString();

@@ -1,5 +1,8 @@
 package com.hitta.SpringSecurityExample.service;
 
+import com.hitta.SpringSecurityExample.exceptions.AlreadyVerifiedException;
+import com.hitta.SpringSecurityExample.exceptions.ExpiredTokenException;
+import com.hitta.SpringSecurityExample.exceptions.InvalidTokenException;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.model.VerificationToken;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
@@ -8,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class VerificationService {
@@ -97,23 +102,32 @@ public class VerificationService {
     public void verifyAccountWithToken(HttpServletResponse response, String token) {
         System.out.println("Verifying token: " + token);
         VerificationToken vt = verificationTokenRepo.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Invalid token"));
+                .orElseThrow(() -> new InvalidTokenException("Invalid token"));
+
+        Users user = vt.getUser();
 
         if (vt.isExpired()) {
             verificationTokenRepo.deleteByToken(vt.getToken());
-            throw new RuntimeException("Token expired");
+            throw new ExpiredTokenException("Token expired");
         }
 
-        Users user = vt.getUser();
+
+        if (user.isEmailVerified()) {
+            verificationTokenRepo.deleteByToken(vt.getToken());
+            throw new AlreadyVerifiedException("Account already verified.");
+        }
+
+
         user.setEmailVerified(true);
         userRepo.save(user);
 
         var authResponse = tokenService.createAccessAndRefreshTokens(user);
-
-        verificationTokenRepo.deleteByToken(vt.getToken());
+        vt.setLastSentAt(LocalDateTime.now());
+        verificationTokenRepo.save(vt);
         tokenService.addRefreshTokenCookie(response, authResponse.getRefreshToken());
-
     }
+
+
 
     public void deleteAccountWithToken(HttpServletResponse response, String token) {
         VerificationToken vt = verificationTokenRepo.findByToken(token)
