@@ -42,7 +42,7 @@ const Header = () => {
           </div>
 
           {/* Centered Links */}
-          <div id="navbar-links" className="navbar-links ml-32">
+          <div id="navbar-links" className="navbar-links">
             <NavLink
               to="/todo"
               className={({ isActive }) =>
@@ -67,20 +67,20 @@ const Header = () => {
 
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button
+            {/* <button
               className="logout-btn"
               aria-label="Notifications"
               title="Notifications"
             >
               <i className="bi bi-lightbulb"></i>
-            </button>
-            <button
+            </button> */}
+            {/* <button
               className="logout-btn"
               aria-label="Settings"
               title="Settings"
             >
               <i className="bi bi-gear"></i>
-            </button>
+            </button> */}
             <button
               className="logout-btn"
               aria-label="Logout"
