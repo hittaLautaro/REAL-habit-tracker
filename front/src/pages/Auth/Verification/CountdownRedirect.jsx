@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 export default function CountdownRedirect() {
-  const [countdown, setCountdown] = useState(3);
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     if (countdown <= 0) {
