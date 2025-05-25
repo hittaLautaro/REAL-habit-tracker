@@ -13,11 +13,17 @@ import java.util.List;
 public class CompletionService {
 
 
-    @Autowired
-    private CompletionRepo completionRepo;
+    private final CompletionRepo completionRepo;
+    private final CompletionMapper completionMapper;
 
-    @Autowired
-    private CompletionMapper completionMapper;
+    public CompletionService(
+            CompletionRepo completionRepo,
+            CompletionMapper completionMapper
+    ) {
+        this.completionRepo = completionRepo;
+        this.completionMapper = completionMapper;
+    }
+
 
     public List<CompletionResponse> getCompletionsByYearAndHabit(Integer year, Integer userId, Integer habitId) {
         LocalDateTime startOfYear = LocalDateTime.of(year, 1, 1, 0, 0, 0);

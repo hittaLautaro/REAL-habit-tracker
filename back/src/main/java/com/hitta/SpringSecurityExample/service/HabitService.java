@@ -6,36 +6,37 @@ import com.hitta.SpringSecurityExample.dtos.HabitResponse;
 import com.hitta.SpringSecurityExample.mappers.HabitMapper;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.CompletionRepo;
-import com.hitta.SpringSecurityExample.repo.CompletionSummaryRepo;
 import com.hitta.SpringSecurityExample.repo.HabitRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class HabitService {
 
-    @Autowired
-    private HabitRepo habitRepo;
+    private final HabitRepo habitRepo;
+    private final UserRepo userRepo;
+    private final HabitMapper habitMapper;
+    private final CompletionRepo completionRepo;
 
-    @Autowired
-    private UserRepo userRepo;
+    public HabitService(
+            HabitRepo habitRepo,
+            UserRepo userRepo,
+            HabitMapper habitMapper,
+            CompletionRepo completionRepo
+    ) {
+        this.habitRepo = habitRepo;
+        this.userRepo = userRepo;
+        this.habitMapper = habitMapper;
+        this.completionRepo = completionRepo;
+    }
 
-    @Autowired
-    private HabitMapper habitMapper;
-
-    @Autowired
-    private CompletionRepo completionRepo;
 
     public List<HabitResponse> findAll(Integer userId){
         List<Habit> habits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(userId);

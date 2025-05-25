@@ -4,13 +4,10 @@ import com.hitta.SpringSecurityExample.dtos.AuthResponse;
 import com.hitta.SpringSecurityExample.dtos.LoginRequest;
 import com.hitta.SpringSecurityExample.dtos.RegisterRequest;
 import com.hitta.SpringSecurityExample.exceptions.InvalidCredentialsException;
-import com.hitta.SpringSecurityExample.exceptions.UserNotVerifiedException;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.service.AuthService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +18,13 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(
+            AuthService authService
+    ){
+        this.authService = authService;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(

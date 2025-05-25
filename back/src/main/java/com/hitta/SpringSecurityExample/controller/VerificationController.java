@@ -6,18 +6,21 @@ import com.hitta.SpringSecurityExample.exceptions.ExpiredTokenException;
 import com.hitta.SpringSecurityExample.exceptions.InvalidTokenException;
 import com.hitta.SpringSecurityExample.service.VerificationService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/account")
 public class VerificationController {
 
-    @Autowired
-    private VerificationService verificationService;
+    private final VerificationService verificationService;
+
+    public VerificationController(
+            VerificationService verificationService
+    ){
+        this.verificationService = verificationService;
+    }
 
     @PostMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String token, HttpServletResponse response) {
@@ -49,7 +52,6 @@ public class VerificationController {
             return ResponseEntity.status(HttpStatus.GONE).body("token_expired");
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("unexpected_error");
         }
     }

@@ -2,20 +2,15 @@ package com.hitta.SpringSecurityExample.service;
 
 import com.hitta.SpringSecurityExample.dtos.*;
 import com.hitta.SpringSecurityExample.exceptions.InvalidCredentialsException;
-import com.hitta.SpringSecurityExample.exceptions.UserNotVerifiedException;
 import com.hitta.SpringSecurityExample.model.*;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,29 +19,32 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class AuthService {
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
+    private final UserRepo userRepo;
+    private final AuthenticationManager authManager;
+    private final VerificationService verificationService;
+    private final TokenService tokenService;
+    private final TokenRepo tokenRepo;
 
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private AuthenticationManager authManager;
-
-    @Autowired
-    private VerificationService verificationService;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private TokenRepo tokenRepo;
+    public AuthService(
+            JwtService jwtService,
+            UserRepo userRepo,
+            AuthenticationManager authManager,
+            VerificationService verificationService,
+            TokenService tokenService,
+            TokenRepo tokenRepo
+    ){
+        this.jwtService = jwtService;
+        this.userRepo = userRepo;
+        this.authManager = authManager;
+        this.verificationService = verificationService;
+        this.tokenService = tokenService;
+        this.tokenRepo = tokenRepo;
+    }
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 

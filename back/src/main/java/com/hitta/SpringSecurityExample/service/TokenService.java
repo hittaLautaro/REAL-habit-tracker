@@ -6,7 +6,6 @@ import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,11 +14,16 @@ import java.util.Optional;
 @Service
 public class TokenService {
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
+    private final TokenRepo tokenRepo;
 
-    @Autowired
-    private TokenRepo tokenRepo;
+    public TokenService(
+            JwtService jwtService,
+            TokenRepo tokenRepo
+    ){
+        this.jwtService = jwtService;
+        this.tokenRepo = tokenRepo;
+    }
 
     public AuthResponse createAccessAndRefreshTokens(Users user){
         String accessToken = jwtService.generateAccessToken(user.getEmail());

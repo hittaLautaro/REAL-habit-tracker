@@ -11,16 +11,17 @@ import java.util.List;
 
 @Service
 public class CompletionSummaryService {
-    @Autowired
-    private CompletionSummaryRepo completionRepo;
+    private final CompletionSummaryRepo completionRepo;
+    private final CompletionSummaryMapper completionSummaryMapper;
 
-    @Autowired
-    private CompletionSummaryMapper completionSummaryMapper;
+    public CompletionSummaryService(
+            CompletionSummaryRepo completionRepo,
+            CompletionSummaryMapper completionSummaryMapper
+    ) {
+        this.completionRepo = completionRepo;
+        this.completionSummaryMapper = completionSummaryMapper;
+    }
 
-    /*
-    Finds all the completions from the user inside {year} and maps all the completions from one day to a summary,
-    repeating that for each day containing completions.
-     */
     public List<CompletionSummaryResponse> getCompletionsByYear(Integer year, Integer userId) {
         LocalDate startOfYear = LocalDate.of(year, 1, 1);
         LocalDate endOfYear = LocalDate.of(year, 12, 31);

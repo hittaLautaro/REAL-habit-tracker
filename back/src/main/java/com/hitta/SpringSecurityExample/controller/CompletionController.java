@@ -5,7 +5,6 @@ import com.hitta.SpringSecurityExample.dtos.CompletionSummaryResponse;
 import com.hitta.SpringSecurityExample.model.CustomUserDetails;
 import com.hitta.SpringSecurityExample.service.CompletionService;
 import com.hitta.SpringSecurityExample.service.CompletionSummaryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +15,16 @@ import java.util.List;
 @RequestMapping("/api/completions")
 public class CompletionController {
 
-    @Autowired
-    private CompletionSummaryService completionSummaryService;
+    private final CompletionService completionService;
+    private final CompletionSummaryService completionSummaryService;
 
-    @Autowired
-    private CompletionService completionService;
+    public CompletionController(
+            CompletionService completionService,
+            CompletionSummaryService completionSummaryService
+    ){
+        this.completionService = completionService;
+        this.completionSummaryService = completionSummaryService;
+    }
 
     @GetMapping("/summary")
     public ResponseEntity<List<CompletionSummaryResponse>> getCompletionsSummaryByYear(

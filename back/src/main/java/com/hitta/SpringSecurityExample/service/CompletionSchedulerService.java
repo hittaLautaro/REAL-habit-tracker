@@ -10,13 +10,11 @@ import com.hitta.SpringSecurityExample.repo.HabitRepo;
 import com.hitta.SpringSecurityExample.repo.UserRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -28,17 +26,23 @@ public class CompletionSchedulerService {
 
     private static final Logger logger = LoggerFactory.getLogger(CompletionSchedulerService.class);
 
-    @Autowired
-    private UserRepo userRepo;
+    private final UserRepo userRepo;
+    private final HabitRepo habitRepo;
+    private final CompletionRepo completionRepo;
+    private final CompletionSummaryRepo completionSummaryRepo;
 
-    @Autowired
-    private HabitRepo habitRepo;
+    public CompletionSchedulerService(
+            UserRepo userRepo,
+            HabitRepo habitRepo,
+            CompletionRepo completionRepo,
+            CompletionSummaryRepo completionSummaryRepo
+    ) {
+        this.userRepo = userRepo;
+        this.habitRepo = habitRepo;
+        this.completionRepo = completionRepo;
+        this.completionSummaryRepo = completionSummaryRepo;
+    }
 
-    @Autowired
-    private CompletionRepo completionRepo;
-
-    @Autowired
-    private CompletionSummaryRepo completionSummaryRepo;
 
     @Scheduled(cron = "0 0 * * * *") // runs every hour
     @Transactional

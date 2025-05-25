@@ -9,7 +9,6 @@ import com.hitta.SpringSecurityExample.repo.UserRepo;
 import com.hitta.SpringSecurityExample.repo.VerificationTokenRepo;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,17 +16,21 @@ import java.time.LocalDateTime;
 @Service
 public class VerificationService {
 
-    @Autowired
-    private VerificationTokenRepo verificationTokenRepo;
+    private final VerificationTokenRepo verificationTokenRepo;
+    private final TokenService tokenService;
+    private final EmailService emailService;
+    private final UserRepo userRepo;
 
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private UserRepo userRepo;
+    public VerificationService(
+            VerificationTokenRepo verificationTokenRepo,
+            TokenService tokenService,
+            EmailService emailService,
+            UserRepo userRepo) {
+        this.verificationTokenRepo = verificationTokenRepo;
+        this.tokenService = tokenService;
+        this.emailService = emailService;
+        this.userRepo = userRepo;
+    }
 
     @Transactional
     public void sendVerificationEmail(Users user) {
