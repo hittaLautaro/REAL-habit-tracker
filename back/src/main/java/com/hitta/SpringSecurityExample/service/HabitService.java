@@ -1,5 +1,6 @@
 package com.hitta.SpringSecurityExample.service;
 
+import com.hitta.SpringSecurityExample.dtos.CompletionSummaryResponse;
 import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
 import com.hitta.SpringSecurityExample.dtos.HabitResponse;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,4 +112,31 @@ public class HabitService {
 
         return habitMapper.habitsToResponses(habits);
     }
+
+    public CompletionSummaryResponse findSummaryOfToday(Integer userId) {
+        LocalDate today = LocalDate.now();
+
+        List<Habit> habits = habitRepo.findByUserIdAndDayOfWeek(userId,today.getDayOfWeek()).orElseThrow(() -> new RuntimeException("No habits for that day!"));
+
+        System.out.println(habits);
+
+        int completedCount = 0;
+        for (Habit habit : habits) {
+            System.out.println(habit);
+            if (habit.isCompleted()) {
+                completedCount++;
+            }
+        }
+
+        CompletionSummaryResponse summary = new CompletionSummaryResponse();
+        summary.setHabitsObjective(habits.size());
+        summary.setHabitsCompleted(completedCount);
+        summary.setDate(today);
+
+        System.out.println(summary);
+
+        return summary;
+    }
+
+
 }

@@ -1,9 +1,6 @@
 package com.hitta.SpringSecurityExample.controller;
 
-import com.hitta.SpringSecurityExample.dtos.HabitCompletedRequest;
-import com.hitta.SpringSecurityExample.dtos.HabitCreateRequest;
-import com.hitta.SpringSecurityExample.dtos.HabitUpdateRequest;
-import com.hitta.SpringSecurityExample.dtos.HabitResponse;
+import com.hitta.SpringSecurityExample.dtos.*;
 import com.hitta.SpringSecurityExample.model.CustomUserDetails;
 import com.hitta.SpringSecurityExample.service.HabitService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,6 +81,28 @@ public class HabitController {
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails) {
         List<HabitResponse> habitsRes = habitService.findAllByDayOfWeek(userDetails.getId(), dayOfWeek);
         return ResponseEntity.ok(habitsRes);
+    }
+
+    @GetMapping("/daily-summary")
+    @Operation(
+            summary = "Get a completion summary of today",
+            description = "Retrieve a summary of today's completions by user"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successfully retrieved summary of today",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = HabitResponse.class)
+                    )
+            ),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - Authentication required")
+    })
+    public ResponseEntity<CompletionSummaryResponse> findSummaryOfToday(
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails) {
+        CompletionSummaryResponse summary = habitService.findSummaryOfToday(userDetails.getId());
+        return ResponseEntity.ok(summary);
     }
 
     @GetMapping("/{id}")

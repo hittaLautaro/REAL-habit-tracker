@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CompletionSummaryResponse {
     private LocalDate date;
     private Integer habitsCompleted;
