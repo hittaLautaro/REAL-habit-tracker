@@ -4,21 +4,30 @@ import UserService from "../../../services/userService.js";
 import { NavLink } from "react-router-dom";
 
 import UserWelcome from "./UserWelcome.jsx";
+import habitService from "../../../services/habitService.js";
 
 const HomePage = () => {
   const [user, setUser] = useState(null);
+  const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUser = async () => {
+  const fetch = async () => {
     setLoading(true);
-    const response = await UserService.getUserSimpleData();
-    console.log(response);
-    setUser(response.data);
+
+    const userData = await UserService.getUserSimpleData();
+    console.log(userData);
+    setUser(userData.data);
+
+    console.log("Fetching completed habits for user..." + userData.data.id);
+    const summary = await habitService.getCompletedByUser();
+    console.log(summary);
+    setSummary(summary.data);
+
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchUser();
+    fetch();
   }, []);
 
   return (
@@ -34,12 +43,16 @@ const HomePage = () => {
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl">
           <div className="bg-[#151515] text-neutral-200 !border !border-neutral-600 rounded-xl p-6 text-center shadow-md">
-            <div className="text-3xl font-bold">{user ? user.streak : "?"}</div>
+            <div className="text-3xl font-bold">{user ? user.streak : "-"}</div>
             <div className="text-lg mono-400 mt-2">Current daily streak</div>
           </div>
 
           <div className="bg-[#151515] text-neutral-200 !border !border-neutral-600 p-6 rounded-xl text-center shadow-md">
-            <div className="text-3xl font-bold">3 / 5</div>
+            <div className="text-3xl font-bold">
+              {summary
+                ? summary.habitsCompleted + " / " + summary.habitsObjective
+                : "- / -"}
+            </div>
             <div className="text-lg mono-400 mt-2">Habits completed today</div>
           </div>
         </div>

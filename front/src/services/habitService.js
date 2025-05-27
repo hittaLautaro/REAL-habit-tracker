@@ -32,6 +32,9 @@ const habitService = {
   deleteAll: async () => {
     await axiosInstance.delete(`/habits/`);
   },
+  getCompletedByUser: async () => {
+    return await axiosInstance.get("/habits/daily-summary");
+  },
 };
 
 export default habitService;
