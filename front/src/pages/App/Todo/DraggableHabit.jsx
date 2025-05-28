@@ -1,17 +1,20 @@
 "use client";
 
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "../../../components/global/UpdateHabitModal.jsx";
-import { HabitContext } from "../../../components/contexts/HabitContext.jsx";
 import { Draggable } from "@hello-pangea/dnd";
 
 import "../../../components/global/styles.css";
 
-const DraggableHabit = ({ habit, index }) => {
-  const { deleteHabit, updateHabit, updateIsCompleted, addHabit } =
-    useContext(HabitContext);
-
+const DraggableHabit = ({
+  habit,
+  index,
+  onComplete,
+  onDelete,
+  onUpdate,
+  onDuplicate,
+}) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = () => {
@@ -24,7 +27,7 @@ const DraggableHabit = ({ habit, index }) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
       preConfirm: async () => {
-        deleteHabit(habit.id);
+        onDelete();
       },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -38,21 +41,20 @@ const DraggableHabit = ({ habit, index }) => {
   };
 
   const handleComplete = async () => {
-    updateIsCompleted(habit.id, {
-      isCompleted: habit.isCompleted == null ? true : !habit.isCompleted,
-    });
+    onComplete();
   };
 
   const handleDuplicate = async () => {
-    addHabit({
-      name: habit.name,
-      frequency: habit.frequency,
-      activeDays: habit.activeDays,
-    });
+    onDuplicate();
   };
 
   const handleEdit = () => {
     setShowModal(true);
+  };
+
+  const handleUpdate = (updatedData) => {
+    onUpdate(updatedData);
+    setShowModal(false);
   };
 
   return (
@@ -142,6 +144,7 @@ const DraggableHabit = ({ habit, index }) => {
               <UpdateHabitModal
                 habit={habit}
                 handleClose={() => setShowModal(false)}
+                handleUpdate={handleUpdate}
               />
             )}
           </div>
