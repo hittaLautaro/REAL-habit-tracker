@@ -29,7 +29,7 @@ spring:
                         enabled: true
     springdoc:
         swagger-ui:
-            path: /swagger-ui.html]]
+            path: /swagger-ui.html
             enabled: true
             operations-sorter: alpha
             tags-sorter: alpha

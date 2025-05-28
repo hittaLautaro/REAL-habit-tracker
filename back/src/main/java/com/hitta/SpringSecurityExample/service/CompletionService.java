@@ -6,6 +6,7 @@ import com.hitta.SpringSecurityExample.repo.CompletionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class CompletionService {
 
 
     public List<CompletionResponse> getCompletionsByYearAndHabit(Integer year, Integer userId, Integer habitId) {
-        LocalDateTime startOfYear = LocalDateTime.of(year, 1, 1, 0, 0, 0);
-        LocalDateTime endOfYear = LocalDateTime.of(year, 12, 31, 23, 59, 59);
+        LocalDate startOfYear = LocalDate.of(year, 1, 1);
+        LocalDate endOfYear = LocalDate.of(year, 12, 31);
         var completions =  completionRepo.findByDateBetweenAndUserIdAndHabitId(startOfYear, endOfYear, userId, habitId);
         return completionMapper.completionsToResponses(completions);
     }

@@ -7,12 +7,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface CompletionRepo extends JpaRepository<Completion, Integer> {
-    List<Completion> findByDateBetweenAndUserIdAndHabitId(LocalDateTime startOfYear, LocalDateTime endOfYear, Integer userId, Integer habitId);
+    List<Completion> findByDateBetweenAndUserIdAndHabitId(LocalDate startOfYear, LocalDate endOfYear, Integer userId, Integer habitId);
 
     @Modifying
     @Transactional
