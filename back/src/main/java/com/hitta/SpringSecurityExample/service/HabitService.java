@@ -118,11 +118,8 @@ public class HabitService {
 
         List<Habit> habits = habitRepo.findByUserIdAndDayOfWeek(userId,today.getDayOfWeek()).orElseThrow(() -> new RuntimeException("No habits for that day!"));
 
-        System.out.println(habits);
-
         int completedCount = 0;
         for (Habit habit : habits) {
-            System.out.println(habit);
             if (habit.isCompleted()) {
                 completedCount++;
             }
