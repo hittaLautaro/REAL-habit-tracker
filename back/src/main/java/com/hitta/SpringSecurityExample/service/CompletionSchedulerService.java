@@ -44,11 +44,15 @@ public class CompletionSchedulerService {
     }
 
 
-    @Scheduled(cron = "0 0 * * * *") // runs every hour
+    @Scheduled(cron = "0 0 * * * *") 
     @Transactional
     public void scheduleHabitResets() {
         logger.info("Running scheduled habit reset check");
+        runHabitResetCheckForAllUsers();
+    }
 
+    @Transactional
+    public void runHabitResetCheckForAllUsers() {
         List<Users> allUsers = userRepo.findAll();
 
         Map<String, List<Users>> usersByTimezone = allUsers.stream()
@@ -61,27 +65,27 @@ public class CompletionSchedulerService {
             ZoneId zoneId = ZoneId.of(timezone);
             ZonedDateTime nowInZone = ZonedDateTime.now(zoneId);
 
-            // Reset at 00:00 in user's timezone
             if (nowInZone.getHour() == 0) {
-                LocalDate today = nowInZone.toLocalDate();
-
-                logger.info("Processing end-of-day resets for timezone: {}", timezone);
-
-                for (Users user : users) {
-                    try {
-                        if (today.equals(user.getLastHabitResetDate())) {
-                            continue;
-                        }
-
-                        resetHabitsForUser(user);
-                    } catch (RuntimeException rex) {
-                        logger.warn("{} - Failed resetting user habits on {}", rex.getMessage(), user.getEmail());
-                    }
-                }
+                processHabitResetForUsers(users, nowInZone.toLocalDate());
             }
         }
     }
 
+    @Transactional
+    public void processHabitResetForUsers(List<Users> users, LocalDate date) {
+
+        for (Users user : users) {
+            try {
+                if (date.equals(user.getLastHabitResetDate())) {
+                    continue;
+                }
+
+                resetHabitsForUser(user);
+            } catch (RuntimeException rex) {
+                logger.warn("{} - Failed resetting user habits on {}", rex.getMessage(), user.getEmail());
+            }
+        }
+    }
 
     @Transactional
     protected void resetHabitsForUser(Users user) {
@@ -89,7 +93,7 @@ public class CompletionSchedulerService {
         Integer userId = user.getId();
 
         logger.info("Resetting habits for user: {}", userId);
-        List<Habit> habits = habitRepo.findAllByUserIdWithActiveDaysOrderByLastModifiedDate(userId);
+        List<Habit> habits = habitRepo.findAllByDayOfWeek(userId, userDate.getDayOfWeek());
         dailyReset(userId, habits, userDate);
         updateLastResetDate(userId, userDate);
     }
