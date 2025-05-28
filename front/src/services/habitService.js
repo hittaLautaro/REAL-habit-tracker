@@ -5,6 +5,14 @@ const habitService = {
     return await axiosInstance.get("/habits/");
   },
 
+  getAllByDay: async (day) => {
+    return await axiosInstance.get("/habits/by-day", {
+      params: {
+        day: day,
+      },
+    });
+  },
+
   findById: async (id) => {
     return await axiosInstance.get(`/habits/${id}`);
   },

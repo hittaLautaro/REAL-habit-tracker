@@ -43,6 +43,10 @@ const HabitProvider = ({ children }) => {
     fetchHabits();
   };
 
+  const getHabitsByDay = async (day) => {
+    return await HabitService.getAllByDay(day);
+  };
+
   useEffect(() => {
     fetchHabits();
   }, []);
@@ -50,6 +54,7 @@ const HabitProvider = ({ children }) => {
   const contextValue = {
     habits,
     loading,
+    getHabitsByDay,
     addHabit,
     updateHabit,
     deleteHabit,

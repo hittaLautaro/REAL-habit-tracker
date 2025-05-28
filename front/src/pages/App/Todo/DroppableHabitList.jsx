@@ -6,7 +6,7 @@ import _ from "lodash";
 import { HabitContext } from "../../../components/contexts/HabitContext";
 import DraggableHabit from "./DraggableHabit";
 
-const DroppableHabitList = ({ droppableId }) => {
+const DroppableHabitList = ({ droppableId, today }) => {
   const { habits, updateIsCompleted, deleteHabit, updateHabit, addHabit } =
     useContext(HabitContext);
   const [localHabits, setLocalHabits] = useState([]);
@@ -14,10 +14,13 @@ const DroppableHabitList = ({ droppableId }) => {
 
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialize local habits from context ONLY ONCE
   useEffect(() => {
     if (!isInitialized && habits.length > 0) {
-      setLocalHabits(habits);
+      setLocalHabits(
+        habits.filter((habit) =>
+          habit.activeDayOrders?.some((entry) => entry.dayOfWeek === today)
+        )
+      );
       setIsInitialized(true);
     }
   }, [habits, isInitialized]);
@@ -28,7 +31,6 @@ const DroppableHabitList = ({ droppableId }) => {
         await updateHabitsOrdersAndCompletions(updatedHabits);
       } catch (error) {
         console.error("Failed to save habit order:", error);
-        // Revert to context habits on error
         setLocalHabits(habits);
       }
     }, 1000)
@@ -40,12 +42,10 @@ const DroppableHabitList = ({ droppableId }) => {
         await updateIsCompleted(habitId, { isCompleted });
       } catch (error) {
         console.error("Failed to update completion:", error);
-        // Could revert the specific habit here if needed
       }
-    }, 500) // Shorter debounce for completions
+    }, 500)
   ).current;
 
-  // Cleanup debounce on unmount
   useEffect(() => {
     return () => {
       debounceSaveOrder.cancel();
@@ -53,9 +53,7 @@ const DroppableHabitList = ({ droppableId }) => {
     };
   }, [debounceSaveOrder, debounceSaveCompletion]);
 
-  // Handle completion locally without context refetch
   const handleLocalComplete = async (habitId) => {
-    // Update local state immediately
     const updatedHabits = localHabits.map((habit) =>
       habit.id === habitId
         ? {
@@ -67,35 +65,29 @@ const DroppableHabitList = ({ droppableId }) => {
 
     setLocalHabits(updatedHabits);
 
-    // Debounce the API call
     const updatedHabit = updatedHabits.find((h) => h.id === habitId);
     if (updatedHabit) {
       debounceSaveCompletion(habitId, updatedHabit.isCompleted);
     }
   };
 
-  // Handle other actions that should use context
   const handleLocalDelete = async (habitId) => {
     await deleteHabit(habitId);
-    // Remove from local state
     setLocalHabits((prevHabits) => prevHabits.filter((h) => h.id !== habitId));
   };
 
   const handleLocalUpdate = async (habitId, updatedData) => {
-    // Update local state
     setLocalHabits((prevHabits) =>
       prevHabits.map((habit) =>
         habit.id === habitId ? { ...habit, ...updatedData } : habit
       )
     );
 
-    // Update context
     await updateHabit(habitId, updatedData);
   };
 
   const handleLocalDuplicate = async (habitData) => {
     const newHabit = await addHabit(habitData);
-    // Add to local state if addHabit returns the new habit
     if (newHabit) {
       setLocalHabits((prevHabits) => [...prevHabits, newHabit]);
     }
