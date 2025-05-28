@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import AuthService from "../../../services/authService.js";
 import { useNavigate, useNavigation } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -114,15 +116,22 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            <div className="mb-3" style={{ color: "#121212" }}>
+            <div className="mb-3 flex flex-col" style={{ color: "#121212" }}>
               <label htmlFor="date">Date of Birth</label>
-              <input
+              <DatePicker
+                selected={dateOfBirth ? new Date(dateOfBirth) : null}
+                onChange={(date) =>
+                  setDateOfBirth(date.toISOString().split("T")[0])
+                }
+                maxDate={new Date()}
+                minDate={new Date("1900-01-01")}
+                placeholderText="Select your birth date"
+                showYearDropdown
+                scrollableYearDropdown
+                yearDropdownItemNumber={100}
+                n
+                dateFormat="yyyy-MM-dd"
                 className="form-control"
-                id="date"
-                placeholder="Enter date"
-                value={dateOfBirth}
-                type="date"
-                onChange={(e) => setDateOfBirth(e.target.value)}
                 required
               />
             </div>
