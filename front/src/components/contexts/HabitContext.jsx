@@ -35,6 +35,7 @@ const HabitProvider = ({ children }) => {
   };
 
   const updateHabitsOrdersAndCompletions = async (localHabits) => {
+    setHabits(localHabits);
     await HabitService.updateAll(localHabits);
   };
 
