@@ -1,4 +1,3 @@
-"use client";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
 import "../global/styles.css";
