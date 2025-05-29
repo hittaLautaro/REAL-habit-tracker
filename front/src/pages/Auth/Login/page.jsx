@@ -95,10 +95,10 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <button
+              {/* <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/api/auth/change-password")}
+                onClick={() => navigate("/auth/change-password")}
                 style={{
                   padding: 0,
                   border: "none",
@@ -106,7 +106,7 @@ const LoginPage = () => {
                 }}
               >
                 Forgot password?
-              </button>
+              </button> */}
             </div>
             <div className="d-grid gap-2">
               <button
@@ -124,7 +124,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/api/auth/register")}
+                onClick={() => navigate("/auth/register")}
                 style={{
                   padding: 0,
                   border: "none",
