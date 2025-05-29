@@ -65,7 +65,7 @@ public class TokenService {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setPath("/api/auth");
+        cookie.setPath("/auth");
         cookie.setMaxAge(14 * 24 * 60 * 60);
         response.addCookie(cookie);
     }
@@ -74,7 +74,7 @@ public class TokenService {
         Cookie cookie = new Cookie("refreshToken", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setPath("/api/auth");
+        cookie.setPath("/auth");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
