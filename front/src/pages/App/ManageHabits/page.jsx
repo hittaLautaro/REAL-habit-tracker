@@ -1,4 +1,4 @@
-import Header from "../../../components/global/Header.jsx";
+import Header from "../../../components/Global/Header.jsx";
 import CompletionHeatmap from "./CompletionHeatmap/CompletionHeatmap.jsx";
 import Stats from "./Stats.jsx";
 import ManageHabits from "./ManageHabits.jsx";

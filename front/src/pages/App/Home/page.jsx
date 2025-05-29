@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Header from "../../../components/global/Header.jsx";
+import Header from "../../../components/Global/Header.jsx";
 import UserService from "../../../services/userService.js";
 import { NavLink } from "react-router-dom";
 
