@@ -36,3 +36,5 @@ spring:
         api-docs:
             path: /v3/api-docs
         show-actuator: true
+    server:
+        port: ${PORT:8080}
