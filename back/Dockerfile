@@ -21,8 +21,11 @@ COPY src ./src
 # Build the application
 RUN ./mvnw package -DskipTests
 
+# Find and copy the jar file to a known location
+RUN cp target/*.jar app.jar
+
 # Expose the port your Spring Boot app runs on (default is 8080)
 EXPOSE 8080
 
 # Run the jar file
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "app.jar"]
