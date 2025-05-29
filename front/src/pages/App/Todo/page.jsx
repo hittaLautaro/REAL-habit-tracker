@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { HabitContext } from "../../../components/contexts/HabitContext.jsx";
 import Header from "../../../components/Global/Header.jsx";
 import _ from "lodash";
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 import Todo from "./Todo.jsx";
 
 const HabitPage = () => {

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import Swal from "sweetalert2";
-import UpdateHabitModal from "../../../components/global/UpdateHabitModal";
+import UpdateHabitModal from "../../../components/Global/UpdateHabitModal";
 import { HabitContext } from "../../../components/contexts/HabitContext";
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 
 const Habit = ({ habit }) => {
   const { deleteHabit, fetchHabits } = useContext(HabitContext);

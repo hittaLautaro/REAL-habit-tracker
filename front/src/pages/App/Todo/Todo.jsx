@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { HabitContext } from "../../../components/contexts/HabitContext";
-import AddHabitModal from "../../../components/global/AddHabitModal";
+import AddHabitModal from "../../../components/Global/AddHabitModal";
 import DroppableHabitList from "./DroppableHabitList";
 
 const Todo = () => {

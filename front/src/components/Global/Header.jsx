@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
-import "../global/styles.css";
+import "../Global/styles.css";
 import AuthService from "../../services/authService.js";
 import Swal from "sweetalert2";
 import "bootstrap-icons/font/bootstrap-icons.css";

@@ -1,5 +1,5 @@
 import { Droppable } from "@hello-pangea/dnd";
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 import { DragDropContext } from "@hello-pangea/dnd";
 import React, { useEffect, useContext, useState, useRef } from "react";
 import _ from "lodash";

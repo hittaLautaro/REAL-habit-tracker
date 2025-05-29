@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
-import UpdateHabitModal from "../../../components/global/UpdateHabitModal.jsx";
+import UpdateHabitModal from "../../../components/Global/UpdateHabitModal.jsx";
 import { Draggable } from "@hello-pangea/dnd";
 
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 
 const DraggableHabit = ({
   habit,

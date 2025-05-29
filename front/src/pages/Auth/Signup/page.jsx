@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthService from "../../../services/authService";
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 import CountdownRedirect from "./CountdownRedirect";
 import ResendButton from "./ResendButton";
 

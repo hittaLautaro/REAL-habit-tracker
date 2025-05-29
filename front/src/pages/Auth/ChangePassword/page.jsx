@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import AuthService from "../../../services/authService.js";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 
 const ChangePasswordPage = () => {
   const [email, setEmail] = useState("");

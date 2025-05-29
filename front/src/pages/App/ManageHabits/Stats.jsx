@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "../../../components/global/styles.css";
+import "../../../components/Global/styles.css";
 import { useState } from "react";
 import UserService from "../../../services/userService.js";
 
