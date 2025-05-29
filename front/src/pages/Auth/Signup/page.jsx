@@ -152,7 +152,7 @@ const RegisterPage = () => {
               <button
                 type="button"
                 className="btn btn-link text-dark btn-sm"
-                onClick={() => navigate("/api/auth/login")}
+                onClick={() => navigate("/auth/login")}
                 style={{
                   padding: 0,
                   border: "none",

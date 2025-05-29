@@ -64,7 +64,7 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        window.location.href = "/api/auth/login"; // Refresh token expirado
+        window.location.href = "/auth/login"; // refresh token expired
         return Promise.reject(refreshError);
       }
     }

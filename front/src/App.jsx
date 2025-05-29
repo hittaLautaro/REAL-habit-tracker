@@ -16,14 +16,11 @@ const App = () => {
   return (
     <div className="main-app">
       <Routes>
-        <Route path="/api/auth/login" element={<LoginPage />} />
-        <Route path="/api/auth/register" element={<RegisterPage />} />
-        <Route
-          path="/api/auth/change-password"
-          element={<ChangePasswordPage />}
-        />
-        <Route path="/api/account/verify" element={<VerifyPage />} />
-        <Route path="/api/account/delete" element={<DeletePage />} />
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/register" element={<RegisterPage />} />
+        <Route path="/auth/change-password" element={<ChangePasswordPage />} />
+        <Route path="/account/verify" element={<VerifyPage />} />
+        <Route path="/account/delete" element={<DeletePage />} />
 
         <Route
           path="/"
