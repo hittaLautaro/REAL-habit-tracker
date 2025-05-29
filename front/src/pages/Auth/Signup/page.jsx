@@ -116,7 +116,7 @@ const RegisterPage = () => {
                 required
               />
             </div>
-            <div className="mb-3 flex flex-col" style={{ color: "#121212" }}>
+            <div className="mb-3" style={{ color: "#121212" }}>
               <label htmlFor="date">Date of Birth</label>
               <DatePicker
                 selected={dateOfBirth ? new Date(dateOfBirth) : null}
