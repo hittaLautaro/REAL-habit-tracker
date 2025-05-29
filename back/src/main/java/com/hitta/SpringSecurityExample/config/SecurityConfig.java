@@ -3,6 +3,7 @@ package com.hitta.SpringSecurityExample.config;
 import com.hitta.SpringSecurityExample.filter.JwtFilter;
 import com.hitta.SpringSecurityExample.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +25,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Value("${FRONTEND_URL}")
+    private String frontUrl;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsServiceImpl;
@@ -73,7 +77,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:5173");
+
+        configuration.addAllowedOrigin(frontUrl);
+
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
