@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
-import CompletionService from "../../../../services/completionService.js";
+import { useEffect, useState } from "react";
+import { useCompletionsByHabit } from "../../../../components/hooks/useCompletions.js";
 
 const HabitCalendar = ({ year, habitId }) => {
-  const [dataValues, setDataValues] = useState([]);
-
-  const fetchData = async () => {
-    if (habitId != -1) {
-      const res = await CompletionService.getAllByHabit(year, habitId);
-      console.log(res.data);
-      setDataValues(res.data);
-    }
-  };
+  const [localCompletions, setLocalCompletions] = useState([]);
+  const {
+    data: completions,
+    isLoading,
+    refetch,
+  } = useCompletionsByHabit(year, habitId);
 
   useEffect(() => {
-    fetchData();
-  }, [year, habitId]);
+    if (completions) {
+      setLocalCompletions(completions);
+    }
+  }, [completions, year]);
 
   const startingDate = new Date(year, 0, 1);
   const endingDate = new Date(year, 11, 31);
@@ -53,10 +52,9 @@ const HabitCalendar = ({ year, habitId }) => {
   gridCells.push(...calenderGrid);
 
   const getColor = (completed) => {
-    console.log(completed);
-    if (!completed) return "#757575"; // grey
-    if (completed === false) return "#ffe890"; // yellow
-    return "#68d600"; // green / success
+    if (!completed) return "#757575";
+    if (completed === false) return "#ffe890";
+    return "#68d600";
   };
 
   return (
@@ -65,7 +63,7 @@ const HabitCalendar = ({ year, habitId }) => {
         display: "grid",
         gap: "4px",
         gridTemplateRows: `repeat(${rows}, 1fr)`,
-        gridTemplateColumns: `repeat(${columns + 1}, 1fr)`, // was: 1fr
+        gridTemplateColumns: `repeat(${columns + 1}, 1fr)`,
         gridAutoFlow: "column",
         margin: "1rem 0",
         width: "700px",
@@ -73,7 +71,6 @@ const HabitCalendar = ({ year, habitId }) => {
     >
       {gridCells.map((cell, index) => {
         if (cell.isEmpty) {
-          // Return an empty cell
           return (
             <div
               key={`empty-${index}`}
@@ -86,7 +83,8 @@ const HabitCalendar = ({ year, habitId }) => {
         }
 
         const completed =
-          dataValues.find((i) => i.localDate === cell.day)?.completed || false;
+          localCompletions.find((i) => i.localDate === cell.day)?.completed ||
+          false;
 
         return (
           <div

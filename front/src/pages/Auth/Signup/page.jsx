@@ -33,7 +33,6 @@ const RegisterPage = () => {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     })
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           navigate("/");
         }

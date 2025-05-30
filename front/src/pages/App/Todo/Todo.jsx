@@ -1,5 +1,4 @@
-import { useEffect, useContext, useState } from "react";
-import { HabitContext } from "../../../components/contexts/HabitContext";
+import { useState } from "react";
 import AddHabitModal from "../../../components/Global/AddHabitModal";
 import DroppableHabitList from "./DroppableHabitList";
 

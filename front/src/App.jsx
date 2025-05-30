@@ -7,7 +7,6 @@ import LoginPage from "./pages/Auth/Login/page.jsx";
 import RegisterPage from "./pages/Auth/Signup/page.jsx";
 import ManageHabits from "./pages/App/ManageHabits/page.jsx";
 import HabitPage from "./pages/App/Todo/page.jsx";
-import { HabitProvider } from "./components/contexts/HabitContext.jsx";
 import VerifyPage from "./pages/Auth/Verification/VerifyPage.jsx";
 import DeletePage from "./pages/Auth/DeleteAccount/page.jsx";
 
@@ -17,36 +16,11 @@ const App = () => {
       <Routes>
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<RegisterPage />} />
-        {/* <Route path="/auth/change-password" element={<ChangePasswordPage />} /> */}
         <Route path="/account/verify" element={<VerifyPage />} />
         <Route path="/account/delete" element={<DeletePage />} />
-
-        <Route
-          path="/"
-          element={
-            <HabitProvider>
-              <HomePage />
-            </HabitProvider>
-          }
-        />
-
-        <Route
-          path="/todo"
-          element={
-            <HabitProvider>
-              <HabitPage />
-            </HabitProvider>
-          }
-        />
-
-        <Route
-          path="/my-habits"
-          element={
-            <HabitProvider>
-              <ManageHabits />
-            </HabitProvider>
-          }
-        />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/todo" element={<HabitPage />} />
+        <Route path="/my-habits" element={<ManageHabits />} />
       </Routes>
     </div>
   );

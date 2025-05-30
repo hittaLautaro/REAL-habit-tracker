@@ -4,31 +4,12 @@ import UserService from "../../../services/userService.js";
 import { NavLink } from "react-router-dom";
 
 import UserWelcome from "./UserWelcome.jsx";
-import habitService from "../../../services/habitService.js";
+import { useCurrentUser } from "../../../components/hooks/useUser.js";
 
 const HomePage = () => {
-  const [user, setUser] = useState(null);
+  const { data: user, isLoading, error } = useCurrentUser();
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const fetch = async () => {
-    setLoading(true);
-
-    const userData = await UserService.getUserSimpleData();
-    console.log(userData);
-    setUser(userData.data);
-
-    console.log("Fetching completed habits for user..." + userData.data.id);
-    const summary = await habitService.getCompletedByUser();
-    console.log(summary);
-    setSummary(summary.data);
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetch();
-  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -42,19 +23,19 @@ const HomePage = () => {
         </div>
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-4xl">
-          <div className="bg-[#151515] text-neutral-200 !border !border-neutral-600 rounded-xl p-6 text-center shadow-md">
+          {/* <div className="bg-[#151515] text-neutral-200 !border !border-neutral-600 rounded-xl p-6 text-center shadow-md">
             <div className="text-3xl font-bold">{user ? user.streak : "-"}</div>
             <div className="text-lg mono-400 mt-2">Current daily streak</div>
-          </div>
+          </div> */}
 
-          <div className="bg-[#151515] text-neutral-200 !border !border-neutral-600 p-6 rounded-xl text-center shadow-md">
+          {/* <div className="bg-[#151515] text-neutral-200 !border !border-neutral-600 p-6 rounded-xl text-center shadow-md">
             <div className="text-3xl font-bold">
               {summary
                 ? summary.habitsCompleted + " / " + summary.habitsObjective
                 : "- / -"}
             </div>
             <div className="text-lg mono-400 mt-2">Habits completed today</div>
-          </div>
+          </div> */}
         </div>
 
         <NavLink

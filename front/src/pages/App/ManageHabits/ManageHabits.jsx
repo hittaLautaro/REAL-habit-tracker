@@ -1,13 +1,12 @@
-import React from "react";
 import AddHabitModal from "../../../components/Global/AddHabitModal.jsx";
 import AllHabitsList from "./AllHabitsList.jsx";
-import { useContext } from "react";
-import { HabitContext } from "../../../components/contexts/HabitContext.jsx";
+import { useHabitsOperations } from "../../../components/hooks/useHabits.js";
 import Swal from "sweetalert2";
 import "../../../components/Global/styles.css";
 
 const ManageHabits = () => {
-  const { habits, deleteAllHabits, fetchHabits } = useContext(HabitContext);
+  const { habits, isLoading, isError, error, deleteAll, isDeletingAll } =
+    useHabitsOperations();
 
   const handleRemoveAllHabits = () => {
     Swal.fire({
@@ -19,7 +18,16 @@ const ManageHabits = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Delete",
       preConfirm: async () => {
-        await deleteAllHabits();
+        try {
+          await new Promise((resolve, reject) => {
+            deleteAll(undefined, {
+              onSuccess: () => resolve(),
+              onError: (error) => reject(error),
+            });
+          });
+        } catch (error) {
+          Swal.showValidationMessage(`Request failed: ${error.message}`);
+        }
       },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -32,6 +40,34 @@ const ManageHabits = () => {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div
+        className="border border-dark rounded"
+        style={{ backgroundColor: "#151515" }}
+      >
+        <div className="d-flex align-items-center justify-content-center m-4">
+          <div className="text-neutral-300">Loading habits...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div
+        className="border border-dark rounded"
+        style={{ backgroundColor: "#151515" }}
+      >
+        <div className="d-flex align-items-center justify-content-center m-4">
+          <div className="text-red-500">
+            Error loading habits: {error?.message || "Unknown error"}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="border border-dark rounded"
@@ -42,10 +78,15 @@ const ManageHabits = () => {
         <div>
           <AddHabitModal />
           <button
-            className=" btn btn-outline-light "
+            className="btn btn-outline-light"
             onClick={handleRemoveAllHabits}
+            disabled={isDeletingAll || habits.length === 0}
           >
-            <i className="my-1 bi bi-trash text-center"></i>
+            {isDeletingAll ? (
+              <i className="my-1 spinner-border spinner-border-sm"></i>
+            ) : (
+              <i className="my-1 bi bi-trash text-center"></i>
+            )}
           </button>
         </div>
       </div>

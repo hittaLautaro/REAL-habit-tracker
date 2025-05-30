@@ -1,20 +1,23 @@
 import { Droppable } from "@hello-pangea/dnd";
 import "../../../components/Global/styles.css";
 import { DragDropContext } from "@hello-pangea/dnd";
-import React, { useEffect, useContext, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import _ from "lodash";
-import { HabitContext } from "../../../components/contexts/HabitContext";
 import DraggableHabit from "./DraggableHabit";
+import { useHabitsOperations } from "../../../components/hooks/useHabits.js";
 
 const DroppableHabitList = ({ droppableId, today }) => {
   const {
     habits,
-    updateIsCompleted,
-    deleteHabit,
+    isLoading,
+    isError,
+    createHabit,
     updateHabit,
-    addHabit,
-    updateHabitsOrdersAndCompletions,
-  } = useContext(HabitContext);
+    deleteHabit,
+    updateCompletion,
+    updateOrder,
+  } = useHabitsOperations();
+
   const [localHabits, setLocalHabits] = useState([]);
 
   // Determine if the selected day is actually today
@@ -32,7 +35,6 @@ const DroppableHabitList = ({ droppableId, today }) => {
         habit.activeDayOrders?.some((entry) => entry.dayOfWeek === today)
       );
 
-      // Sort habits by their position for today
       const sortedHabits = filteredHabits.sort((a, b) => {
         const aPosition = a.activeDayOrders?.find(
           (entry) => entry.dayOfWeek === today
@@ -41,7 +43,6 @@ const DroppableHabitList = ({ droppableId, today }) => {
           (entry) => entry.dayOfWeek === today
         )?.position;
 
-        // Handle undefined positions by putting them at the end
         if (aPosition === undefined && bPosition === undefined) return 0;
         if (aPosition === undefined) return 1;
         if (bPosition === undefined) return -1;
@@ -56,7 +57,7 @@ const DroppableHabitList = ({ droppableId, today }) => {
   const debounceSaveOrder = useRef(
     _.debounce(async (updatedHabits) => {
       try {
-        await updateHabitsOrdersAndCompletions(updatedHabits);
+        updateHabitsOrdersAndCompletions(updatedHabits);
       } catch (error) {
         console.error("Failed to save habit order:", error);
         setLocalHabits(habits);
@@ -67,7 +68,7 @@ const DroppableHabitList = ({ droppableId, today }) => {
   const debounceSaveCompletion = useRef(
     _.debounce(async (habitId, isCompleted) => {
       try {
-        await updateIsCompleted(habitId, { isCompleted });
+        updateCompletion({ id: habitId, updatedData: { isCompleted } });
       } catch (error) {
         console.error("Failed to update completion:", error);
       }
@@ -82,7 +83,7 @@ const DroppableHabitList = ({ droppableId, today }) => {
   }, [debounceSaveOrder, debounceSaveCompletion]);
 
   const handleLocalComplete = async (habitId) => {
-    if (isReadOnly) return; // Prevent completion if not today
+    if (isReadOnly) return;
 
     const updatedHabits = localHabits.map((habit) =>
       habit.id === habitId
@@ -102,13 +103,14 @@ const DroppableHabitList = ({ droppableId, today }) => {
   };
 
   const handleLocalDelete = async (habitId) => {
-    if (isReadOnly) return; // Prevent deletion if not today
-    await deleteHabit(habitId);
+    if (isReadOnly) return;
+
+    deleteHabit(habitId);
     setLocalHabits((prevHabits) => prevHabits.filter((h) => h.id !== habitId));
   };
 
   const handleLocalUpdate = async (habitId, updatedData) => {
-    if (isReadOnly) return; // Prevent updates if not today
+    if (isReadOnly) return;
 
     setLocalHabits((prevHabits) =>
       prevHabits.map((habit) =>
@@ -116,7 +118,7 @@ const DroppableHabitList = ({ droppableId, today }) => {
       )
     );
 
-    await updateHabit(habitId, updatedData);
+    updateHabit({ id: habitId, updatedData });
   };
 
   const getNextPositionForDay = (habits, dayOfWeek) => {
@@ -131,9 +133,8 @@ const DroppableHabitList = ({ droppableId, today }) => {
   };
 
   const handleLocalDuplicate = async (habitData) => {
-    if (isReadOnly) return; // Prevent duplication if not today
+    if (isReadOnly) return;
 
-    // Calculate the next position for each active day
     const activeDayOrders =
       habitData.activeDays?.map((dayOfWeek) => ({
         dayOfWeek,
@@ -147,7 +148,6 @@ const DroppableHabitList = ({ droppableId, today }) => {
 
     const newHabit = await addHabit(habitDataWithPositions);
     if (newHabit) {
-      // Only add to local state if it's active for the current day
       if (
         newHabit.activeDayOrders?.some((entry) => entry.dayOfWeek === today)
       ) {
@@ -157,7 +157,6 @@ const DroppableHabitList = ({ droppableId, today }) => {
   };
 
   const onDragEnd = (result) => {
-    // Allow dragging for all days, but only save if it's today
     const { source, destination } = result;
     if (!destination || source.index === destination.index) return;
 
@@ -180,11 +179,20 @@ const DroppableHabitList = ({ droppableId, today }) => {
 
     setLocalHabits(updatedHabitsWithOrder);
 
-    // Only save to backend if it's today
     if (isToday) {
       debounceSaveOrder(updatedHabitsWithOrder);
     }
   };
+
+  if (isLoading) {
+    return <div className="mx-2 mt-1 p-4">Loading habits...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="mx-2 mt-1 p-4 text-red-500">Error loading habits</div>
+    );
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

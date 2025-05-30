@@ -1,16 +1,13 @@
-import React, { useState, useContext } from "react";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import UpdateHabitModal from "../../../components/Global/UpdateHabitModal";
-import { HabitContext } from "../../../components/contexts/HabitContext";
 import "../../../components/Global/styles.css";
+import { useHabitsOperations } from "../../../components/hooks/useHabits.js";
 
 const Habit = ({ habit }) => {
-  const { deleteHabit, fetchHabits } = useContext(HabitContext);
+  const { deleteHabit } = useHabitsOperations();
 
   const [showModal, setShowModal] = useState(false);
-
-  console.log("Habit component rendered with habit:", habit);
-
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -89,7 +86,6 @@ const Habit = ({ habit }) => {
       {showModal && (
         <UpdateHabitModal
           habit={habit}
-          fetchHabits={fetchHabits}
           handleClose={() => setShowModal(false)} // Close the modal when triggered
         />
       )}

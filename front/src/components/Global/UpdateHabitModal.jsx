@@ -2,11 +2,10 @@ import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-
-import { HabitContext } from "../contexts/HabitContext";
+import { useHabitsOperations } from "../hooks/useHabits.js";
 
 function UpdateHabitModal({ habit, handleClose }) {
-  const { updateHabit } = useContext(HabitContext);
+  const { updateHabit } = useHabitsOperations();
   const [habitName, setHabitName] = useState(habit.name);
   const [habitFrequency, setHabitFrequency] = useState(habit.frequency);
   const [selectedDays, setSelectedDays] = useState(habit.activeDayOrders);

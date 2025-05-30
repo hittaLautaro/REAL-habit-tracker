@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
-import CompletionService from "../../../../services/completionService";
+import { useEffect, useState } from "react";
+import { useCompletions } from "../../../../components/hooks/useCompletions.js";
 
 const CompletionCalendar = ({ year }) => {
-  const [dataValues, setDataValues] = useState([]);
-
-  const fetchData = async () => {
-    const res = await CompletionService.getAll(year);
-    console.log(res.data);
-    setDataValues(res.data);
-  };
+  const [localCompletions, setLocalCompletions] = useState([]);
+  const { data: completions, isLoading, refetch } = useCompletions(year);
 
   useEffect(() => {
-    fetchData();
-  }, [year]);
+    if (completions) {
+      setLocalCompletions(completions);
+    }
+  }, [completions, year]);
 
   const startingDate = new Date(year, 0, 1);
   const endingDate = new Date(year, 11, 31);
@@ -84,9 +81,11 @@ const CompletionCalendar = ({ year }) => {
         }
 
         const activityCount =
-          dataValues.find((i) => i.date === cell.day)?.habitsCompleted || 0;
+          localCompletions.find((i) => i.date === cell.day)?.habitsCompleted ||
+          0;
         const objective =
-          dataValues.find((i) => i.date === cell.day)?.habitsObjective || 0;
+          localCompletions.find((i) => i.date === cell.day)?.habitsObjective ||
+          0;
 
         return (
           <div

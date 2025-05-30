@@ -2,6 +2,8 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
+// http://localhost:8080
+
 const axiosInstance = axios.create({
   baseURL: `${BASE_URL}/api`,
   withCredentials: true,
@@ -36,8 +38,6 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    console.log(error);
-
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry &&
@@ -48,8 +48,6 @@ axiosInstance.interceptors.response.use(
       !originalRequest.url.includes("/account/resend")
     ) {
       originalRequest._retry = true;
-
-      console.log(originalRequest.url);
 
       try {
         const response = await axios.post(

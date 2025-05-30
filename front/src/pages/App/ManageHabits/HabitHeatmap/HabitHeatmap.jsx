@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import HabitCalendar from "./HabitCalendar.jsx";
-import { HabitContext } from "../../../../components/contexts/HabitContext.jsx";
+import { useHabitsOperations } from "../../../../components/hooks/useHabits.js";
 
 const HabitHeatmap = () => {
-  const { habits } = useContext(HabitContext);
+  const { habits } = useHabitsOperations();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedHabitId, setSelectedHabitId] = useState(-1);
   const [selectedHabitName, setSelectedHabitName] = useState("");
@@ -42,8 +42,7 @@ const HabitHeatmap = () => {
                     className="dropdown-item text-black mono-400"
                     onClick={() => {
                       setSelectedHabitId(habit.id),
-                        setSelectedHabitName(habit.name),
-                        console.log(habit);
+                        setSelectedHabitName(habit.name);
                     }}
                   >
                     {habit.id} {habit.name}

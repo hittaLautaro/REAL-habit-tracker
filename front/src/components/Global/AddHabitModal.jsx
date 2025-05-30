@@ -1,12 +1,11 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
-
-import { HabitContext } from "../contexts/HabitContext";
+import { useHabitsOperations } from "../hooks/useHabits.js";
 
 function AddHabitModal() {
-  const { addHabit } = useContext(HabitContext);
+  const { createHabit } = useHabitsOperations();
 
   const [show, setShow] = useState(false);
   const [habitName, setHabitName] = useState("");
@@ -18,8 +17,6 @@ function AddHabitModal() {
   const handleShow = () => setShow(true);
 
   const handleSubmit = (e) => {
-    console.log(selectedDays);
-
     e.preventDefault();
 
     if (!habitName.trim()) {
@@ -41,7 +38,7 @@ function AddHabitModal() {
       })),
     };
 
-    addHabit(habitData);
+    createHabit(habitData);
 
     setHabitName("");
     setHabitFrequency("");

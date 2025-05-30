@@ -1,23 +1,11 @@
 import React, { useEffect } from "react";
 import "../../../components/Global/styles.css";
 import { useState } from "react";
-import UserService from "../../../services/userService.js";
+
+import { useCurrentUser } from "../../../components/hooks/useUser.js";
 
 const Stats = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const fetchUser = async () => {
-    setLoading(true);
-    const response = await UserService.getUserSimpleData();
-    console.log(response);
-    setUser(response.data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  const { data: user, isLoading, error } = useCurrentUser();
 
   return (
     <div

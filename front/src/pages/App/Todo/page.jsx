@@ -1,5 +1,3 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { HabitContext } from "../../../components/contexts/HabitContext.jsx";
 import Header from "../../../components/Global/Header.jsx";
 import _ from "lodash";
 import "../../../components/Global/styles.css";
