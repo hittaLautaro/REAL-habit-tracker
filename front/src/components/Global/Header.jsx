@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
-import "../Global/styles.css";
+import "./styles.css";
 import AuthService from "../../services/authService.js";
 import Swal from "sweetalert2";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -21,7 +21,7 @@ const Header = () => {
         try {
           await AuthService.logout();
           localStorage.clear();
-          navigate("/api/auth/login");
+          navigate("/auth/login");
         } catch (error) {
           Swal.showValidationMessage(`Logout failed: ${error.message}`);
         }
