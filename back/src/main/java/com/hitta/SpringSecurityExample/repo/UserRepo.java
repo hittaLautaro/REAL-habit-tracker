@@ -17,6 +17,10 @@ public interface UserRepo extends JpaRepository<Users, Integer> {
     @Query("SELECT new com.hitta.SpringSecurityExample.dtos.UserResponse(u.id, u.name, u.streak, u.email) FROM Users u WHERE u.id = :id")
     Optional<UserResponse> findUserInfoById(@Param("id") Integer id);
 
-    Optional<Users> findByEmail(String email);
+    @Query("SELECT u FROM Users u " +
+            "LEFT JOIN FETCH u.token " +
+            "LEFT JOIN FETCH u.verificationToken " +
+            "WHERE u.email = :email")
+    Optional<Users> findByEmail(@Param("email") String email);
 
 }

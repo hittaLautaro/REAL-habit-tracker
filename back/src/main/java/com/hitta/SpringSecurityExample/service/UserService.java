@@ -20,19 +20,8 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public Users findByUsername(String username) {
-        return userRepo.findByEmail(username).orElse(null);
-    }
-
     public UserResponse findUserResponseById(Integer id){
         return userRepo.findUserInfoById(id).orElse(null);
     }
-
-    public Integer findUserIdByEmail(String username) {
-        return userRepo.findIdByEmail(username).orElse(null);
-    }
-
-
-
 
 }
