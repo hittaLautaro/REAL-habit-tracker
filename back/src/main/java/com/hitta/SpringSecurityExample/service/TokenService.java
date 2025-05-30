@@ -62,23 +62,15 @@ public class TokenService {
     }
 
     public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/auth");
-        cookie.setMaxAge(14 * 24 * 60 * 60);
-        response.addCookie(cookie);
+        response.setHeader("Set-Cookie",
+                String.format("refreshToken=%s; Path=/api/auth; Max-Age=%d; HttpOnly; Secure; SameSite=None",
+                        refreshToken, 14 * 24 * 60 * 60));
     }
 
     public void deleteRefreshTokenCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("refreshToken", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/auth");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        response.setHeader("Set-Cookie",
+                "refreshToken=; Path=/api/auth; Max-Age=0; HttpOnly; Secure; SameSite=None");
     }
-
 
 }
 
