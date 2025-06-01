@@ -1,14 +1,49 @@
 import React, { useState, useContext } from "react";
 import HabitCalendar from "./HabitCalendar.jsx";
 import { useHabitsOperations } from "../../../../components/hooks/useHabits.js";
+import Skeleton from "../../../../components/Global/Skeleton.jsx";
+import CompletionCalendarSkeleton from "../CompletionHeatmap/CompletionCalendarSkeleton.jsx";
 
 const HabitHeatmap = () => {
-  const { habits } = useHabitsOperations();
+  const { habits, isLoading } = useHabitsOperations();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedHabitId, setSelectedHabitId] = useState(-1);
   const [selectedHabitName, setSelectedHabitName] = useState("");
 
   const years = [2025, 2024, 2022];
+
+  if (isLoading) {
+    return (
+      <section
+        className="border-dark border-1 rounded m-3 p-3"
+        style={{ backgroundColor: "#151515" }}
+      >
+        {/* Header section skeleton */}
+        <div className="flex justify-content-between mb-4">
+          <Skeleton className="h-6 w-40" />
+          <div className="flex flex-row gap-2">
+            <Skeleton className="h-10 w-32" />
+            <Skeleton className="h-10 w-20" />
+          </div>
+        </div>
+
+        <CompletionCalendarSkeleton year={selectedYear} />
+
+        {/* Legend skeleton */}
+        <div className="d-flex gap-3">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="d-flex align-items-center">
+              <Skeleton
+                className="w-4 h-4 me-2"
+                style={{ borderRadius: "1px" }}
+              />
+              <Skeleton className="h-3 w-20" />
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section

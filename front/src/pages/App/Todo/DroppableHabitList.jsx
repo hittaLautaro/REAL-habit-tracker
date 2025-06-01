@@ -6,17 +6,9 @@ import _ from "lodash";
 import DraggableHabit from "./DraggableHabit";
 import { useHabitsOperations } from "../../../components/hooks/useHabits.js";
 
-const DroppableHabitList = ({ droppableId, today }) => {
-  const {
-    habits,
-    isLoading,
-    isError,
-    createHabit,
-    updateHabit,
-    deleteHabit,
-    updateCompletion,
-    updateOrder,
-  } = useHabitsOperations();
+const DroppableHabitList = ({ habits, droppableId, today }) => {
+  const { isLoading, isError, updateHabit, deleteHabit, updateCompletion } =
+    useHabitsOperations();
 
   const [localHabits, setLocalHabits] = useState([]);
 

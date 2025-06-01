@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
 import { useCompletions } from "../../../../components/hooks/useCompletions.js";
+import Skeleton from "../../../../components/Global/Skeleton.jsx";
 
-const CompletionCalendar = ({ year }) => {
-  const [localCompletions, setLocalCompletions] = useState([]);
-  const { data: completions, isLoading, refetch } = useCompletions(year);
-
-  useEffect(() => {
-    if (completions) {
-      setLocalCompletions(completions);
-    }
-  }, [completions, year]);
-
+const CompletionCalendar = ({ completions, year }) => {
   const startingDate = new Date(year, 0, 1);
   const endingDate = new Date(year, 11, 31);
   const daysInMonth = Math.ceil(
@@ -20,13 +12,10 @@ const CompletionCalendar = ({ year }) => {
   const rows = 7; // 7 days of week
   const columns = Math.ceil(daysInMonth / rows);
 
-  // Create grid cells with day info
   const gridCells = [];
 
-  // Calculate how many empty cells we need based on the day of week of the first date
   const firstDayOfWeek = startingDate.getDay();
 
-  // Add empty cells for proper alignment
   for (let i = 0; i < firstDayOfWeek; i++) {
     gridCells.push({
       isEmpty: true,
@@ -81,11 +70,9 @@ const CompletionCalendar = ({ year }) => {
         }
 
         const activityCount =
-          localCompletions.find((i) => i.date === cell.day)?.habitsCompleted ||
-          0;
+          completions.find((i) => i.date === cell.day)?.habitsCompleted || 0;
         const objective =
-          localCompletions.find((i) => i.date === cell.day)?.habitsObjective ||
-          0;
+          completions.find((i) => i.date === cell.day)?.habitsObjective || 0;
 
         return (
           <div

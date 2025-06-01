@@ -3,9 +3,39 @@ import "../../../components/Global/styles.css";
 import { useState } from "react";
 
 import { useCurrentUser } from "../../../components/hooks/useUser.js";
+import Skeleton from "../../../components/Global/Skeleton.jsx";
 
 const Stats = () => {
   const { data: user, isLoading, error } = useCurrentUser();
+
+  if (isLoading) {
+    return (
+      <section
+        className="border-dark border-1 rounded m-3 p-3"
+        style={{ backgroundColor: "#151515" }}
+      >
+        {/* Header section skeleton */}
+        <div className="flex justify-content-between mb-3">
+          <Skeleton className="h-8 w-32" />
+        </div>
+        {/* Stats skeletons */}
+        <div>
+          <div className="mb-3">
+            <Skeleton className="h-6 w-40" />
+            <Skeleton className="h-4 w-12 mt-2" />
+          </div>
+          <div className="mb-3">
+            <Skeleton className="h-6 w-40" />
+            <Skeleton className="h-4 w-12 mt-2" />
+          </div>
+          <div className="">
+            <Skeleton className="h-6 w-40" />
+            <Skeleton className="h-4 w-12 mt-2" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <div

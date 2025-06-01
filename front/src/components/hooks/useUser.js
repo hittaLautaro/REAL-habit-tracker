@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import UserService from "../../services/userService.js";
+import { ssrModuleExportsKey } from "vite/module-runner";
 
 export const userKeys = {
   current: ["user", "current"],

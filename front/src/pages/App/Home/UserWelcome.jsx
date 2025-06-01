@@ -1,7 +1,18 @@
 import React from "react";
 import "../../../components/Global/styles.css";
+import Skeleton from "../../../components/Global/Skeleton.jsx";
 
-const UserWelcome = ({ user }) => {
+const UserWelcome = ({ user, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center my-12">
+        <div className="flex items-center gap-2">
+          <Skeleton className="h-32 w-[calc(100vh-70px)]" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col justify-center items-center my-12">
       <div>
