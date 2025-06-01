@@ -50,7 +50,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         const response = await axios.post(
-          `${BASE_URL}/auth/refresh`,
+          `${BASE_URL}/api/auth/refresh`,
           {},
           {
             withCredentials: true,
