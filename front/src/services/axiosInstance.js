@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = /* import.meta.env.VITE_BACKEND_URL */ "http://localhost:8080";
+const BASE_URL = /* "http://localhost:8080" */ import.meta.env.VITE_BACKEND_URL;
 
 const axiosInstance = axios.create({
   baseURL: `${BASE_URL}/api`,
@@ -10,6 +10,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const publicPaths = [
+      "/",
       "/auth/register",
       "/auth/login",
       "/account/delete",
