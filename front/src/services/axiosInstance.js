@@ -18,8 +18,12 @@ axiosInstance.interceptors.request.use(
       "/account/resend",
       "/auth/logout",
     ];
-    const isPublic = publicPaths.some((path) => config.url.includes(path));
-
+    const isPublic = publicPaths.some((path) => {
+      if (path === "/") {
+        return config.url === "/" || config.url === "";
+      }
+      return config.url === path || config.url?.startsWith(path + "/");
+    });
     if (!isPublic) {
       const token = localStorage.getItem("jwtToken");
       if (token) {
