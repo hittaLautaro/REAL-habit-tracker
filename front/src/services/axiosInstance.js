@@ -49,13 +49,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const response = await axios.post(
-          `${BASE_URL}/api/auth/refresh`,
-          {},
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axiosInstance.post("/auth/refresh", {});
 
         localStorage.setItem("jwtToken", response.data.accessToken);
 
