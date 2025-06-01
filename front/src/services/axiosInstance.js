@@ -13,17 +13,15 @@ axiosInstance.interceptors.request.use(
       "/",
       "/auth/register",
       "/auth/login",
+      "/auth/logout",
+      "/auth/refresh",
       "/account/delete",
       "/account/verify",
       "/account/resend",
-      "/auth/logout",
     ];
-    const isPublic = publicPaths.some((path) => {
-      if (path === "/") {
-        return config.url === "/" || config.url === "";
-      }
-      return config.url === path || config.url?.startsWith(path + "/");
-    });
+
+    const isPublic = publicPaths.includes(config.url);
+
     if (!isPublic) {
       const token = localStorage.getItem("jwtToken");
       if (token) {
@@ -44,22 +42,17 @@ axiosInstance.interceptors.response.use(
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/authenticate") &&
-      !originalRequest.url.includes("/auth/register") &&
-      !originalRequest.url.includes("/account/verify") &&
-      !originalRequest.url.includes("/account/delete") &&
-      !originalRequest.url.includes("/account/resend")
+      !originalRequest.url.includes("/auth/")
     ) {
       originalRequest._retry = true;
 
       try {
         const response = await axiosInstance.post("/auth/refresh", {});
-
         localStorage.setItem("jwtToken", response.data.accessToken);
-
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        window.location.href = "/auth/login"; // refresh token expired
+        localStorage.removeItem("jwtToken");
+        window.location.href = "/auth/login";
         return Promise.reject(refreshError);
       }
     }
