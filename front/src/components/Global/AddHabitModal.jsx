@@ -35,25 +35,22 @@ function AddHabitModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!habitName.trim()) {
       setError("Habit name is required");
       return;
     }
-
     if (selectedDays.length === 0) {
       setError("Please select at least one day");
       return;
     }
-
     const habitData = {
       name: habitName,
+      frequency: 0,
       activeDayOrders: selectedDays.map((day) => ({
         dayOfWeek: day,
         position: 0,
       })),
     };
-
     createHabit(habitData);
     handleClose();
   };
@@ -66,7 +63,6 @@ function AddHabitModal() {
     }
   };
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape" && show) {
@@ -78,11 +74,10 @@ function AddHabitModal() {
   }, [show]);
 
   return (
-    <>
-      {/* Trigger Button */}
+    <div className="mono-500">
       <button
         onClick={handleShow}
-        className="group relative flex justify-center items-center h-10 w-10 border border-white text-white rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 mr-3 overflow-hidden"
+        className="group relative flex justify-center items-center h-10 w-10 border border-white text-white rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 hover:animate-wiggle transition-all duration-200 mr-3 overflow-hidden"
       >
         <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
         <svg
@@ -101,7 +96,6 @@ function AddHabitModal() {
         <div className="absolute inset-0 rounded-xl ring-2 ring-white ring-opacity-0 group-hover:ring-opacity-30 transition-all duration-200"></div>
       </button>
 
-      {/* Modal */}
       {show && (
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-300 ${
@@ -109,26 +103,7 @@ function AddHabitModal() {
           }`}
           onClick={handleClose}
         >
-          {/* Glassmorphic Backdrop */}
-          <div className="absolute inset-0 bg-black/20 backdrop-blur-md"></div>
-
-          {/* Floating Particles Effect */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className={`absolute w-2 h-2 bg-white/10 rounded-full animate-pulse`}
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${i * 0.5}s`,
-                  animationDuration: `${2 + Math.random() * 2}s`,
-                }}
-              ></div>
-            ))}
-          </div>
-
-          {/* Modal Container */}
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
           <div
             className={`relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden border border-white/20 transform transition-all duration-300 ${
               isClosing
@@ -137,26 +112,20 @@ function AddHabitModal() {
             }`}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Gradient Border */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl p-[1px]">
-              <div className="bg-white rounded-3xl h-full w-full"></div>
-            </div>
-
-            {/* Content */}
             <div className="relative z-10">
-              {/* Header */}
-              <div className="flex items-center justify-between p-8 pb-6">
-                <div>
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+              <div className="flex items-center justify-between p-4 pb-6">
+                <div className="flex flex-col">
+                  <h2 className="text-3xl font-bold text-black">
                     Create Habit
                   </h2>
                   <p className="text-gray-500 text-sm mt-1">
-                    Build something amazing
+                    Build a new goal!
                   </p>
                 </div>
+
                 <button
                   onClick={handleClose}
-                  className="group flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-200 hover:scale-110"
+                  className="group flex items-center justify-center w-10 h-10 rounded-full mb-5 bg-gray-100 hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-200 hover:scale-110"
                 >
                   <svg
                     className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200"
@@ -174,7 +143,6 @@ function AddHabitModal() {
                 </button>
               </div>
 
-              {/* Error Message */}
               {error && (
                 <div className="mx-8 mb-6 p-4 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-2xl">
                   <div className="flex items-center gap-3">
@@ -196,9 +164,7 @@ function AddHabitModal() {
                 </div>
               )}
 
-              {/* Form */}
               <div className="px-8 pb-8 space-y-8">
-                {/* Habit Name */}
                 <div className="space-y-3">
                   <label className="block text-sm font-semibold text-gray-700">
                     What's your new habit?
@@ -208,15 +174,14 @@ function AddHabitModal() {
                       type="text"
                       value={habitName}
                       onChange={(e) => setHabitName(e.target.value)}
-                      placeholder="e.g., Morning meditation, Daily reading..."
-                      className="w-full px-6 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400"
+                      placeholder="e.g., Running..."
+                      className="w-full px-6 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:border-yellow-500 focus:ring-4 focus:ring-blue-500/10 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400"
                       autoFocus
                     />
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 focus-within:opacity-100 transition-opacity duration-200 pointer-events-none"></div>
                   </div>
                 </div>
 
-                {/* Days Selection */}
                 <div className="space-y-4">
                   <label className="block text-sm font-semibold text-gray-700">
                     Which days will you practice this?
@@ -231,7 +196,7 @@ function AddHabitModal() {
                           onClick={() => toggleDay(day.key)}
                           className={`relative py-4 px-2 rounded-2xl font-semibold text-sm transition-all duration-200 transform hover:scale-105 ${
                             isSelected
-                              ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:shadow-xl"
+                              ? "bg-slate-500 text-white shadow-lg hover:shadow-xl"
                               : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                           }`}
                           style={{ animationDelay: `${index * 50}ms` }}
@@ -246,7 +211,6 @@ function AddHabitModal() {
                   </div>
                 </div>
 
-                {/* Actions */}
                 <div className="flex gap-4 pt-4">
                   <button
                     type="button"
@@ -257,7 +221,7 @@ function AddHabitModal() {
                   </button>
                   <button
                     onClick={handleSubmit}
-                    className="flex-1 px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 relative overflow-hidden group"
+                    className="flex-1 px-6 py-4 bg-neutral-800 text-white rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 relative overflow-hidden group"
                   >
                     <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
                     <span className="relative z-10">Create Habit</span>
@@ -268,7 +232,7 @@ function AddHabitModal() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

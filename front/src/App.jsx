@@ -9,6 +9,7 @@ import DeletePage from "./pages/Auth/DeleteAccount/page.jsx";
 import LandingPage from "./pages/App/Landing/page.jsx";
 import { Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth } from "./components/context/AuthContext.jsx";
+import AuthCallback from "./pages/Auth/Callback/AuthCallback.jsx";
 
 const AppRoutes = () => {
   const { isAuthenticated, isLoading, token } = useAuth();
@@ -43,6 +44,7 @@ const AppRoutes = () => {
           element={isAuthenticated ? <HomePage /> : <LandingPage />}
         />
         <Route path="/todo" element={<HabitPage />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/my-habits" element={<ManageHabits />} />
       </Routes>
     </div>
