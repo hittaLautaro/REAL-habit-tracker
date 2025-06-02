@@ -1,6 +1,7 @@
 package com.hitta.SpringSecurityExample.config;
 
 import com.hitta.SpringSecurityExample.filter.JwtFilter;
+import com.hitta.SpringSecurityExample.handlers.OAuth2AuthenticationSuccessHandler;
 import com.hitta.SpringSecurityExample.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,9 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -50,12 +54,16 @@ public class SecurityConfig {
                                 "/webjars/**",
                                 "/swagger-ui/index.html",
                                 "/api-docs/**",
-                                "/api/health"
+                                "/api/health",
+                                "/oauth2/**",
+                                "/login/oauth2/**",
+                                "/api/oauth2/**"
                         )
                         .permitAll()
                         .anyRequest().authenticated())
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
