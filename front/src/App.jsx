@@ -13,11 +13,20 @@ import { AuthProvider, useAuth } from "./components/context/AuthContext.jsx";
 const AppRoutes = () => {
   const { isAuthenticated, isLoading, token } = useAuth();
 
-  // Show loading while checking authentication
   if (token && isLoading) {
     return (
-      <div className="loading-container">
-        <div>Loading...</div>
+      <div
+        className="flex flex-col items-center justify-center h-screen w-screen bg-black"
+        role="status"
+        aria-live="polite"
+      >
+        <div className="mb-5 flex flex-col items-center justify-center">
+          <div className="text-white mb-4">
+            <h1 className="text-2xl font-bold mono-300">Loading...</h1>
+          </div>
+          <div className="w-8 h-8 border-4 border-neutral-700 border-t-white rounded-full animate-spin" />
+          <span className="sr-only">Loading...</span>
+        </div>
       </div>
     );
   }
