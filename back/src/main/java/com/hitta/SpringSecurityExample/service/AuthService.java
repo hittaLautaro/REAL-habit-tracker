@@ -121,7 +121,7 @@ public class AuthService {
 
     public void revokeRefreshToken(HttpServletResponse response, String refreshToken) {
         Token token = tokenRepo.findByToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+                .orElseThrow(() -> new RuntimeException("Refresh token not found when trying to revkoe refresh token"));
         token.setRevoked(true);
         tokenRepo.save(token);
         tokenService.deleteRefreshTokenCookie(response);
