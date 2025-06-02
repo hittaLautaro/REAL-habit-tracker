@@ -1,6 +1,7 @@
 import React from "react";
 import "../../../components/Global/styles.css";
 import { NavLink } from "react-router-dom";
+import logo from "../../../assets/logo.svg";
 
 export default function Navbar() {
   return (
@@ -10,7 +11,7 @@ export default function Navbar() {
           href="/"
           className="text-decoration-none flex items-center group hover:scale-110 duration-300 ml-3"
         >
-          <img src="/logo.svg" alt="Real Logo" className="h-8 w-auto " />
+          <img src={logo} alt="Real Logo" className="h-8 w-auto " />
 
           <h2 className="ml-2 text-white font-bold text-4xl mono-600 ">
             real.
