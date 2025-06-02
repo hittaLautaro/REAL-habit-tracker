@@ -10,6 +10,7 @@
 
 .main-app {
   background-color: #0f0f0f; /* Dark background color */
+  color: #fff;
   margin: 0;
   padding: 0;
   min-height: 100vh;

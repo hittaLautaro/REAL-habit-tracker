@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AuthService from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../components/context/AuthContext";
+import AuthService from "../../../services/authService.js";
 
 import "../../../components/Global/styles.css";
 
@@ -9,9 +10,10 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -21,28 +23,63 @@ const LoginPage = () => {
       return;
     }
 
-    AuthService.login({
-      email: email,
-      password: password,
-      time_zone: currentTimeZone,
-    })
-      .then(() => {
-        navigate("/");
-      })
-      .catch((err) => {
-        if (err.response) {
-          const status = err.response.status;
+    try {
+      console.log("=== Starting login process ===");
 
-          if (status === 401) {
-            setError("Invalid credentials.");
-            return;
-          }
-
-          setError("Login failed. Please try again.");
-        }
+      // First, login with AuthService
+      console.log("Calling AuthService.login...");
+      const response = await AuthService.login({
+        email: email,
+        password: password,
+        time_zone: currentTimeZone,
       });
-  };
 
+      console.log("AuthService.login response:", response);
+
+      const token =
+        response.data?.token || response.data?.accessToken || response.token;
+      console.log(
+        "Extracted token:",
+        token ? `${token.substring(0, 20)}...` : "No token found"
+      );
+
+      if (!token) {
+        throw new Error("No token received from login response");
+      }
+
+      // Wait for context login to complete
+      console.log("Calling context login...");
+      await login(token);
+
+      console.log("Login successful, navigating...");
+      navigate("/");
+    } catch (err) {
+      console.error("=== Login process failed ===");
+      console.error("Error:", err);
+
+      if (err.response) {
+        const status = err.response.status;
+        console.error("HTTP Error:", status, err.response.data);
+
+        if (status === 401) {
+          setError("Invalid credentials.");
+          return;
+        }
+      }
+
+      // Set a more specific error message
+      if (
+        err.message === "No user data returned" ||
+        err.message === "Failed to fetch user data"
+      ) {
+        setError(
+          "Login successful but failed to load user profile. Please refresh the page."
+        );
+      } else {
+        setError("Login failed. Please try again.");
+      }
+    }
+  };
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
       <div className="text-center mb-4 my-5">

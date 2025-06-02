@@ -3,7 +3,6 @@ import axiosInstance from "./axiosInstance";
 const AuthService = {
   login: async (user) => {
     const response = await axiosInstance.post("/auth/authenticate", user);
-    localStorage.setItem("jwtToken", response.data.accessToken);
     return response;
   },
 

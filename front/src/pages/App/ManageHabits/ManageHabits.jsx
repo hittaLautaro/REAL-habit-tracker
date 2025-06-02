@@ -83,12 +83,12 @@ const ManageHabits = () => {
       className="border border-dark rounded"
       style={{ backgroundColor: "#151515" }}
     >
-      <div className="d-flex align-items-center justify-content-between m-4">
+      <div className="flex align-items-center justify-content-between m-4">
         <h1 className="ml-2 fs-2 text-neutral-300 mono-500">Manage habits</h1>
-        <div>
+        <div className="flex align-items-center">
           <AddHabitModal />
           <button
-            className="btn btn-outline-light"
+            className="flex justify-center items-center h-10 w-10  border border-white text-white hover:bg-white hover:text-gray-900 rounded-lg transition-colors "
             onClick={handleRemoveAllHabits}
             disabled={isDeletingAll || habits.length === 0}
           >
