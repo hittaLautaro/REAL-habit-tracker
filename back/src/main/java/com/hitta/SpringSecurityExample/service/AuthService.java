@@ -106,7 +106,7 @@ public class AuthService {
 
     public AuthResponse generateAccessToken(String refreshToken) {
         Token token = tokenRepo.findByToken(refreshToken)
-                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+                .orElseThrow(() -> new RuntimeException("Refresh token not found when trying to generate new access token"));
         if (token.isRevoked() || token.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Refresh token is expired or revoked");
         }

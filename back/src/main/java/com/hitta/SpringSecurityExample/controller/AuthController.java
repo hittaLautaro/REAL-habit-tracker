@@ -216,12 +216,12 @@ public class AuthController {
     })
     public ResponseEntity<Void> logout(
             @Parameter(
-                    description = "Refresh token from cookie (optional)",
-                    required = false
+                    description = "Refresh token from cookie (optional)"
             )
             @CookieValue(name = "refreshToken", required = false) String refreshToken,
             @Parameter(hidden = true) HttpServletResponse response) {
         try {
+            System.out.println(refreshToken);
             authService.revokeRefreshToken(response, refreshToken);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
