@@ -13,6 +13,7 @@ axiosInstance.interceptors.request.use(
       "/",
       "/auth/register",
       "/auth/login",
+      "/auth/logout",
       "/auth/refresh",
       "/account/delete",
       "/account/verify",
@@ -54,7 +55,8 @@ axiosInstance.interceptors.response.use(
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/")
+      !originalRequest.url.includes("/auth/") &&
+      originalRequest.url !== "/auth/logout"
     ) {
       originalRequest._retry = true;
 
