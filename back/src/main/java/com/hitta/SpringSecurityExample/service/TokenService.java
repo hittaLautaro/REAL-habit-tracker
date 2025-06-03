@@ -63,13 +63,13 @@ public class TokenService {
 
     public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         response.addHeader("Set-Cookie",
-                String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=None",
+                String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Lax",
                         refreshToken, 14 * 24 * 60 * 60));
     }
 
     public void deleteRefreshTokenCookie(HttpServletResponse response) {
         response.addHeader("Set-Cookie",
-                "refreshToken=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None");
+                "refreshToken=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax");
     }
 
 
