@@ -4,7 +4,8 @@ import com.hitta.SpringSecurityExample.dtos.AuthResponse;
 import com.hitta.SpringSecurityExample.model.Token;
 import com.hitta.SpringSecurityExample.model.Users;
 import com.hitta.SpringSecurityExample.repo.TokenRepo;
-import jakarta.servlet.http.Cookie;
+import org.springframework.http.ResponseCookie;
+import java.time.Duration;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 
@@ -61,15 +62,30 @@ public class TokenService {
         return tokenValue;
     }
 
+
+
     public void addRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        response.addHeader("Set-Cookie",
-                String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Lax",
-                        refreshToken, 14 * 24 * 60 * 60));
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(Duration.ofDays(14))
+                .sameSite("None")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     public void deleteRefreshTokenCookie(HttpServletResponse response) {
-        response.addHeader("Set-Cookie",
-                "refreshToken=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax");
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(Duration.ZERO)
+                .sameSite("None")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 
 
