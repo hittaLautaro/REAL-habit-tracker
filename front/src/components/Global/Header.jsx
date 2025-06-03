@@ -4,9 +4,11 @@ import "./styles.css";
 import AuthService from "../../services/authService.js";
 import Swal from "sweetalert2";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     Swal.fire({
@@ -20,7 +22,7 @@ const Header = () => {
       preConfirm: async () => {
         try {
           await AuthService.logout();
-          localStorage.clear();
+          await logout();
           navigate("/auth/login");
         } catch (error) {
           Swal.showValidationMessage(`Logout failed: ${error.message}`);

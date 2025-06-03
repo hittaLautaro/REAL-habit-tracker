@@ -13,7 +13,6 @@ axiosInstance.interceptors.request.use(
       "/",
       "/auth/register",
       "/auth/login",
-      "/auth/logout",
       "/auth/refresh",
       "/account/delete",
       "/account/verify",

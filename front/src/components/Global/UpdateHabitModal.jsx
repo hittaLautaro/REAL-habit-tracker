@@ -48,15 +48,19 @@ function UpdateHabitModal({ habit, handleClose }) {
       setError("Please select at least one day");
       return;
     }
-    const updatedHabit = {
-      ...habit,
+
+    const updatedData = {
       name: habitName,
       activeDayOrders: selectedDays.map((day) => ({
         dayOfWeek: day,
         position: 0,
       })),
     };
-    updateHabit(updatedHabit);
+
+    updateHabit({
+      id: habit.id,
+      updatedData: updatedData,
+    });
     closeWithAnimation();
   };
 
