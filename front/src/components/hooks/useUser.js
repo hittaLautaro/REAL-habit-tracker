@@ -11,7 +11,6 @@ export const useCurrentUser = (options = {}) => {
   return useQuery({
     queryKey: userKeys.current(token), // Include token in query key
     queryFn: async () => {
-      console.log("Fetching user with token:", token ? "present" : "missing");
       const response = await UserService.getUserSimpleData();
       return response.data;
     },

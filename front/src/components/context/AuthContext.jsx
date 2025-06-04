@@ -20,17 +20,8 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = !!user && !error && !!token;
 
   const login = async (newToken) => {
-    console.log("=== Context login called ===");
-    console.log(
-      "New token:",
-      newToken ? `${newToken.substring(0, 20)}...` : "No token"
-    );
-
-    // Set token in localStorage first
     localStorage.setItem("jwtToken", newToken);
     setToken(newToken);
-
-    console.log("Token set, waiting before refetch...");
   };
 
   const logout = () => {

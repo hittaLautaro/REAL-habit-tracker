@@ -4,14 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../components/context/AuthContext";
 import AuthService from "../../../services/authService.js";
 import axiosInstance from "../../../services/axiosInstance.js";
-
+import logo from "../../../assets/logo.svg";
+import { NavLink } from "react-router-dom";
 import "../../../components/Global/styles.css";
+import { Loader2 } from "lucide-react";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleOAuth() {
@@ -20,13 +23,8 @@ const LoginPage = () => {
         "/oauth2/google/authorization-url"
       );
       const url = response.data.authorizationUrl;
-
-      // Redirect user to Google OAuth2 authorization URL
       window.location.href = url;
-    } catch (error) {
-      console.error("Failed to get authorization URL:", error);
-      // You can also show an error message to the user here
-    }
+    } catch (error) {}
   }
 
   const handleSubmit = async (e) => {
@@ -40,74 +38,50 @@ const LoginPage = () => {
     }
 
     try {
-      console.log("=== Starting login process ===");
+      setIsLoading(true);
 
-      // First, login with AuthService
-      console.log("Calling AuthService.login...");
       const response = await AuthService.login({
         email: email,
         password: password,
         time_zone: currentTimeZone,
       });
-
-      console.log("AuthService.login response:", response);
-
       const token =
         response.data?.token || response.data?.accessToken || response.token;
-      console.log(
-        "Extracted token:",
-        token ? `${token.substring(0, 20)}...` : "No token found"
-      );
-
       if (!token) {
         throw new Error("No token received from login response");
       }
 
-      // Wait for context login to complete
-      console.log("Calling context login...");
       await login(token);
-
-      console.log("Login successful, navigating...");
+      setIsLoading(false);
       navigate("/");
     } catch (err) {
-      console.error("=== Login process failed ===");
-      console.error("Error:", err);
-
       if (err.response) {
         const status = err.response.status;
-        console.error("HTTP Error:", status, err.response.data);
-
         if (status === 401) {
           setError("Invalid credentials.");
           return;
+        } else {
+          setError("An error occurred. Please try again later.");
+          return;
         }
-      }
-
-      // Set a more specific error message
-      if (
-        err.message === "No user data returned" ||
-        err.message === "Failed to fetch user data"
-      ) {
-        setError(
-          "Login successful but failed to load user profile. Please refresh the page."
-        );
-      } else {
-        setError("Login failed. Please try again.");
       }
     }
   };
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
-      <div className="text-center mb-4 my-5">
-        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big mono-600">
-          real.
-        </h1>
-        <h3 className="mono-300 text-white">
-          Simple & customizable habit tracker!
-        </h3>
-      </div>
+    <div className="flex flex-col items-center min-h-screen justify-center gap-4">
+      <NavLink
+        to="/"
+        className="text-decoration-none flex items-center group hover:scale-110 duration-300 ml-3"
+      >
+        <img
+          src={logo}
+          alt="Real Logo"
+          className="h-8 w-auto scale-150 mt-1 mr-2"
+        />
+        <h2 className="ml-2 text-white font-bold text-6xl mono-600 ">real.</h2>
+      </NavLink>
       <div
-        className="container d-flex justify-content-center align-items-center"
+        className="container flex justify-content-center align-items-center mb-7"
         style={{ minHeight: "calc(100vh - 450px)" }}
       >
         <div
@@ -201,7 +175,7 @@ const LoginPage = () => {
             <div className="d-grid gap-2">
               <button
                 type="submit"
-                className="btn btn-dark btn-md "
+                className="btn btn-dark btn-md justify-items-center py-2"
                 style={{
                   backgroundColor: "#007bff",
                   border: "none",
@@ -209,7 +183,11 @@ const LoginPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                Login
+                {isLoading ? (
+                  <Loader2 className="animate-spin my-1" size={16} />
+                ) : (
+                  "Login"
+                )}
               </button>
               <button
                 type="button"

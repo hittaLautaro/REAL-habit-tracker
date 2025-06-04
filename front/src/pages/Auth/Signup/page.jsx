@@ -3,6 +3,9 @@ import AuthService from "../../../services/authService.js";
 import { useNavigate, useNavigation } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import logo from "../../../assets/logo.svg";
+import { NavLink } from "react-router-dom";
+import { Loader, Loader2 } from "lucide-react";
 
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,6 +13,7 @@ import "../../../components/Global/styles.css";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [name, setName] = useState("");
@@ -25,6 +29,7 @@ const RegisterPage = () => {
       return;
     }
 
+    setIsLoading(true);
     AuthService.register({
       email: email,
       password: password,
@@ -33,8 +38,10 @@ const RegisterPage = () => {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     })
       .then((response) => {
+        setIsLoading(false);
+
         if (response.status === 200) {
-          navigate("/");
+          navigate("/auth/login");
         }
 
         setEmail("");
@@ -43,6 +50,7 @@ const RegisterPage = () => {
         setName("");
       })
       .catch((err) => {
+        setIsLoading(false);
         if (err.response) {
           setError("Signup failed. Please try again.");
         } else {
@@ -52,17 +60,20 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
-      <div className="text-center mb-4 my-5">
-        <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-yellow-400 fs-big mono-600">
-          real.
-        </h1>
-        <h3 className="mono-300 text-white">
-          Simple & customizable habit tracker!
-        </h3>
-      </div>
+    <div className="flex flex-col items-center min-h-screen justify-center gap-5">
+      <NavLink
+        to="/"
+        className="text-decoration-none flex items-center group hover:scale-110 duration-300 ml-3"
+      >
+        <img
+          src={logo}
+          alt="Real Logo"
+          className="h-8 w-auto scale-150 mt-1 mr-2"
+        />
+        <h2 className="ml-2 text-white font-bold text-6xl mono-600 ">real.</h2>
+      </NavLink>
       <div
-        className="container d-flex justify-content-center align-items-center"
+        className="container d-flex justify-content-center align-items-center mb-14"
         style={{ minHeight: "calc(100vh - 450px)" }}
       >
         <div
@@ -138,7 +149,7 @@ const RegisterPage = () => {
             <div className="d-grid gap-2">
               <button
                 type="submit"
-                className="btn btn-dark btn-md "
+                className="btn btn-dark btn-md justify-items-center py-2"
                 style={{
                   backgroundColor: "#007bff",
                   border: "none",
@@ -146,7 +157,11 @@ const RegisterPage = () => {
                   marginBottom: "10px",
                 }}
               >
-                Sign up
+                {isLoading ? (
+                  <Loader2 className="animate-spin my-1" size={16} />
+                ) : (
+                  "Sign Up"
+                )}
               </button>
               <button
                 type="button"

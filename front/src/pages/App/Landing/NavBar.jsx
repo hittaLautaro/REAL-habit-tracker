@@ -8,7 +8,7 @@ export default function Navbar() {
     <div className="bg-black p-3 border-b border-neutral-900">
       <div className="flex items-center justify-between mx-auto">
         <NavLink
-          href="/"
+          to="/"
           className="text-decoration-none flex items-center group hover:scale-110 duration-300 ml-3"
         >
           <img src={logo} alt="Real Logo" className="h-8 w-auto " />
