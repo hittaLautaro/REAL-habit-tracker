@@ -7,12 +7,18 @@ import DraggableHabit from "./DraggableHabit";
 import { useHabitsOperations } from "../../../components/hooks/useHabits.js";
 
 const DroppableHabitList = ({ habits, droppableId, today }) => {
-  const { isLoading, isError, updateHabit, deleteHabit, updateCompletion } =
-    useHabitsOperations();
+  const {
+    isLoading,
+    isError,
+    updateHabit,
+    deleteHabit,
+    updateCompletion,
+    createHabit,
+    updateOrder,
+  } = useHabitsOperations();
 
   const [localHabits, setLocalHabits] = useState([]);
 
-  // Determine if the selected day is actually today
   const todaysDate = new Date();
   const todayDayString = todaysDate
     .toLocaleDateString("en-US", { weekday: "long" })
@@ -47,23 +53,18 @@ const DroppableHabitList = ({ habits, droppableId, today }) => {
   }, [habits, today]);
 
   const debounceSaveOrder = useRef(
-    _.debounce(async (updatedHabits) => {
+    _.debounce((updatedHabits) => {
       try {
-        updateHabitsOrdersAndCompletions(updatedHabits);
+        updateOrder(updatedHabits);
       } catch (error) {
-        console.error("Failed to save habit order:", error);
         setLocalHabits(habits);
       }
-    }, 200)
+    }, 1000)
   ).current;
 
   const debounceSaveCompletion = useRef(
     _.debounce(async (habitId, isCompleted) => {
-      try {
-        updateCompletion({ id: habitId, updatedData: { isCompleted } });
-      } catch (error) {
-        console.error("Failed to update completion:", error);
-      }
+      updateCompletion({ id: habitId, updatedData: { isCompleted } });
     }, 200)
   ).current;
 
@@ -138,7 +139,7 @@ const DroppableHabitList = ({ habits, droppableId, today }) => {
       activeDayOrders,
     };
 
-    const newHabit = await addHabit(habitDataWithPositions);
+    const newHabit = await createHabit(habitDataWithPositions);
     if (newHabit) {
       if (
         newHabit.activeDayOrders?.some((entry) => entry.dayOfWeek === today)
@@ -169,10 +170,22 @@ const DroppableHabitList = ({ habits, droppableId, today }) => {
       };
     });
 
-    setLocalHabits(updatedHabitsWithOrder);
+    setLocalHabits(newLocalHabits);
 
-    if (isToday) {
-      debounceSaveOrder(updatedHabitsWithOrder);
+    const changedHabits = updatedHabitsWithOrder.filter((habit, index) => {
+      const originalHabit = localHabits.find((h) => h.id === habit.id);
+      const originalPosition = originalHabit?.activeDayOrders?.find(
+        (entry) => entry.dayOfWeek === today
+      )?.position;
+      const newPosition = habit.activeDayOrders?.find(
+        (entry) => entry.dayOfWeek === today
+      )?.position;
+
+      return originalPosition !== newPosition;
+    });
+
+    if (changedHabits.length > 0) {
+      debounceSaveOrder(changedHabits);
     }
   };
 

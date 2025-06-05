@@ -11,15 +11,9 @@ const DraggableHabit = ({
   onComplete,
   onDelete,
   onUpdate,
-  onDuplicate,
-  today,
   isReadOnly = false,
 }) => {
   const [showModal, setShowModal] = useState(false);
-
-  const positionForToday = habit.activeDayOrders?.find(
-    (entry) => entry.dayOfWeek === today
-  )?.position;
 
   const handleDelete = () => {
     if (isReadOnly) return;
@@ -49,11 +43,6 @@ const DraggableHabit = ({
   const handleComplete = async () => {
     if (isReadOnly) return;
     onComplete();
-  };
-
-  const handleDuplicate = async () => {
-    if (isReadOnly) return;
-    onDuplicate();
   };
 
   const handleEdit = () => {
@@ -154,7 +143,7 @@ const DraggableHabit = ({
                   >
                     <li>
                       <button
-                        className="dropdown-item sans-600"
+                        className="dropdown-item mono-400"
                         onClick={handleEdit}
                       >
                         Edit
@@ -162,18 +151,10 @@ const DraggableHabit = ({
                     </li>
                     <li>
                       <button
-                        className="dropdown-item sans-600"
+                        className="dropdown-item mono-400"
                         onClick={handleDelete}
                       >
                         Delete
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        className="dropdown-item sans-600"
-                        onClick={handleDuplicate}
-                      >
-                        Duplicate
                       </button>
                     </li>
                   </ul>
