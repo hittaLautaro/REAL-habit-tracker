@@ -47,7 +47,7 @@ const CompletionHeatmap = () => {
       style={{ backgroundColor: "#151515" }}
     >
       <div className="flex justify-content-between">
-        <h3 className="text-neutral-300 mono-500">Daily Completions</h3>
+        <span className="text-neutral-300 text-xl mono-500">Activity</span>
         <div className="dropdown text-end mr-1 mb-1">
           <button
             className="btn btn-outline-light dropdown-toggle sans-600"

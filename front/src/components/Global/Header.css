@@ -153,10 +153,6 @@
   color: #facc15;
 }
 
-.bi-gear:hover {
-  color: #22c55e;
-}
-
 .bi-box-arrow-right:hover {
   color: #ef4444;
 }
@@ -181,11 +177,6 @@
 .bi-lightbulb:hover {
   color: #ffc107;
   text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
-}
-
-.bi-gear:hover {
-  color: #3a7bd5;
-  animation: spin 4s linear infinite;
 }
 
 .bi-box-arrow-right:hover {
@@ -225,10 +216,6 @@
 .bi-lightbulb:hover {
   color: #ffeb3b;
   text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
-}
-
-.bi-gear:hover {
-  color: #64b5f6;
 }
 
 .bi-box-arrow-right:hover {

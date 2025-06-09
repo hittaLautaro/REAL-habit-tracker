@@ -51,7 +51,9 @@ const HabitHeatmap = () => {
       style={{ backgroundColor: "#151515" }}
     >
       <div className="flex justify-content-between">
-        <h3 className="text-neutral-300 mono-500">Daily Habit Completions</h3>
+        <span className="text-neutral-300 text-xl mono-500">
+          Habit Activity
+        </span>
 
         {/*  Dropdown buttons  */}
         <div className="flex flex-row gap-2">

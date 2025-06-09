@@ -77,7 +77,7 @@ function AddHabitModal() {
     <div className="mono-500">
       <button
         onClick={handleShow}
-        className="group relative flex justify-center items-center h-10 w-10 border border-white text-white rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 hover:animate-wiggle transition-all duration-200 mr-3 overflow-hidden"
+        className="group relative flex justify-center items-center h-9 w-9 !border !border-neutral-300 text-neutral-300 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 hover:animate-wiggle transition-all duration-200 mr-3 overflow-hidden"
       >
         <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
         <svg

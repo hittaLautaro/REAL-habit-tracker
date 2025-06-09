@@ -7,7 +7,18 @@ import { useHabitsOperations } from "../../../components/hooks/useHabits.js";
 const Habit = ({ habit }) => {
   const { deleteHabit } = useHabitsOperations();
 
+  const dayOrder = {
+    monday: 0,
+    tuesday: 1,
+    wednesday: 2,
+    thursday: 3,
+    friday: 4,
+    saturday: 5,
+    sunday: 6,
+  };
+
   const [showModal, setShowModal] = useState(false);
+
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -36,28 +47,34 @@ const Habit = ({ habit }) => {
   };
 
   return (
-    <div className="!border !border-neutral-800 mt-2 rounded custom-min-height ml-2 mb-1 my-1 py-3 text-light d-flex justify-content-between align-items-center transition-all duration-200">
+    <div className="!border !border-neutral-800 mt-2 rounded custom-min-height ml-2 mb-1 my-1 py-2 text-light d-flex justify-content-between align-items-center transition-all duration-200">
       <div className="ml-3">
-        <h4 className="m-0 mono-600">{habit.name}</h4>
-        <p className="m-0 mono-400">Frequency: {habit.frequency}</p>
-        <p className="m-0 mono-400">
-          Days:{" "}
-          {habit.activeDayOrders.length > 0
-            ? habit.activeDayOrders.map((day) => day.dayOfWeek).join(", ")
-            : "None"}
+        <h5 className="m-0 mono-300 text-neutral-300 text-1xl mb-2">
+          {habit.name}
+        </h5>
+        <p className="m-0 mono-300 flex flex-row gap-1">
+          {habit.activeDayOrders.length > 0 &&
+            [...habit.activeDayOrders]
+              .sort(
+                (a, b) =>
+                  dayOrder[a.dayOfWeek.toLowerCase()] -
+                  dayOrder[b.dayOfWeek.toLowerCase()]
+              )
+              .map((day) => (
+                <div
+                  key={day.dayOfWeek}
+                  className="px-2 py-1 rounded-xl text-sm transition-all duration-200 transform bg-neutral-700 hover:bg-neutral-500 text-neutral-100"
+                >
+                  {day.dayOfWeek.substring(0, 1).toUpperCase() +
+                    day.dayOfWeek.substring(1, 3).toLowerCase()}
+                </div>
+              ))}
         </p>
       </div>
 
-      {/* Dropdown menu in the top-right */}
       <div className="dropdown text-end mr-2 mb-5">
-        <button
-          className="btn btn-outline-light dropdown-toggle sans-600"
-          type="button"
-          id={`dropdownMenuButton-${habit.id}`}
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <i className="bi bi-gear"></i>
+        <button type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i className="bi bi-gear text-neutral-400"></i>
         </button>
         <ul
           className="dropdown-menu"

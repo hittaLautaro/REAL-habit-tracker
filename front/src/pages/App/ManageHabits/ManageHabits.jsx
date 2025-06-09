@@ -84,19 +84,32 @@ const ManageHabits = () => {
       style={{ backgroundColor: "#151515" }}
     >
       <div className="flex align-items-center justify-content-between m-4">
-        <h1 className="ml-2 fs-2 text-neutral-300 mono-500">Manage habits</h1>
+        <h1 className="ml-2 text-xl text-neutral-300 mono-500">Your Habits</h1>
         <div className="flex align-items-center">
           <AddHabitModal />
           <button
-            className="flex justify-center items-center h-10 w-10  border border-white text-white hover:bg-white hover:text-gray-900 rounded-lg transition-colors "
+            className="group relative flex justify-center items-center h-9 w-9 !border !border-neutral-300 text-neutral-300 rounded-xl hover:shadow-xl transform hover:scale-105 hover:animate-wiggle transition-all duration-200 overflow-hidden"
             onClick={handleRemoveAllHabits}
             disabled={isDeletingAll || habits.length === 0}
           >
-            {isDeletingAll ? (
-              <i className="my-1 spinner-border spinner-border-sm"></i>
-            ) : (
-              <i className="my-1 bi bi-trash text-center"></i>
-            )}
+            <div className="absolute inset-0  opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-5 h-5 transform origin-center group-hover:rotate-90 transition-transform duration-200"
+            >
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              <line x1="10" y1="11" x2="10" y2="17" />
+              <line x1="14" y1="11" x2="14" y2="17" />
+            </svg>
+
+            <div className="absolute inset-0 rounded-xl ring-1 ring-white ring-opacity-0 group-hover:ring-opacity-30 transition-all duration-200"></div>
           </button>
         </div>
       </div>

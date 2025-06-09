@@ -42,19 +42,25 @@ const Stats = () => {
       className="border-dark border-1 rounded m-3 p-4"
       style={{ backgroundColor: "#151515" }}
     >
-      <h3 className="text-neutral-300 mono-500"> Your Stats </h3>
-      <p className="mb-0 text-neutral-400 mono-400 text-lg">Biggest streak</p>
-      <p className="mb-0 text-transparent bg-clip-text bg-gradient-to-r bg-green-500 mono-500">
+      <span className="text-xl text-neutral-300 mono-500 mb-3">Your Stats</span>
+      <p className="mb-0 text-neutral-400 mono-300 text-sm">Biggest streak</p>
+      <p className="mb-0 text-transparent text-sm bg-clip-text bg-gradient-to-r bg-green-500 mono-300">
         {"-"}
       </p>
-      <p className="mb-0 text-neutral-400 mono-400 text-lg">Current streak</p>
-      <p className="mb-0 text-transparent bg-clip-text bg-gradient-to-r bg-green-500 mono-500">
+      <p className="mb-0 text-neutral-400 mono-300 text-sm">Current streak</p>
+      <p className="mb-0 text-transparent text-sm bg-clip-text bg-gradient-to-r bg-green-500 mono-300">
         {user ? user.streak : "-"}
       </p>
-      <p className="mb-0 text-neutral-400 mono-400 text-lg">
+      <p className="mb-0 text-neutral-400 mono-300 text-sm">
         Most Consistent Habit
       </p>
-      <p className="mb-0 text-transparent bg-clip-text bg-gradient-to-r bg-green-500 mono-500">
+      <p className="mb-0 text-transparent text-sm bg-clip-text bg-gradient-to-r bg-green-500 mono-300">
+        {"-"}
+      </p>
+      <p className="mb-0 text-neutral-400 mono-300 text-sm">
+        Most Productive Day
+      </p>
+      <p className="mb-0 text-transparent text-sm bg-clip-text bg-gradient-to-r bg-green-500 mono-300">
         {"-"}
       </p>
     </div>
