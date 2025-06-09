@@ -49,10 +49,10 @@ const Habit = ({ habit }) => {
   return (
     <div className="!border !border-neutral-800 mt-2 rounded custom-min-height ml-2 mb-1 my-1 py-2 text-light d-flex justify-content-between align-items-center transition-all duration-200">
       <div className="ml-3">
-        <h5 className="m-0 mono-300 text-neutral-300 text-1xl mb-2">
+        <h5 className="m-0 mono-300 text-neutral-300 text-lg mb-2">
           {habit.name}
         </h5>
-        <p className="m-0 mono-300 flex flex-row gap-1">
+        <p className="m-0 mono-300 flex flex-row gap-1 ">
           {habit.activeDayOrders.length > 0 &&
             [...habit.activeDayOrders]
               .sort(
