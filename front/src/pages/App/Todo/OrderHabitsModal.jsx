@@ -56,13 +56,8 @@ const OrderHabitModal = ({ day, habits }) => {
   };
 
   const handleSaveOrder = async () => {
-    console.log(orderedHabits);
-    try {
-      updateOrder(orderedHabits);
-      setIsOpen(false);
-    } catch (error) {
-      console.error("Error saving habit order:", error);
-    }
+    updateOrder(orderedHabits);
+    setIsOpen(false);
   };
 
   if (orderedHabits.length === 0) {
