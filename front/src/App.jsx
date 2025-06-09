@@ -10,6 +10,7 @@ import LandingPage from "./pages/App/Landing/page.jsx";
 import { Route, Routes } from "react-router-dom";
 import { AuthProvider, useAuth } from "./components/context/AuthContext.jsx";
 import AuthCallback from "./pages/Auth/Callback/AuthCallback.jsx";
+import logo from "./assets/logo.svg";
 
 const AppRoutes = () => {
   const { isAuthenticated, isLoading, token } = useAuth();
@@ -21,13 +22,13 @@ const AppRoutes = () => {
         role="status"
         aria-live="polite"
       >
-        <div className="mb-5 flex flex-col items-center justify-center">
-          <div className="text-white mb-4">
-            <h1 className="text-2xl font-bold mono-300">Loading...</h1>
-          </div>
-          <div className="w-8 h-8 border-4 border-neutral-700 border-t-white rounded-full animate-spin" />
-          <span className="sr-only">Loading...</span>
+        <div className="mb-2 flex flex-row items-center justify-center">
+          <img src={logo} alt="Real Logo" className="h-8 w-auto" />
+          <h2 className="ml-2 text-white font-bold text-4xl mono-600 ">
+            real.
+          </h2>
         </div>
+        <div className="w-8 h-8 border-4 border-neutral-700 border-t-white rounded-full animate-spin" />
       </div>
     );
   }
