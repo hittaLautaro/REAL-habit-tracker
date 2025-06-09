@@ -52,7 +52,7 @@ const Habit = ({ habit }) => {
         <h5 className="m-0 mono-300 text-neutral-300 text-lg mb-2">
           {habit.name}
         </h5>
-        <p className="m-0 mono-300 flex flex-row gap-1 ">
+        <div className="m-0 mono-300 flex flex-row gap-1 ">
           {habit.activeDayOrders.length > 0 &&
             [...habit.activeDayOrders]
               .sort(
@@ -69,7 +69,7 @@ const Habit = ({ habit }) => {
                     day.dayOfWeek.substring(1, 3).toLowerCase()}
                 </div>
               ))}
-        </p>
+        </div>
       </div>
 
       <div className="dropdown text-end mr-2 mb-5">
