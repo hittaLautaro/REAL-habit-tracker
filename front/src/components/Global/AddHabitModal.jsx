@@ -5,10 +5,10 @@ function AddHabitModal() {
   const { createHabit } = useHabitsOperations();
 
   const [show, setShow] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [habitName, setHabitName] = useState("");
   const [error, setError] = useState("");
   const [selectedDays, setSelectedDays] = useState([]);
-  const [isClosing, setIsClosing] = useState(false);
 
   const days = [
     { key: "MONDAY", label: "Mon" },

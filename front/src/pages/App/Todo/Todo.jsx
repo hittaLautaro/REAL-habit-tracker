@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddHabitModal from "../../../components/Global/AddHabitModal";
-import DroppableHabitList from "./DroppableHabitList";
-
 import { useHabitsOperations } from "../../../components/hooks/useHabits";
 import Skeleton from "../../../components/Global/Skeleton";
+import HabitList from "./HabitList";
+import OrderHabitModal from "./OrderHabitsModal";
 
 const Todo = () => {
   const todaysDate = new Date();
@@ -12,7 +12,6 @@ const Todo = () => {
     .toUpperCase();
 
   const { habits, isLoading } = useHabitsOperations();
-
   const [selectedDay, setSelectedDay] = useState(todayDayString);
 
   const daysOfWeek = [
@@ -26,6 +25,7 @@ const Todo = () => {
   ];
 
   const daysOfWeek2 = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
   const handleDayClick = (day) => {
     setSelectedDay(day);
   };
@@ -70,7 +70,7 @@ const Todo = () => {
         style={{ backgroundColor: "#151515" }}
       >
         <div className="flex align-items-center justify-content-between mx-3">
-          <h1 className="mx-1 mb-4 mt-4 mono-600 text-neutral-300 text-3xl">
+          <h1 className="mx-1 mb-4 mt-4 mono-600 text-neutral-300 text-xl">
             Daily Habits
           </h1>
           <div className="flex justify-content-center mx-3 ">
@@ -91,15 +91,15 @@ const Todo = () => {
             </div>
           </div>
 
-          <AddHabitModal />
+          <div className="flex flex-row">
+            <AddHabitModal />
+            <OrderHabitModal day={selectedDay} habits={habits} />
+          </div>
         </div>
 
         <div className="h-[calc(100vh-350px)] mx-3 mt-1 mb-4 overflow-y-auto !border !border-neutral-800 rounded-sm">
-          <DroppableHabitList
-            habits={habits}
-            today={selectedDay}
-            droppableId="todo"
-          />
+          {/* Pass filtered habits instead of all habits */}
+          <HabitList habits={habits} today={selectedDay} />
         </div>
       </div>
     </div>

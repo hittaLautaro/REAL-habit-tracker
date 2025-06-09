@@ -141,7 +141,7 @@ export const useDeleteAllHabits = () => {
   });
 };
 
-export const useUpdateHabitsOrderAndCompletions = () => {
+export const useUpdateHabitsOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -175,7 +175,7 @@ export const useHabitsOperations = () => {
   const deleteHabit = useDeleteHabit();
   const updateCompletion = useUpdateHabitCompletion();
   const deleteAll = useDeleteAllHabits();
-  const updateOrder = useUpdateHabitsOrderAndCompletions();
+  const updateOrder = useUpdateHabitsOrder();
 
   return {
     // Data

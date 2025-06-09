@@ -4,5 +4,5 @@ export default {
   theme: {
     extend: { backgroundImage: ["hover"] },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 };
