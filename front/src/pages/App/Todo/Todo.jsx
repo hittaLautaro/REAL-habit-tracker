@@ -36,15 +36,12 @@ const Todo = () => {
         className="border border-dark rounded mt-4"
         style={{ backgroundColor: "#151515" }}
       >
-        {/* Header section skeleton */}
         <div className="d-flex align-items-center justify-content-between my-4">
-          {/* Title skeleton */}
           <Skeleton className="h-8 w-52" />
           <Skeleton className="h-10 w-96" />
           <Skeleton className="h-10 w-10" />
         </div>
 
-        {/* Habits list skeleton */}
         <div className="h-[calc(100vh-350px)]  my-2 rounded-sm !border !border-neutral-800">
           {[...Array(1)].map((_, i) => (
             <div
@@ -52,10 +49,10 @@ const Todo = () => {
               className="d-flex align-items-center justify-content-between mb-3 m-2 p-3 border border-dark rounded"
             >
               <div className="d-flex align-items-center gap-3">
-                <Skeleton className="h-5 w-5 rounded" /> {/* Checkbox */}
-                <Skeleton className="h-4 w-32" /> {/* Habit name */}
+                <Skeleton className="h-5 w-5 rounded" />
+                <Skeleton className="h-4 w-32" />
               </div>
-              <Skeleton className="h-8 w-16" /> {/* Action buttons */}
+              <Skeleton className="h-8 w-16" />
             </div>
           ))}
         </div>
@@ -98,7 +95,6 @@ const Todo = () => {
         </div>
 
         <div className="h-[calc(100vh-350px)] mx-3 mt-1 mb-4 overflow-y-auto !border !border-neutral-800 rounded-sm">
-          {/* Pass filtered habits instead of all habits */}
           <HabitList habits={habits} today={selectedDay} />
         </div>
       </div>

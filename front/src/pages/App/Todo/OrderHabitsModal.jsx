@@ -7,23 +7,6 @@ const OrderHabitModal = ({ day, habits }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [orderedHabits, setOrderedHabits] = useState([]);
 
-  // const logHabitOrder = (habits, day) => {
-  //   const list = habits.map((habit, index) => {
-  //     const orderEntry = habit.activeDayOrders?.find(
-  //       (entry) => entry.dayOfWeek === day
-  //     );
-
-  //     return {
-  //       id: habit.id,
-  //       name: habit.name,
-  //       currentPosition: orderEntry?.position,
-  //       visualIndex: index,
-  //     };
-  //   });
-
-  //   console.table(list);
-  // };
-
   useEffect(() => {
     if (habits.length > 0) {
       const filteredHabits = habits.filter((habit) =>
