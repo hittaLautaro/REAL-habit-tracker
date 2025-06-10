@@ -50,7 +50,7 @@ const CompletionHeatmap = () => {
         <span className="text-neutral-300 text-xl mono-500">Activity</span>
         <div className="dropdown text-end mr-1 mb-1">
           <button
-            className="btn btn-outline-light dropdown-toggle sans-600"
+            className="mono-300 !border !border-neutral-200 p-1 px-2 rounded dropdown-toggle"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"

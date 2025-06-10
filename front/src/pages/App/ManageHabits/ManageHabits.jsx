@@ -47,19 +47,15 @@ const ManageHabits = () => {
         className="border border-dark rounded"
         style={{ backgroundColor: "#151515" }}
       >
-        {/* Header section skeleton */}
         <div className="d-flex align-items-center justify-content-between m-4">
-          {/* Title skeleton */}
           <Skeleton className="h-8 w-48 ml-2" />
 
-          {/* Buttons section skeleton */}
           <div className="d-flex gap-2">
-            <Skeleton className="h-10 w-24" /> {/* Add habit button */}
-            <Skeleton className="h-10 w-10" /> {/* Trash button */}
+            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-10" />
           </div>
         </div>
 
-        {/* Habits list skeleton */}
         <div className="h-[71.5vh] w-[800px] mx-4 mb-4 rounded-sm !border !border-neutral-800">
           {[...Array(4)].map((_, i) => (
             <div
@@ -67,10 +63,10 @@ const ManageHabits = () => {
               className="d-flex align-items-center justify-content-between mb-3 m-2 p-3 border border-dark rounded"
             >
               <div className="d-flex align-items-center gap-3">
-                <Skeleton className="h-5 w-5 rounded" /> {/* Checkbox */}
-                <Skeleton className="h-4 w-32" /> {/* Habit name */}
+                <Skeleton className="h-5 w-5 rounded" />
+                <Skeleton className="h-4 w-32" />
               </div>
-              <Skeleton className="h-8 w-16" /> {/* Action buttons */}
+              <Skeleton className="h-8 w-16" />
             </div>
           ))}
         </div>

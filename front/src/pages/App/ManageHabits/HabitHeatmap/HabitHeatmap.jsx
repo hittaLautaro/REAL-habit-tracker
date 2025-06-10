@@ -62,38 +62,38 @@ const HabitHeatmap = () => {
         <div className="flex flex-row gap-2">
           <div className="dropdown text-end mb-1">
             <button
-              className="btn btn-outline-light dropdown-toggle"
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontWeight: 500,
-              }}
+              className="mono-300 !border !border-neutral-200 p-1 px-2 rounded dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
               {selectedHabitId != -1
-                ? selectedHabitId + " " + selectedHabitName
-                : "Select a habit"}
+                ? selectedHabitName
+                : habits.length > 0
+                ? "Select a Habit"
+                : "No habits"}
             </button>
-            <ul className="dropdown-menu overflow-y-auto max-h-[250px]">
-              {habits.map((habit) => (
-                <li key={habit.id}>
-                  <button
-                    className="dropdown-item text-black mono-400"
-                    onClick={() => {
-                      setSelectedHabitId(habit.id),
-                        setSelectedHabitName(habit.name);
-                    }}
-                  >
-                    {habit.id} {habit.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            {habits && habits.length > 0 && (
+              <ul className="dropdown-menu overflow-y-auto max-h-[250px]">
+                {habits.map((habit) => (
+                  <li key={habit.id}>
+                    <button
+                      className="dropdown-item text-black mono-400"
+                      onClick={() => {
+                        setSelectedHabitId(habit.id),
+                          setSelectedHabitName(habit.name);
+                      }}
+                    >
+                      {habit.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className="dropdown text-end mr-1 mb-1">
             <button
-              className="btn btn-outline-light dropdown-toggle sans-600"
+              className="mono-300 !border !border-neutral-200 p-1 px-2 rounded dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
