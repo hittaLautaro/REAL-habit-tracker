@@ -18,11 +18,11 @@ export const useCompletions = (year) => {
   });
 };
 
-export const useCompletionsByHabit = (habit, year) => {
+export const useCompletionsByHabit = (habitId, year) => {
   return useQuery({
-    queryKey: ["completions", "habit", habit, year],
+    queryKey: ["completions", "habit", habitId, year],
     queryFn: async () => {
-      const response = await CompletionService.getAllByHabit(habit, year);
+      const response = await CompletionService.getAllByHabit(habitId, year);
       return response.data;
     },
     staleTime: 5 * 60 * 1000,

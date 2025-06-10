@@ -9,11 +9,11 @@ const CompletionService = {
     });
   },
 
-  getAllByHabit: async (year, habitId) => {
+  getAllByHabit: async (habitId, year) => {
     return await axiosInstance.get(`/completions/habit-summary`, {
       params: {
-        year,
         habitId,
+        year,
       },
     });
   },

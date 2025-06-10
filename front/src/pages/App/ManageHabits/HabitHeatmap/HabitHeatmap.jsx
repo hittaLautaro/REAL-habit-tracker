@@ -1,16 +1,21 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import HabitCalendar from "./HabitCalendar.jsx";
 import { useHabitsOperations } from "../../../../components/hooks/useHabits.js";
 import Skeleton from "../../../../components/Global/Skeleton.jsx";
 import CompletionCalendarSkeleton from "../CompletionHeatmap/CompletionCalendarSkeleton.jsx";
+import { useCompletionsByHabit } from "../../../../components/hooks/useCompletions.js";
 
 const HabitHeatmap = () => {
   const { habits, isLoading } = useHabitsOperations();
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedHabitId, setSelectedHabitId] = useState(-1);
   const [selectedHabitName, setSelectedHabitName] = useState("");
-
   const years = [2025, 2024, 2022];
+  const {
+    data: completions,
+    isCompletionsLoading,
+    isError,
+  } = useCompletionsByHabit(selectedHabitId, selectedYear);
 
   if (isLoading) {
     return (
@@ -18,7 +23,6 @@ const HabitHeatmap = () => {
         className="border-dark border-1 rounded m-3 p-3"
         style={{ backgroundColor: "#151515" }}
       >
-        {/* Header section skeleton */}
         <div className="flex justify-content-between mb-4">
           <Skeleton className="h-6 w-40" />
           <div className="flex flex-row gap-2">
@@ -29,7 +33,6 @@ const HabitHeatmap = () => {
 
         <CompletionCalendarSkeleton year={selectedYear} />
 
-        {/* Legend skeleton */}
         <div className="d-flex gap-3">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="d-flex align-items-center">
@@ -113,7 +116,11 @@ const HabitHeatmap = () => {
         </div>
       </div>
 
-      <HabitCalendar year={selectedYear} habitId={selectedHabitId} />
+      <HabitCalendar
+        completions={completions}
+        year={selectedYear}
+        habitId={selectedHabitId}
+      />
       <div className="d-flex">
         <div className="d-flex align-items-center me-3">
           <div
